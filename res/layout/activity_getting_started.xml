@@ -8,7 +8,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".GettingStarted" >
 
-
+	<EditText android:id="@+id/editFood"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/gs_button"
+            android:layout_marginBottom="10dip"/>
     <TextView
         android:id="@+id/gs_textView1"
         android:layout_width="wrap_content"
@@ -37,5 +41,17 @@
         android:contentDescription="menyou_logo"
         android:gravity="center"
         android:src="@drawable/logo5" />
+
+    <Button
+        android:id="@+id/gs_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="@string/button_text"
+        android:textColor="#638e22"
+        android:textSize="30sp" />
 
 </RelativeLayout>

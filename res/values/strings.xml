@@ -7,9 +7,15 @@
     <string name="sub_title1">the menu for you.</string>
     <string name="button_text">Get Started</string>
     <string name="button_text_2">Or Click Me!</string>
-    
     <string name="title_activity_getting_started">GettingStarted</string>
-    <string name="getting_started_intro">Congratultions! You found the Getting Started page! It does not do anything yet</string>
-	<string name="getting_started_advice">You should press the back button below to return to the main screen</string>
-	
+    <string name="getting_started_intro">Congratultions! You found the Getting Started page! Please type in your favorite food below:</string>
+    <string name="getting_started_advice">You should press the back button below to return to the main screen</string>
+    <string name="title_activity_display_favorites">DisplayFavorites</string>
+    <string name="df_button_text">Go back</string>
+    <string name="title_activity_scrollable_stuff">ScrollableStuff</string>
+    <string name="title_section1">Light or Heavy</string>
+    <string name="title_section2">Spiciness</string>
+    <string name="title_section3">Healthy or Indulgent</string>
+    <string name="title_section4">Budgetary</string>
+
 </resources>

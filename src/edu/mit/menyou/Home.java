@@ -63,6 +63,17 @@ public class Home extends Activity {
                 startActivity(nextScreen);
                 }
         });
+        
+        //Listening to button2 event
+        button2.setOnClickListener(new View.OnClickListener() {
+ 
+            public void onClick(View arg0) {
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), ScrollableStuff.class);
+                
+                startActivity(nextScreen);
+                }
+        });
      
         
         //////////////////////////////////////////////////////////////////////
