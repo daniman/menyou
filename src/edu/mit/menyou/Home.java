@@ -1,5 +1,17 @@
 package edu.mit.menyou;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -10,6 +22,7 @@ import android.widget.TextView;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
+import com.parse.signpost.http.HttpResponse;
 
 public class Home extends Activity {
 
@@ -24,11 +37,6 @@ public class Home extends Activity {
         final TextView tv = (TextView) findViewById(R.id.hello_text);
         final Button button = (Button) findViewById(R.id.button);
         final Button button2 = (Button) findViewById(R.id.button2);
-        
-        // test that menyou is connected to Parse
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
         
         // set up the font
         Typeface type = Typeface.createFromAsset(getAssets(),"fonts/bubblebo.ttf");
@@ -57,6 +65,14 @@ public class Home extends Activity {
 				}
 			}
 		});
+        
+        //////////////////////////////////////////////////////////////////////
+        // test that menyou is connected to Parse
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+        //////////////////////////////////////////////////////////////////////
+        
 	}
 
 	@Override
