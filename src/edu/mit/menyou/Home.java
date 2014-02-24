@@ -34,16 +34,12 @@ public class Home extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
-		
-        final TextView tv1 = (TextView) findViewById(R.id.title1);
-        final TextView tv2 = (TextView) findViewById(R.id.sub_title1);
+
         final Button button = (Button) findViewById(R.id.button_getStart);
         final Button button2 = (Button) findViewById(R.id.button2);
         
         // set up the font
         Typeface type = Typeface.createFromAsset(getAssets(),"fonts/bubblebo.ttf");
-        tv1.setTypeface(type);
-        tv2.setTypeface(type);
         button.setTypeface(type);
         button2.setTypeface(type);
         
