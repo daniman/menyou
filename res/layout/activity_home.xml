@@ -9,35 +9,44 @@
     tools:context=".Home" >
 
     <TextView
-        android:id="@+id/hello_text"
+        android:id="@+id/title1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="@string/hello_world"
+        android:text="@string/title1"
         android:gravity="center"
-        android:textSize="80px" 
+        android:textSize="60sp" 
+   		/>
+    <TextView
+        android:id="@+id/sub_title1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title1"
+        android:text="@string/sub_title1"
+        android:gravity="center"
+        android:textSize="20sp" 
    		/>
     
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_getStart"
       	android:textColor="#638e22"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/hello_text"
+        android:layout_below="@+id/sub_title1"
         android:text="@string/button_text"
         android:gravity="center"
-        android:textSize="120px" 
+        android:textSize="30sp" 
         />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button"
-        android:layout_below="@+id/button"
+        android:layout_alignLeft="@+id/button_getStart"
+        android:layout_below="@+id/button_getStart"
         android:gravity="center"
         android:text="@string/button_text_2"
         android:textColor="#638e22"
-        android:textSize="80px" />
+        android:textSize="30sp" />
 
 </RelativeLayout>

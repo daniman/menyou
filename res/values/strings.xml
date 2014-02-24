@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Menyou</string>
+    <string name="app_name">menyou</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello 21W.789!</string>
-    <string name="goodbye_world">Goodbye 21W.789!</string>
-	<string name="button_text">Click Me</string>
-	<string name="button_text_2">Or Click Me!</string>
+    <string name="title1">menyou</string>
+    <string name="sub_title1">The menu for you.</string>
+    <string name="button_text">Get Started</string>
+    <string name="button_text_2">Or Click Me!</string>
+    <string name="title_activity_getting_started">GettingStarted</string>
 
 </resources>
