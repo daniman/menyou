@@ -8,9 +8,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".GettingStarted" >
 
+
     <TextView
+        android:id="@+id/gs_textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title1" />
+        android:layout_below="@+id/gs_logo"
+        android:layout_marginTop="22dp"
+        android:text="@string/getting_started_intro"
+        android:textSize="15sp"  />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/gs_textView1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="73dp"
+        android:text="@string/getting_started_advice" />
+
+    <ImageView
+        android:id="@+id/gs_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/gs_textView1"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:contentDescription="menyou_logo"
+        android:gravity="center"
+        android:src="@drawable/logo5" />
 
 </RelativeLayout>
