@@ -17,29 +17,51 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
         android:contentDescription="menyou_logo"
-        android:gravity="center"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/logo5" />
+    
+    <TextView
+        android:id="@+id/df_textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gs_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:text="*work in progress*"
+        android:textSize="20sp" />
     
     <Button
         android:id="@+id/df_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/df_textView1"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
+        android:layout_below="@+id/df_button2"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         android:text="@string/df_button_text"
         android:textColor="#638e22"
         android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/df_textView1"
+    
+    <Button
+        android:id="@+id/df_button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/df_button"
-        android:layout_below="@+id/gs_logo"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="60dp"
-        android:text="filler"
-        android:textSize="20sp" />
+        android:layout_below="@+id/df_button3"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/df_button_text2"
+        android:textColor="#638e22"
+        android:textSize="30sp" />
+
+
+    <Button
+        android:id="@+id/df_button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/df_textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/df_button_text3"
+        android:textColor="#638e22"
+        android:textSize="30sp" />
 
 </RelativeLayout>

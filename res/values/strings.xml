@@ -10,9 +10,12 @@
     <string name="getting_started_intro">Congratultions! You found the Getting Started page! Please type in your favorite food below:</string>
     <string name="getting_started_advice">You should press the back button below to return to the main screen</string>
     <string name="gs_button1">enter</string>
+    <string name="gs_button2">send</string>
     
     <string name="title_activity_display_favorites">DisplayFavorites</string>
     <string name="df_button_text">Go back</string>
+    <string name="df_button_text2">awesome</string>
+    <string name="df_button_text3">try me first</string>
     
     <string name="title_activity_scrollable_stuff">ScrollableStuff</string>
     <string name="title_section1">Light or Heavy</string>

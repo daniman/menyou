@@ -11,7 +11,8 @@
 	<EditText android:id="@+id/editFood"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/gs_button"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/gs_textView1"
             android:layout_marginBottom="10dip"/>
     <TextView
         android:id="@+id/gs_textView1"
@@ -22,33 +23,41 @@
         android:text="@string/getting_started_intro"
         android:textSize="15sp"  />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/gs_textView1"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="73dp"
-        android:text="@string/getting_started_advice" />
-
     <ImageView
         android:id="@+id/gs_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/gs_textView1"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:contentDescription="menyou_logo"
-        android:gravity="center"
         android:src="@drawable/logo5" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editFood"
+        android:layout_alignParentBottom="true"
+        android:text="@string/getting_started_advice" />
+
+    <Button
+        android:id="@+id/gs_button2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editFood"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/gs_button2"
+        android:textColor="#638e22"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/gs_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView1"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/gs_button2"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/gs_button1"
         android:textColor="#638e22"

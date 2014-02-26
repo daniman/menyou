@@ -1,5 +1,7 @@
 package edu.mit.menyou;
 
+import com.parse.ParseObject;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -17,10 +19,11 @@ public class GettingStarted extends Activity {
 		setContentView(R.layout.activity_getting_started);
 		
 		final EditText inputFood = (EditText) findViewById(R.id.editFood);
-		final Button button = (Button) findViewById(R.id.gs_button);
+		final Button button1 = (Button) findViewById(R.id.gs_button);
+		final Button button2 = (Button) findViewById(R.id.gs_button2);
 		
 		//Listening to button event
-        button.setOnClickListener(new View.OnClickListener() {
+        button1.setOnClickListener(new View.OnClickListener() {
  
             public void onClick(View arg0) {
                 //Starting a new Intent
@@ -34,6 +37,21 @@ public class GettingStarted extends Activity {
                 startActivity(nextScreen);
                 }
         });
+        
+        ///////////////////////////////////////////////////////////////////////////
+        // mess with Danielle and the Parse server
+        
+        final ParseObject testObject = new ParseObject("MoreObject");
+        
+        button2.setOnClickListener(new View.OnClickListener() {
+        	 
+            public void onClick(View arg0) {
+            	testObject.put("foo", inputFood.getText().toString());
+                }
+        });
+
+        testObject.saveInBackground();
+        ///////////////////////////////////////////////////////////////////////////
 	}
 
 	@Override
