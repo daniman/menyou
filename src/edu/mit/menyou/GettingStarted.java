@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class GettingStarted extends Activity {
 
@@ -17,10 +18,14 @@ public class GettingStarted extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_getting_started);
+		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(false);
 		
 		final EditText inputFood = (EditText) findViewById(R.id.editFood);
 		final Button button1 = (Button) findViewById(R.id.gs_button);
 		final Button button2 = (Button) findViewById(R.id.gs_button2);
+		final Button button3 = (Button) findViewById(R.id.gs_button3);
+		final ImageButton backButton = (ImageButton) findViewById(R.id.gs_back);
 		
 		//Listening to button event
         button1.setOnClickListener(new View.OnClickListener() {
@@ -30,9 +35,9 @@ public class GettingStarted extends Activity {
                 Intent nextScreen = new Intent(getApplicationContext(), DisplayFavorites.class);
                
                 //Sending data to another Activity
-                nextScreen.putExtra("favfood",inputFood.getText().toString());
+                nextScreen.putExtra("food",inputFood.getText().toString());
  
-                Log.e("n", "Your favorite food is "+inputFood.getText()+" ?? That's so weird!");
+                Log.e("n",inputFood.getText().toString());
  				
                 startActivity(nextScreen);
                 }
@@ -52,6 +57,26 @@ public class GettingStarted extends Activity {
 
         testObject.saveInBackground();
         ///////////////////////////////////////////////////////////////////////////
+   
+        // Binding Click event to Button
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                //Closing this Activity
+                finish();
+            }
+        });
+        
+        
+        //Listening to button2 event
+        button3.setOnClickListener(new View.OnClickListener() {
+ 
+            public void onClick(View arg0) {
+                //Starting a new Intent
+                Intent nextScreen = new Intent(getApplicationContext(), ScrollableStuff.class);
+                
+                startActivity(nextScreen);
+                }
+        });
 	}
 
 	@Override

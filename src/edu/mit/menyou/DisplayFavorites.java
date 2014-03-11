@@ -23,15 +23,13 @@ public class DisplayFavorites extends Activity {
         Button df_button2 = (Button) findViewById(R.id.df_button2);
         Button df_button3 = (Button) findViewById(R.id.df_button3);
  
-        /*
+        
         Intent i = getIntent();
         //Receiving the Data
         String food = i.getStringExtra("food");
         Log.e("Second Screen", food);
- 
         // Displaying Received data
-        txtFood.setText("Your favorite food is "+food+" ?? That's so weird!");
-        */
+        txtFood.setText("Your favorite food is "+food+"?? That's so weird!");
  
         // Binding Click event to Button
         df_button.setOnClickListener(new View.OnClickListener() {
