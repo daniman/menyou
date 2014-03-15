@@ -73,13 +73,6 @@ public class First extends Activity {
             public void onClick(View arg0) {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), GettingStarted.class);
-                /*
-                //Sending data to another Activity
-                nextScreen.putExtra("name", inputName.getText().toString());
-                nextScreen.putExtra("email", inputEmail.getText().toString());
- 
-                Log.e("n", inputName.getText()+"."+ inputEmail.getText());
- 				*/
                 startActivity(nextScreen);
                 }
         });

@@ -45,6 +45,10 @@
             android:name="edu.mit.menyou.Home"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity
+            android:name="edu.mit.menyou.Search"
+            android:label="@string/title_activity_search" >
+        </activity>
     </application>
 
 </manifest>
