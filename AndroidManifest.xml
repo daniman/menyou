@@ -38,7 +38,7 @@
             android:label="@string/title_activity_display_favorites" >
         </activity>
         <activity
-            android:name="edu.mit.menyou.ScrollableStuff"
+            android:name="edu.mit.menyou.Tastes"
             android:label="@string/title_activity_scrollable_stuff" >
         </activity>
         <activity
@@ -48,6 +48,30 @@
         <activity
             android:name="edu.mit.menyou.Search"
             android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name="edu.mit.menyou.Profile"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="edu.mit.menyou.TasteProfile"
+            android:label="@string/title_activity_taste_profile" >
+        </activity>
+        <activity
+            android:name="edu.mit.menyou.MyMood"
+            android:label="@string/title_activity_my_mood" >
+        </activity>
+        <activity
+            android:name="edu.mit.menyou.Dietary"
+            android:label="@string/title_activity_dietary" >
+        </activity>
+        <activity
+            android:name="edu.mit.menyou.Friends"
+            android:label="@string/title_activity_friends" >
+        </activity>
+        <activity
+            android:name="edu.mit.menyou.History"
+            android:label="@string/title_activity_history" >
         </activity>
     </application>
 

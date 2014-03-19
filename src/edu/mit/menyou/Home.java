@@ -51,7 +51,8 @@ public class Home extends Activity {
                 startActivity(nextScreen1);
 	            return true;
 	        case R.id.action_profile:
-	        	Toast.makeText(Home.this, "profile", Toast.LENGTH_SHORT).show();
+	        	Intent nextScreen2 = new Intent(getApplicationContext(), Profile.class);
+                startActivity(nextScreen2);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

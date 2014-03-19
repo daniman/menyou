@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MyMood" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My General Mood" />
+    
+    <TextView
+        android:id="@+id/small_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+        android:layout_marginTop="86dp"
+        android:gravity="center"
+        android:text="  $" />
+    <TextView
+        android:id="@+id/high_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="86dp"
+        android:text="$$$" />
+    
+     <TextView
+        android:id="@+id/not_spicy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+        android:layout_marginTop="160dp"
+        android:text="not\nspicy"
+        android:gravity="center" />
+    <TextView
+        android:id="@+id/spicy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="166dp"
+        android:text="spicy" />
+    <TextView
+        android:id="@+id/light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+        android:layout_marginTop="246dp"
+        android:text="light" />
+    <TextView
+        android:id="@+id/heavy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="246dp"
+        android:text="heavy" />
+    <TextView
+        android:id="@+id/familiar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+        android:layout_marginTop="326dp"
+        android:text="familiar" />
+    <TextView
+        android:id="@+id/notfamiliar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="326dp"
+        android:layout_marginRight="4dp"
+        android:text="new" />
+    
+    <SeekBar
+        android:id="@+id/cost_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="80dp" />
+    <SeekBar
+        android:id="@+id/spicy_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp" />
+    <SeekBar
+        android:id="@+id/dense_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="240dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp" />
+
+    <SeekBar
+        android:id="@+id/discover_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+		android:layout_marginTop="320dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp" />
+
+
+</RelativeLayout>

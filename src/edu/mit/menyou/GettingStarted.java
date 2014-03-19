@@ -3,6 +3,7 @@ package edu.mit.menyou;
 import com.parse.ParseObject;
 
 
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -77,7 +78,7 @@ public class GettingStarted extends Activity {
  
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), ScrollableStuff.class);
+                Intent nextScreen = new Intent(getApplicationContext(), Tastes.class);
                 
                 startActivity(nextScreen);
                 }
@@ -103,7 +104,8 @@ public class GettingStarted extends Activity {
                 startActivity(nextScreen1);
 	            return true;
 	        case R.id.action_profile:
-	        	Toast.makeText(GettingStarted.this, "profile", Toast.LENGTH_SHORT).show();
+	        	Intent nextScreen2 = new Intent(getApplicationContext(), Search.class);
+                startActivity(nextScreen2);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
