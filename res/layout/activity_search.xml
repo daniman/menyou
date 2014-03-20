@@ -11,8 +11,9 @@
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"/>
 
     <ImageButton
         android:id="@+id/search_button"
@@ -36,6 +37,7 @@
     <AutoCompleteTextView
         android:id="@+id/search_input"
         android:layout_width="240dp"
+        android:singleLine="true"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginRight="44dp"
