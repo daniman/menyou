@@ -7,9 +7,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Search" >
-    
+       
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/restaurantListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -25,14 +25,14 @@
         android:layout_marginTop="2dp"
         android:src="@drawable/ic_search" />
 
-    <ImageButton
+<!--     <ImageButton
         android:id="@+id/gps_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="@null"
-        android:src="@drawable/ic_map" />
+        android:src="@drawable/ic_map" /> -->
 
     <AutoCompleteTextView
         android:id="@+id/search_input"

@@ -30,5 +30,5 @@ public class Restaurant extends Activity {
 		getMenuInflater().inflate(R.menu.restaurant, menu);
 		return true;
 	}
-
 }
+
