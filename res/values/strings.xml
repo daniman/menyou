@@ -20,7 +20,6 @@
     <string name="df_button_text2">awesome</string>
     <string name="df_button_text3">try me first</string>
     <string name="title_activity_scrollable_stuff">ScrollableStuff</string>
-    
     <string name="title_section1">welcome</string>
     <string name="title_section2">allergies</string>
     <string name="title_section3">likes</string>
@@ -40,5 +39,6 @@
     <string name="title_activity_dietary">Dietary</string>
     <string name="title_activity_friends">Friends</string>
     <string name="title_activity_history">History</string>
+    <string name="title_activity_restaurant">Restaurant</string>
 
 </resources>
