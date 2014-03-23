@@ -20,7 +20,8 @@
         android:layout_below="@+id/section_label2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="let us know what you're allergic too"
+        android:text="let us know what you're allergic to"
+        android:textSize="18dp"
         android:layout_alignParentTop="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
