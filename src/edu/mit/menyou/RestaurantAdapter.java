@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class SimpleAdapter extends ArrayAdapter<Restaurant> {
+public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
 	private List<Restaurant> itemList;
 	private Context context;
 
-	public SimpleAdapter(List<Restaurant> itemList, Context ctx) {
+	public RestaurantAdapter(List<Restaurant> itemList, Context ctx) {
 		super(ctx, android.R.layout.simple_list_item_1, itemList);
 		this.itemList = itemList;
 		this.context = ctx;		

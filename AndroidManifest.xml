@@ -74,6 +74,10 @@
             android:name="edu.mit.menyou.History"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name="edu.mit.menyou.MenuList"
+            android:label="@string/title_activity_history" >
+        </activity>
     </application>
 
 </manifest>

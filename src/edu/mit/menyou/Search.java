@@ -17,84 +17,48 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class Search extends Activity {
-	private SimpleAdapter adpt;
+	private RestaurantAdapter adpt;
+	private ListView lView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	
 		final AutoCompleteTextView search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
 		final ImageButton searchButton = (ImageButton) findViewById(R.id.search_button);
-//		final ImageButton gpsButton = (ImageButton) findViewById(R.id.gps_button);
     	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         
-        adpt  = new SimpleAdapter(new ArrayList<Restaurant>(), this);
-        ListView lView = (ListView) findViewById(R.id.restaurantListView);
-        
+        adpt  = new RestaurantAdapter(new ArrayList<Restaurant>(), this);
+        lView = (ListView) findViewById(R.id.restaurantListView);
         lView.setAdapter(adpt);
         
-//        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
-//        String displayThis;
-//        if (!enabled) {
-//        	displayThis = "Please enable your GPS";
-//        	Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
-//        } else {
-//        	// Exec async load task
-//            String location = "42.3598,-71.0921";
-//            (new AsyncListViewLoader()).execute(location);
-//        }
-        
-                LocationManager locMan=null;  
-                LatLongListener locList;  
-                locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);  
-                locList = new LatLongListener();  
-                locMan.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locList);  
+        LocationManager locMan=null;  
+        LatLongListener locList;  
+        locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);  
+        locList = new LatLongListener();  
+        locMan.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locList);  
          
                if (locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {  
-                	   String location = LatLongListener.latitude + "," + LatLongListener.longitude;
-                	   System.out.println("LOCATION: " + location);
+//                	   String location = LatLongListener.latitude + "," + LatLongListener.longitude;
+            	   String location = "42.364270,-71.102991";
+            	   System.out.println("LOCATION: " + location);
                 	   (new AsyncListViewLoader()).execute(location);
                  } else {  
                 	String displayThis = "Please enable your GPS";
                  	Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show(); 
                  }  
-         
-         
-        
-//		//Listening to button event
-//      searchButton.setOnClickListener(new View.OnClickListener() {
-//          public void onClick(View arg0) {
-//          	search_history.add(search_input.getText().toString());
-//          	Toast.makeText(Search.this, "searching", Toast.LENGTH_SHORT).show();
-//          	adapter.notifyDataSetChanged();
-//          	adapter1.notifyDataSetChanged();
-//          }
-//      });
-      
-//    //Listening to button event
-//      gpsButton.setOnClickListener(new View.OnClickListener() {
-//          public void onClick(View arg0) {
-//          	
-//          	LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-//              boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
-//              String displayThis;
-//              if (enabled) {
-//              	displayThis = "GPS is enabled yayy";
-//              } else {
-//              	displayThis = "Please enable your GPS";
-//              }
-//          	Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
-//          }
-//      });
     }
 
 
@@ -104,11 +68,20 @@ public class Search extends Activity {
 		private String request_url;
     	
 		@Override
-		protected void onPostExecute(List<Restaurant> result) {			
+		protected void onPostExecute(final List<Restaurant> result) {			
 			super.onPostExecute(result);
 			dialog.dismiss();
 			adpt.setItemList(result);
 			adpt.notifyDataSetChanged();
+			
+			lView.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(Search.this, MenuList.class);
+                    intent.putExtra("restID",result.get(position).getId());
+                    startActivity(intent);
+                }
+            });	
 		}
 
 		@Override
@@ -126,11 +99,9 @@ public class Search extends Activity {
 
 			try {
 				URL u = new URL(request_url);
-				System.out.println(u.toString());
-
-				BufferedReader in = new BufferedReader(new InputStreamReader(u.openStream())); // read the server's output
+				 // read the server's output
+				BufferedReader in = new BufferedReader(new InputStreamReader(u.openStream()));
 		        String serverOutput;
-		        
 		        String output = "";
 		        while ((serverOutput = in.readLine()) != null) {
 		        	output = serverOutput;
@@ -139,11 +110,12 @@ public class Search extends Activity {
 				JSONArray arr = json.getJSONArray("objects");
 				for (int i=0; i < arr.length(); i++) {
 					JSONObject rest = arr.getJSONObject(i);
-					result.add(convertRestaurant(arr.getJSONObject(i)));
+					result.add(convertRestaurant(rest));
 				}
 				return result;
 			}
 			catch(Throwable t) {
+				System.out.println("Caught Error");
 				t.printStackTrace();
 			}
 			return null;
@@ -152,7 +124,8 @@ public class Search extends Activity {
 		private Restaurant convertRestaurant(JSONObject obj) throws JSONException {
 			String name = obj.getString("name");
 			String description = obj.getString("street_address");
-			return new Restaurant(name, description);
+			String id = obj.getString("id");
+			return new Restaurant(name, description, id);
 		}
     	
     }
