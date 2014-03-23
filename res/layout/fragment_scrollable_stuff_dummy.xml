@@ -20,7 +20,8 @@
         android:layout_below="@+id/section_label"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:text="Large Text"
+        android:gravity="center"
+        android:text="welcome to your new menyou profile! \n\nswipe to get started with setting up your taste profile"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
