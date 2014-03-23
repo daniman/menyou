@@ -10,11 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
@@ -29,7 +31,7 @@ public class Search extends Activity {
     	
 		final AutoCompleteTextView search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
 		final ImageButton searchButton = (ImageButton) findViewById(R.id.search_button);
-		final ImageButton gpsButton = (ImageButton) findViewById(R.id.gps_button);
+//		final ImageButton gpsButton = (ImageButton) findViewById(R.id.gps_button);
     	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -39,17 +41,33 @@ public class Search extends Activity {
         
         lView.setAdapter(adpt);
         
-        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-        boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        String displayThis;
-        if (!enabled) {
-        	displayThis = "Please enable your GPS";
-        	Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
-        } else {
-        	// Exec async load task
-            String location = "42.3598,-71.0921";
-            (new AsyncListViewLoader()).execute(location);
-        }
+//        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+//        boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        String displayThis;
+//        if (!enabled) {
+//        	displayThis = "Please enable your GPS";
+//        	Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
+//        } else {
+//        	// Exec async load task
+//            String location = "42.3598,-71.0921";
+//            (new AsyncListViewLoader()).execute(location);
+//        }
+        
+                LocationManager locMan=null;  
+                LatLongListener locList;  
+                locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);  
+                locList = new LatLongListener();  
+                locMan.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locList);  
+         
+               if (locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {  
+                	   String location = LatLongListener.latitude + "," + LatLongListener.longitude;
+                	   System.out.println("LOCATION: " + location);
+                	   (new AsyncListViewLoader()).execute(location);
+                 } else {  
+                	String displayThis = "Please enable your GPS";
+                 	Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show(); 
+                 }  
+         
          
         
 //		//Listening to button event
@@ -104,7 +122,7 @@ public class Search extends Activity {
 		protected List<Restaurant> doInBackground(String... params) {
 			JSONObject json = null;
 			List<Restaurant> result = new ArrayList<Restaurant>();
-			request_url = BASE_URL + "&location=" + params[0] + "&radius=200";
+			request_url = BASE_URL + "&location=" + params[0] + "&radius=300&category=restaurant";
 
 			try {
 				URL u = new URL(request_url);

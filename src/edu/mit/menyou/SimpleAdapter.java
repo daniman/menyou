@@ -43,7 +43,7 @@ public class SimpleAdapter extends ArrayAdapter<Restaurant> {
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = inflater.inflate(R.layout.activity_search, null);
+			v = inflater.inflate(R.layout.restaurant_list_item, null);
 		}
 
 		Restaurant r = itemList.get(position);

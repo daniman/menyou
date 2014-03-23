@@ -41,9 +41,9 @@ public final class R {
         public static final int taste_profile=0x7f020011;
     }
     public static final class id {
-        public static final int action_home=0x7f080035;
-        public static final int action_profile=0x7f080037;
-        public static final int action_search=0x7f080036;
+        public static final int action_home=0x7f080034;
+        public static final int action_profile=0x7f080036;
+        public static final int action_search=0x7f080035;
         public static final int button_getStart=0x7f080007;
         public static final int button_second=0x7f080008;
         public static final int cost_seekBar=0x7f08001b;
@@ -57,7 +57,6 @@ public final class R {
         public static final int editFood=0x7f080009;
         public static final int familiar=0x7f080019;
         public static final int friends_button=0x7f080022;
-        public static final int gps_button=0x7f08002d;
         public static final int gs_back=0x7f08000d;
         public static final int gs_button=0x7f08000b;
         public static final int gs_button2=0x7f08000a;
@@ -75,28 +74,28 @@ public final class R {
         public static final int home_username_first=0x7f080020;
         public static final int home_username_last=0x7f080021;
         public static final int light=0x7f080017;
-        public static final int listView2=0x7f080032;
+        public static final int listView2=0x7f08002f;
         public static final int mood_button=0x7f080023;
         public static final int not_spicy=0x7f080015;
         public static final int notfamiliar=0x7f08001a;
         public static final int pager=0x7f080027;
         public static final int pager_title_strip=0x7f080028;
         public static final int profile_av=0x7f08001f;
-        public static final int restaurantDescription=0x7f08002a;
-        public static final int restaurantListView=0x7f08002b;
-        public static final int restaurantName=0x7f080029;
-        public static final int search_button=0x7f08002c;
-        public static final int search_input=0x7f08002e;
-        public static final int section_label=0x7f08002f;
-        public static final int section_label2=0x7f080030;
-        public static final int setup_button=0x7f080034;
+        public static final int restaurantDescription=0x7f080033;
+        public static final int restaurantListView=0x7f080029;
+        public static final int restaurantName=0x7f080032;
+        public static final int search_button=0x7f08002a;
+        public static final int search_input=0x7f08002b;
+        public static final int section_label=0x7f08002c;
+        public static final int section_label2=0x7f08002d;
+        public static final int setup_button=0x7f080031;
         public static final int small_cost=0x7f080013;
         public static final int spicy=0x7f080016;
         public static final int spicy_seekBar=0x7f08001c;
         public static final int taste_button=0x7f080025;
         public static final int textView1=0x7f080012;
-        public static final int textView2=0x7f080031;
-        public static final int textView4=0x7f080033;
+        public static final int textView2=0x7f08002e;
+        public static final int textView4=0x7f080030;
     }
     public static final class layout {
         public static final int activity_dietary=0x7f030000;
@@ -116,6 +115,7 @@ public final class R {
         public static final int fragment_scrollable_stuff_dummy3=0x7f03000e;
         public static final int fragment_scrollable_stuff_dummy4=0x7f03000f;
         public static final int fragment_scrollable_stuff_dummy5=0x7f030010;
+        public static final int restaurant_list_item=0x7f030011;
     }
     public static final class menu {
         public static final int first=0x7f070000;
