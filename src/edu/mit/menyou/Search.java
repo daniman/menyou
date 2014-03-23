@@ -15,10 +15,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -28,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -39,6 +44,7 @@ import android.widget.Toast;
 public class Search extends Activity {
 	
     private static final List<String> search_history = new ArrayList<String>();
+    private static final List<String> local = new ArrayList<String>();
 
   	
   	@Override
@@ -48,8 +54,9 @@ public class Search extends Activity {
 		getActionBar().setDisplayShowTitleEnabled(false);
 		
 		search_history.add("pad thai");
+		local.add("pad thai");
 		ListView lv = (ListView) findViewById(R.id.listView);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, search_history);
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, local);
 		lv.setAdapter(adapter);
 		
 		final AutoCompleteTextView search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
@@ -58,22 +65,27 @@ public class Search extends Activity {
 		
 		
 		final ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, search_history);
-		final AutoCompleteTextView search_input1 = (AutoCompleteTextView) findViewById(R.id.search_input);
-		search_input1.setAdapter(adapter1);
+		search_input.setAdapter(adapter1);
 	    
+		//LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+		//Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		//double lon = location.getLongitude();
+		//double lat = location.getLatitude();
+		//String locate =String.valueOf(lon)+","+String.valueOf(lat) ;
 		
 		String location = "42.3598,-71.0921";
-        String radius = "200";
+		String radius = "200";
         LocuTask task = new LocuTask();
         task.execute(location, radius);		
 		
 		//Listening to button event
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-            	search_history.add(search_input.getText().toString());
+            	search_history.add(search_input.getText().toString());            	
+            	search_input.setText("");
             	Toast.makeText(Search.this, "searching", Toast.LENGTH_SHORT).show();
-            	adapter.notifyDataSetChanged();
-            	adapter1.notifyDataSetChanged();
+            	//adapter.notifyDataSetChanged();
+            	//adapter1.notifyDataSetChanged();
             }
         });
       //Listening to button event
@@ -82,6 +94,22 @@ public class Search extends Activity {
             	Toast.makeText(Search.this, "update with gps", Toast.LENGTH_SHORT).show();
             }
         });
+        
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		      public void onItemClick(AdapterView<?> adapter, View view, int position,long id) {
+		    	
+		    	TextView clickedView = (TextView) view;
+		  		String restaurantName = clickedView.getText().toString();
+		  		
+		                //Starting a new Intent
+		                Intent nextScreen = new Intent(getApplicationContext(), Restaurant.class);
+		                //Sending data to another Activity
+		                nextScreen.putExtra("name",restaurantName);
+		                Log.e("n",String.valueOf(id));
+
+		                startActivity(nextScreen);
+		     }
+		});
 	}
 
 	@Override
@@ -90,6 +118,7 @@ public class Search extends Activity {
 		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
@@ -109,6 +138,7 @@ public class Search extends Activity {
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+
 	
 	
 	
@@ -154,7 +184,7 @@ public class Search extends Activity {
 				for (int i=0; i<restaurants.length() ;i++) {
 					JSONObject rest = restaurants.getJSONObject(i);
 					System.out.println(rest.get("name"));
-					search_history.add(rest.getString("name"));
+					local.add(rest.getString("name"));
 					
 					
 //					search_history.add(search_input.getText().toString());
