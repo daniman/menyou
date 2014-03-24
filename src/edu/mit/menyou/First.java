@@ -56,7 +56,7 @@ public class First extends Activity {
  
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Home.class);
+                Intent nextScreen = new Intent(getApplicationContext(), Tastes.class);
                 /*
                 //Sending data to another Activity
                 nextScreen.putExtra("name", inputName.getText().toString());
@@ -64,16 +64,6 @@ public class First extends Activity {
  
                 Log.e("n", inputName.getText()+"."+ inputEmail.getText());
  				*/
-                startActivity(nextScreen);
-                }
-        });
-        
-        //Listening to button event
-        button.setOnClickListener(new View.OnClickListener() {
- 
-            public void onClick(View arg0) {
-                //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Tastes.class);
                 startActivity(nextScreen);
                 }
         });

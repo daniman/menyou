@@ -19,11 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Tastes extends FragmentActivity {
 	
@@ -187,20 +189,29 @@ public class Tastes extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
+			final View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
 			allergies_full.add("egg");
 			allergies_full.add("fish");
 			allergies_full.add("milk");
-			allergies_full.add("pad thai");
 			allergies_full.add("peanuts");
 			allergies_full.add("soy");
 			allergies_full.add("tree nuts");
 			allergies_full.add("shellfish");
 			allergies_full.add("wheat");
-			ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
+			final TextView allergies = (TextView) rootView2.findViewById(R.id.allergies);
+			final ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
 			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
 			lv.setAdapter(adapter);
+			
+			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
+			         // We know the View is a TextView so we can cast it
+				         TextView clickedView = (TextView) view;
+					     allergies.setText(allergies.getText()+" "+clickedView.getText().toString());
+					     }
+					});
 			return rootView2;
+			
 		}
 	}
 	public static class DummySectionFragment3 extends Fragment {

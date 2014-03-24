@@ -1,6 +1,8 @@
 package edu.mit.menyou;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,9 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 	private List<Restaurant> itemList;
 	private Context context;
 
-	public RestaurantAdapter(List<Restaurant> itemList, Context ctx) {
-		super(ctx, android.R.layout.simple_list_item_1, itemList);
-		this.itemList = itemList;
+	public RestaurantAdapter(ArrayList<Restaurant> arrayList, Context ctx) {
+		super(ctx, android.R.layout.simple_list_item_1);
+		this.itemList = arrayList;
 		this.context = ctx;		
 	}
 

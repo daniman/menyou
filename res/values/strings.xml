@@ -40,5 +40,6 @@
     <string name="title_activity_friends">Friends</string>
     <string name="title_activity_history">History</string>
     <string name="title_activity_restaurant">Restaurant</string>
+    <string name="title_activity_username">Username</string>
 
 </resources>
