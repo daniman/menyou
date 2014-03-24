@@ -1,9 +1,10 @@
 package edu.mit.menyou;
 
 import android.os.Bundle;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,20 @@ public class Home extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		SharedPreferences prefs = this.getSharedPreferences(
+			      "edu.mit.menyou", Context.MODE_PRIVATE);
+		String firstTime = "edu.mit.menyou.firstTime";
+		
+		// use a default value using new Date()
+		int firstCheck = prefs.getInt(firstTime, 0);
+		
+		if(firstCheck==0){
+			Intent nextScreen = new Intent(getApplicationContext(), First.class);
+            startActivity(nextScreen);
+		}
+		
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		

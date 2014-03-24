@@ -28,16 +28,6 @@
         android:text="@string/first_button1"
         android:textColor="#638e22"
         android:textSize="30sp" />
-    
-    <Button
-        android:id="@+id/button_second"
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/button_getStart"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/first_button2"
-        android:textColor="#638e22"
-        android:textSize="30sp" />
+
    
 </RelativeLayout>

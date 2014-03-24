@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,6 +34,7 @@ public class Tastes extends FragmentActivity {
 	private static final List<String> dislikes_full = new ArrayList<String>();
 	private static final List<String> likes_full = new ArrayList<String>();
 	private static final List<String> allergies_full = new ArrayList<String>();
+	String firstTime = "edu.mit.menyou.firstTime";
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -256,11 +259,18 @@ public class Tastes extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView5 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy5, container, false);
-		       // Demonstration of a collection-browsing activity.
-	        rootView5.findViewById(R.id.setup_button)
-	                .setOnClickListener(new View.OnClickListener() {
-	                    public void onClick(View view) {
+			
+			final SharedPreferences prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		      
+	        rootView5.findViewById(R.id.setup_button).setOnClickListener(new View.OnClickListener() {
+	                    
+	                	public void onClick(View view) {
+	                		String firstTime = "edu.mit.menyou.firstTime";
+
+	                		prefs.edit().putInt(firstTime, 1).commit();
+	                		
 	                        Intent intent = new Intent(getActivity(), Home.class);
+	                    
 	                        startActivity(intent);
 	                    }
 	                });

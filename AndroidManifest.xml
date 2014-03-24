@@ -18,12 +18,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme" 
+        android:screenOrientation="portrait">
         <activity
-            android:name="edu.mit.menyou.First"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:uiOptions="splitActionBarWhenNarrow" >
+            android:name="edu.mit.menyou.Home"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,7 +42,7 @@
             android:label="@string/title_activity_scrollable_stuff" >
         </activity>
         <activity
-            android:name="edu.mit.menyou.Home"
+            android:name="edu.mit.menyou.First"
             android:label="@string/title_activity_main" >
         </activity>
         <activity

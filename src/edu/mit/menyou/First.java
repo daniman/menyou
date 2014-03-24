@@ -43,13 +43,11 @@ public class First extends Activity {
 		getActionBar().setDisplayShowTitleEnabled(false);
 		
         final Button button = (Button) findViewById(R.id.button_getStart);
-        final Button button2 = (Button) findViewById(R.id.button_second);
         
         
         // set up the font
         Typeface type = Typeface.createFromAsset(getAssets(),"fonts/bubblebo.ttf");
         button.setTypeface(type);
-        button2.setTypeface(type);
         
         //Listening to button event
         button.setOnClickListener(new View.OnClickListener() {
@@ -67,16 +65,7 @@ public class First extends Activity {
                 startActivity(nextScreen);
                 }
         });
-     
-        //Listening to button event
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-                //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Home.class);
-                startActivity(nextScreen);
-                }
-        });
-        
+
         //////////////////////////////////////////////////////////////////////
         // test that menyou is connected to Parse
         //ParseObject testObject = new ParseObject("TestObject");
