@@ -58,7 +58,6 @@ public class Tastes extends FragmentActivity {
 		getActionBar().setDisplayShowTitleEnabled(false);
 
 		final Button SetupButton = (Button) findViewById(R.id.setup_button);
-
 		
 		// Create the adapter that will return a fragment for each of the four
 		// primary sections of the app.
@@ -68,8 +67,6 @@ public class Tastes extends FragmentActivity {
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
 	}
 
 	@Override
@@ -171,9 +168,8 @@ public class Tastes extends FragmentActivity {
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
-		public DummySectionFragment() {
-		}
-
+		public DummySectionFragment() {}
+		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -186,8 +182,7 @@ public class Tastes extends FragmentActivity {
 	public static class DummySectionFragment2 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
-		public DummySectionFragment2() {
-		}
+		public DummySectionFragment2() {}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -218,14 +213,9 @@ public class Tastes extends FragmentActivity {
 		}
 	}
 	public static class DummySectionFragment3 extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
-		public DummySectionFragment3() {
-		}
+		public DummySectionFragment3() {}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -238,9 +228,7 @@ public class Tastes extends FragmentActivity {
 	public static class DummySectionFragment4 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
-		public DummySectionFragment4() {
-			
-		}
+		public DummySectionFragment4() {}
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -266,11 +254,9 @@ public class Tastes extends FragmentActivity {
 	                    
 	                	public void onClick(View view) {
 	                		String firstTime = "edu.mit.menyou.firstTime";
-
 	                		prefs.edit().putInt(firstTime, 1).commit();
 	                		
 	                        Intent intent = new Intent(getActivity(), Username.class);
-	                    
 	                        startActivity(intent);
 	                    }
 	                });

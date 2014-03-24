@@ -71,6 +71,7 @@ public class Search extends Activity {
 
 
 public void onCreate(Bundle savedInstanceState) {
+	getActionBar().setDisplayShowTitleEnabled(false);
 
 final AutoCompleteTextView search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
 final ImageButton searchButton = (ImageButton) findViewById(R.id.search_button);
