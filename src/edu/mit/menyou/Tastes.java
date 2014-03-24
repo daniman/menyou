@@ -269,7 +269,7 @@ public class Tastes extends FragmentActivity {
 
 	                		prefs.edit().putInt(firstTime, 1).commit();
 	                		
-	                        Intent intent = new Intent(getActivity(), Home.class);
+	                        Intent intent = new Intent(getActivity(), Username.class);
 	                    
 	                        startActivity(intent);
 	                    }

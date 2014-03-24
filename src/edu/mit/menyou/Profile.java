@@ -2,11 +2,15 @@ package edu.mit.menyou;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Profile extends Activity {
@@ -22,6 +26,16 @@ public class Profile extends Activity {
 		final ImageButton DietaryButton = (ImageButton) findViewById(R.id.dietary_button);
 		final ImageButton FriendsButton = (ImageButton) findViewById(R.id.friends_button);
 		final ImageButton HistoryButton = (ImageButton) findViewById(R.id.history_button);
+		final Button ResetButton = (Button) findViewById(R.id.reset_button);
+		final SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		final String first = "edu.mit.menyou.first";
+		final String last = "edu.mit.menyou.last";
+		
+		TextView first_name = (TextView) findViewById(R.id.username_first);
+		first_name.setText(prefs.getString(first, "Ben"));
+		TextView last_name = (TextView) findViewById(R.id.username_last);
+		last_name.setText(prefs.getString(last, "Bitdiddle"));
+	      
 		
 		TasteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -50,6 +64,18 @@ public class Profile extends Activity {
 		HistoryButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent nextScreen = new Intent(getApplicationContext(), History.class);
+                startActivity(nextScreen);
+                }
+        });
+		ResetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+            	String firstTime = "edu.mit.menyou.firstTime";
+            	String first = "edu.mit.menyou.first";
+            	String last = "edu.mit.menyou.last";
+        		prefs.edit().putInt(firstTime, 0).commit();
+        		prefs.edit().putString(first, null).commit();
+        		prefs.edit().putString(last, null).commit();
+                Intent nextScreen = new Intent(getApplicationContext(), First.class);
                 startActivity(nextScreen);
                 }
         });

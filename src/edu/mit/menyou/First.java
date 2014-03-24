@@ -44,7 +44,6 @@ public class First extends Activity {
 		
         final Button button = (Button) findViewById(R.id.button_getStart);
         
-        
         // set up the font
         Typeface type = Typeface.createFromAsset(getAssets(),"fonts/bubblebo.ttf");
         button.setTypeface(type);
@@ -55,13 +54,6 @@ public class First extends Activity {
             public void onClick(View arg0) {
                 //Starting a new Intent
                 Intent nextScreen = new Intent(getApplicationContext(), Tastes.class);
-                /*
-                //Sending data to another Activity
-                nextScreen.putExtra("name", inputName.getText().toString());
-                nextScreen.putExtra("email", inputEmail.getText().toString());
- 
-                Log.e("n", inputName.getText()+"."+ inputEmail.getText());
- 				*/
                 startActivity(nextScreen);
                 }
         });

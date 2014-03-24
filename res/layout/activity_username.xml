@@ -12,7 +12,7 @@
         android:id="@+id/username_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"
+        android:text="Oh! I almost forgot! \n\nWhat's your name?"
         android:layout_marginBottom="80dp" />
 
     <TextView
@@ -60,8 +60,8 @@
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_below="@+id/edit_last"
-        android:layout_marginTop="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:text="Done" />
 
 </RelativeLayout>

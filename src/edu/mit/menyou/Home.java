@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Home extends Activity {
@@ -16,9 +17,9 @@ public class Home extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		SharedPreferences prefs = this.getSharedPreferences(
-			      "edu.mit.menyou", Context.MODE_PRIVATE);
+		SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String firstTime = "edu.mit.menyou.firstTime";
+		String first = "edu.mit.menyou.first";
 		
 		// use a default value using new Date()
 		int firstCheck = prefs.getInt(firstTime, 0);
@@ -35,7 +36,8 @@ public class Home extends Activity {
 		getActionBar().setDisplayShowTitleEnabled(false);
 		
 		final Button home_button = (Button) findViewById(R.id.home_button);
-		
+		TextView name = (TextView) findViewById(R.id.home_username);
+		name.setText("Welcome "+prefs.getString(first, "Ben"));
 		//Listening to button event
         home_button.setOnClickListener(new View.OnClickListener() {
  
