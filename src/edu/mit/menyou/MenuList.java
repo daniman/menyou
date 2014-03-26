@@ -20,11 +20,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MenuList extends Activity {
 	private MenuAdapter adpt;
 	private ListView lView;
+	private TextView RestaurantName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MenuList extends Activity {
         adpt  = new MenuAdapter(new ArrayList<Dish>(), this);
         lView = (ListView) findViewById(R.id.menuListView);
         lView.setAdapter(adpt);
+        RestaurantName = (TextView) findViewById(R.id.restName);
         
         String restID = getIntent().getExtras().getString("restID");
         new AsyncListViewLoader().execute(restID);
@@ -93,6 +96,8 @@ public class MenuList extends Activity {
 		        
 		        json = new JSONObject(output);
 		        JSONObject objs = json.getJSONArray("objects").getJSONObject(0);
+		        //Not sure where I can set the name of the Restaurant
+		        //RestaurantName.setText(String.valueOf(json.getJSONArray("name")));????
 				JSONArray menus = objs.getJSONArray("menus");
 								
 				for (int men=0; men < menus.length(); men++) {

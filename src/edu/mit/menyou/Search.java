@@ -3,6 +3,7 @@ package edu.mit.menyou;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,44 +42,22 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class Search extends Activity {
+public class Search extends Activity implements LocationListener {
 
 	private RestaurantAdapter adpt;
 	private ListView lView;
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.home, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
-	        case R.id.action_home:
-	        	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
-                startActivity(nextScreen);
-	            return true;
-	        case R.id.action_search:
-	        	Toast.makeText(Search.this, "search", Toast.LENGTH_SHORT).show();
-	            return true;
-	        case R.id.action_profile:
-	        	Intent nextScreen1 = new Intent(getApplicationContext(), Profile.class);
-                startActivity(nextScreen1);	           
-                return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
-
+	private LocationManager locationManager;
+	private String provider;
+	private TextView latitudeField;
+	private TextView longitudeField;
+	private AutoCompleteTextView search_input;
+	private ImageButton searchButton;
 
 public void onCreate(Bundle savedInstanceState) {
 	getActionBar().setDisplayShowTitleEnabled(false);
 
-final AutoCompleteTextView search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
-final ImageButton searchButton = (ImageButton) findViewById(R.id.search_button);
+	search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
+	searchButton = (ImageButton) findViewById(R.id.search_button);
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
@@ -88,17 +71,98 @@ final ImageButton searchButton = (ImageButton) findViewById(R.id.search_button);
     locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     locList = new LatLongListener();
     locMan.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locList);
-     
-           if (locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//String location = LatLongListener.latitude + "," + LatLongListener.longitude;
-         String location = "42.364270,-71.102991";
-         System.out.println("LOCATION: " + location);
-             (new AsyncListViewLoader()).execute(location);
+    
+	latitudeField = (TextView) findViewById(R.id.latitude);
+	longitudeField = (TextView) findViewById(R.id.longitude);
+
+	// Get the location manager
+	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	// Define the criteria how to select the location provider -> use default
+	Criteria criteria = new Criteria();
+	provider = locationManager.getBestProvider(criteria, false);
+	final Location location = locationManager.getLastKnownLocation(provider);
+
+	// Initialize the location fields
+	if (location != null) {
+		System.out.println("Provider " + provider + " has been selected.");
+		onLocationChanged(location);
+	} 
+	if (location == null){
+	latitudeField.setText("Location not available");
+	longitudeField.setText("Location not available");
+	}
+	
+	 if (locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+		//String location = LatLongListener.latitude + "," + LatLongListener.longitude;
+		String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
+		         String location1 = "42.364270,-71.102991";
+		         System.out.println("LOCATION: " + coords);
+		             (new AsyncListViewLoader()).execute(coords);
+	 } 
+	 if (!locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+		 String displayThis = "Please enable your GPS";
+		 Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
+	 }
+    /*
+	searchButton.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View arg0) {
+           
+        
+          if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+         String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
+         //String location = "42.364270,-71.102991";
+         System.out.println("LOCATION: " + coords);
+             (new AsyncListViewLoader()).execute(coords);
              } else {
              String displayThis = "Please enable your GPS";
               Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
              }
+        }
+    });
+    
+       */      
 }
+////////////////////////////////////////////
+@Override
+protected void onResume() {
+  super.onResume();
+  locationManager.requestLocationUpdates(provider, 400, 1, this);
+}
+
+/* Remove the locationlistener updates when Activity is paused */
+@Override
+protected void onPause() {
+  super.onPause();
+  locationManager.removeUpdates(this);
+}
+
+@Override
+public void onLocationChanged(Location location) {
+  double lat = location.getLatitude();
+  double lng = location.getLongitude();
+  String latString=new DecimalFormat("#.#####").format(lat);
+  String lngString=new DecimalFormat("#.#####").format(lng);
+  latitudeField.setText("Latitude: "+latString);
+  longitudeField.setText("Longitude: "+lngString);
+}
+
+@Override
+public void onStatusChanged(String provider, int status, Bundle extras) {
+  // TODO Auto-generated method stub
+}
+
+@Override
+public void onProviderEnabled(String provider) {
+  Toast.makeText(this, "Enabled new provider " + provider,
+      Toast.LENGTH_SHORT).show();
+}
+
+@Override
+public void onProviderDisabled(String provider) {
+  Toast.makeText(this, "Disabled provider " + provider,
+      Toast.LENGTH_SHORT).show();
+}
+////////////////////////////////////////////
 
 
 private class AsyncListViewLoader extends AsyncTask<String, Void, List<Restaurant>> {
@@ -179,6 +243,34 @@ String id = obj.getString("id");
 return new Restaurant(name, description, id);
 }
 
+}
+
+
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+	// Inflate the menu; this adds items to the action bar if it is present.
+	getMenuInflater().inflate(R.menu.home, menu);
+	return true;
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle presses on the action bar items
+    switch (item.getItemId()) {
+        case R.id.action_home:
+        	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
+            startActivity(nextScreen);
+            return true;
+        case R.id.action_search:
+        	Toast.makeText(Search.this, "search", Toast.LENGTH_SHORT).show();
+            return true;
+        case R.id.action_profile:
+        	Intent nextScreen1 = new Intent(getApplicationContext(), Profile.class);
+            startActivity(nextScreen1);	           
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
 }
 
 }
