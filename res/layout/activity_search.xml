@@ -7,16 +7,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Search" >
-       
+
     <ListView
         android:id="@+id/restaurantListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="70dp" />
 
-    <ImageButton
+    <!--
+         <ImageButton
         android:id="@+id/search_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -25,25 +26,33 @@
         android:background="@null"
         android:layout_marginTop="2dp"
         android:src="@drawable/ic_search" />
+  
+  	<Button 
+  	    android:id="@+id/update"
+  	    android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+  	    />
+    -->
 
-<!--     <ImageButton
+    <ImageButton
         android:id="@+id/gps_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@null"
-        android:src="@drawable/ic_map" /> -->
+        android:src="@drawable/ic_map_logo" />
 
     <AutoCompleteTextView
         android:id="@+id/search_input"
         android:layout_width="240dp"
-        android:singleLine="true"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="44dp"
         android:layout_marginLeft="60dp"
-        android:hint="seach for your restaurant" >
+        android:layout_marginRight="44dp"
+        android:hint="search"
+        android:singleLine="true" >
 
         <requestFocus />
     </AutoCompleteTextView>
@@ -62,10 +71,21 @@
         android:id="@+id/longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:gravity="center"
         android:text="longitude"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <TextView
+        android:id="@+id/nearbyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_input"
+        android:layout_marginTop="7dp"
+         android:layout_alignParentLeft="true"
+        android:text="Nearby Restaurants"
+        android:textColor="#6B6868"
+        android:textSize="20dp" />
 
 </RelativeLayout>

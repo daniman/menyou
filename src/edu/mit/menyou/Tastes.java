@@ -31,10 +31,15 @@ import android.widget.Toast;
 
 public class Tastes extends FragmentActivity {
 	
-	private static final List<String> dislikes_full = new ArrayList<String>();
-	private static final List<String> likes_full = new ArrayList<String>();
+	private static final List<String> dislikes_list = new ArrayList<String>();
+	private static final List<String> likes_list = new ArrayList<String>();
 	private static final List<String> allergies_full = new ArrayList<String>();
-	String firstTime = "edu.mit.menyou.firstTime";
+	private static final List<String> food_list = new ArrayList<String>();
+	
+	final static String firstTime = "edu.mit.menyou.firstTime";
+	final static String allergiesKey = "edu.mit.menyou.allergies";
+	final static String likesKey = "edu.mit.menyou.likes";
+	final static String dislikesKey = "edu.mit.menyou.dislikes";
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -220,8 +225,21 @@ public class Tastes extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView3 = inflater.inflate(
-					R.layout.fragment_scrollable_stuff_dummy3, container, false);
+			View rootView3 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy3, container, false);
+			
+			food_list.add("pad thai");
+			final TextView likes = (TextView) rootView3.findViewById(R.id.likes);
+			final ListView lv = (ListView) rootView3.findViewById(R.id.listView3);
+			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, food_list);
+			lv.setAdapter(adapter);
+			
+			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
+			         // We know the View is a TextView so we can cast it
+				         TextView clickedView = (TextView) view;
+					     likes.setText(likes.getText()+" "+clickedView.getText().toString());
+					     }
+					});
 			return rootView3;
 		}
 	}
@@ -253,7 +271,6 @@ public class Tastes extends FragmentActivity {
 	        rootView5.findViewById(R.id.setup_button).setOnClickListener(new View.OnClickListener() {
 	                    
 	                	public void onClick(View view) {
-	                		String firstTime = "edu.mit.menyou.firstTime";
 	                		prefs.edit().putInt(firstTime, 1).commit();
 	                		
 	                        Intent intent = new Intent(getActivity(), Username.class);

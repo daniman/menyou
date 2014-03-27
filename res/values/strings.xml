@@ -4,6 +4,7 @@
     <string name="app_name">menyou</string>
     <string name="action_home"> home </string>
     <string name="action_search"> search </string>
+    <string name="action_update_search"> update my search </string>
     <string name="action_profile"> profile </string>
     <string name="home_button">start new search</string>
     <string name="first_button1">get started</string>

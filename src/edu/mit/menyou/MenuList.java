@@ -17,8 +17,12 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +46,10 @@ public class MenuList extends Activity {
         
         String restID = getIntent().getExtras().getString("restID");
         new AsyncListViewLoader().execute(restID);
+        
+      //register for the contextmenu     
+        registerForContextMenu(lView);
+        
        
     }
 
@@ -139,6 +147,25 @@ public class MenuList extends Activity {
 		}
     	
     }
+    
+ // We want to create a context Menu when the user long click on an item
+    	  @Override
+    	  public void onCreateContextMenu(ContextMenu menu, View v,
+    	          ContextMenuInfo menuInfo) {
+    	 
+    	      super.onCreateContextMenu(menu, v, menuInfo);
+    	      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+    	 
+    	      // We know that each row in the adapter is a Map - Except not in our code
+    	      //HashMap map =  (HashMap) simpleAdpt.getItem(aInfo.position);
+    	 
+    	      menu.setHeaderTitle("Name of dish");
+    	      menu.add(1, 1, 1, "Details");
+    	      menu.add(1, 1, 1, "Friends Recommend");
+    	      menu.add(1, 2, 2, "Ordered This!");
+    	 
+    	  }
+    
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

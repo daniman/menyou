@@ -34,7 +34,7 @@ public class Profile extends Activity {
 		TextView first_name = (TextView) findViewById(R.id.username_first);
 		first_name.setText(prefs.getString(first, "Ben"));
 		TextView last_name = (TextView) findViewById(R.id.username_last);
-		last_name.setText(prefs.getString(last, "Bitdiddle"));
+		last_name.setText(prefs.getString(last, ""));
 	      
 		
 		TasteButton.setOnClickListener(new View.OnClickListener() {

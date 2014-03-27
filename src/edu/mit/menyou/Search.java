@@ -51,27 +51,31 @@ public class Search extends Activity implements LocationListener {
 	private TextView latitudeField;
 	private TextView longitudeField;
 	private AutoCompleteTextView search_input;
-	private ImageButton searchButton;
-
+	//private ImageButton searchButton;
+	private Location location;
+	//private Button update;
+	
 public void onCreate(Bundle savedInstanceState) {
 	getActionBar().setDisplayShowTitleEnabled(false);
 
 	search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
-	searchButton = (ImageButton) findViewById(R.id.search_button);
-
+	//searchButton = (ImageButton) findViewById(R.id.search_button);
+	//ImageButton updateButton = (ImageButton) findViewById(R.id.gps_button);
+	//update = (Button) findViewById(R.id.update);
+	
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
     
     adpt = new RestaurantAdapter(new ArrayList<Restaurant>(), this);
     lView = (ListView) findViewById(R.id.restaurantListView);
     lView.setAdapter(adpt);
-    
+    /*
     LocationManager locMan=null;
     LatLongListener locList;
     locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     locList = new LatLongListener();
     locMan.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locList);
-    
+    */
 	latitudeField = (TextView) findViewById(R.id.latitude);
 	longitudeField = (TextView) findViewById(R.id.longitude);
 
@@ -80,33 +84,39 @@ public void onCreate(Bundle savedInstanceState) {
 	// Define the criteria how to select the location provider -> use default
 	Criteria criteria = new Criteria();
 	provider = locationManager.getBestProvider(criteria, false);
-	final Location location = locationManager.getLastKnownLocation(provider);
+	location = locationManager.getLastKnownLocation(provider);
 
+	
 	// Initialize the location fields
 	if (location != null) {
 		System.out.println("Provider " + provider + " has been selected.");
 		onLocationChanged(location);
+		String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
+		//String location1 = "42.364270,-71.102991";
+        System.out.println("LOCATION: " + coords);
+            (new AsyncListViewLoader()).execute(coords);
 	} 
 	if (location == null){
 	latitudeField.setText("Location not available");
 	longitudeField.setText("Location not available");
 	}
 	
-	 if (locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+	/*
+	 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 		//String location = LatLongListener.latitude + "," + LatLongListener.longitude;
 		String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
 		         String location1 = "42.364270,-71.102991";
 		         System.out.println("LOCATION: " + coords);
 		             (new AsyncListViewLoader()).execute(coords);
 	 } 
-	 if (!locMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+	 */
+	 if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 		 String displayThis = "Please enable your GPS";
 		 Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
 	 }
-    /*
+	 /*
 	searchButton.setOnClickListener(new View.OnClickListener() {
         public void onClick(View arg0) {
-           
         
           if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
          String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
@@ -119,49 +129,59 @@ public void onCreate(Bundle savedInstanceState) {
              }
         }
     });
-    
-       */      
+	updateButton.setClickable(true);
+	 update.setOnClickListener(new View.OnClickListener() {
+		public void onClick(View arg0) {
+			String displayThis = "Please enable your GPS";
+            Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
+		}
+	});
+	*/
+	
 }
+
 ////////////////////////////////////////////
-@Override
-protected void onResume() {
-  super.onResume();
-  locationManager.requestLocationUpdates(provider, 400, 1, this);
-}
+	@Override
+	protected void onResume() {
+	  super.onResume();
+	  locationManager.requestLocationUpdates(provider, 400, 1, this);
+	}
 
-/* Remove the locationlistener updates when Activity is paused */
-@Override
-protected void onPause() {
-  super.onPause();
-  locationManager.removeUpdates(this);
-}
+	/* Remove the locationlistener updates when Activity is paused */
+	@Override
+	protected void onPause() {
+	  super.onPause();
+	  locationManager.removeUpdates(this);
+	}
 
-@Override
-public void onLocationChanged(Location location) {
-  double lat = location.getLatitude();
-  double lng = location.getLongitude();
-  String latString=new DecimalFormat("#.#####").format(lat);
-  String lngString=new DecimalFormat("#.#####").format(lng);
-  latitudeField.setText("Latitude: "+latString);
-  longitudeField.setText("Longitude: "+lngString);
-}
+	@Override
+	public void onLocationChanged(Location location) {
+	  double lat = location.getLatitude();
+	  double lng = location.getLongitude();
+	  String latString=new DecimalFormat("#.#####").format(lat);
+	  String lngString=new DecimalFormat("#.#####").format(lng);
+	  latitudeField.setText("Latitude: "+latString);
+	  longitudeField.setText("Longitude: "+lngString);
+	  
 
-@Override
-public void onStatusChanged(String provider, int status, Bundle extras) {
-  // TODO Auto-generated method stub
-}
+	}
 
-@Override
-public void onProviderEnabled(String provider) {
-  Toast.makeText(this, "Enabled new provider " + provider,
-      Toast.LENGTH_SHORT).show();
-}
-
-@Override
-public void onProviderDisabled(String provider) {
-  Toast.makeText(this, "Disabled provider " + provider,
-      Toast.LENGTH_SHORT).show();
-}
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+	  // TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void onProviderEnabled(String provider) {
+	  Toast.makeText(this, "Enabled new provider " + provider,
+	      Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public void onProviderDisabled(String provider) {
+	  Toast.makeText(this, "Disabled provider " + provider,
+	      Toast.LENGTH_SHORT).show();
+	}
 ////////////////////////////////////////////
 
 
@@ -249,7 +269,7 @@ return new Restaurant(name, description, id);
 @Override
 public boolean onCreateOptionsMenu(Menu menu) {
 	// Inflate the menu; this adds items to the action bar if it is present.
-	getMenuInflater().inflate(R.menu.home, menu);
+	getMenuInflater().inflate(R.menu.search, menu);
 	return true;
 }
 
@@ -261,8 +281,9 @@ public boolean onOptionsItemSelected(MenuItem item) {
         	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
             startActivity(nextScreen);
             return true;
-        case R.id.action_search:
-        	Toast.makeText(Search.this, "search", Toast.LENGTH_SHORT).show();
+        case R.id.action_update_search:
+        	Intent nextScreen2 = new Intent(getApplicationContext(), Search.class);
+            startActivity(nextScreen2);
             return true;
         case R.id.action_profile:
         	Intent nextScreen1 = new Intent(getApplicationContext(), Profile.class);
