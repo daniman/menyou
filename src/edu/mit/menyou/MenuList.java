@@ -22,6 +22,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class MenuList extends Activity {
 	private MenuAdapter adpt;
 	private ListView lView;
 	private TextView RestaurantName;
+	private String restName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,15 +44,17 @@ public class MenuList extends Activity {
         adpt  = new MenuAdapter(new ArrayList<Dish>(), this);
         lView = (ListView) findViewById(R.id.menuListView);
         lView.setAdapter(adpt);
+        registerForContextMenu(lView); //register for the contextmenu
+        
         RestaurantName = (TextView) findViewById(R.id.restName);
+        restName = getIntent().getExtras().getString("restName");
+        RestaurantName.setText(restName);
+        
         
         String restID = getIntent().getExtras().getString("restID");
+        
         new AsyncListViewLoader().execute(restID);
         
-      //register for the contextmenu     
-        registerForContextMenu(lView);
-        
-       
     }
 
     private class AsyncListViewLoader extends AsyncTask<String, Void, List<Dish>> {
@@ -94,7 +98,7 @@ public class MenuList extends Activity {
 			try {
 				URL u = new URL(request_url);
 
-				 // read the server's output
+				// read the server's output
 				BufferedReader in = new BufferedReader(new InputStreamReader(u.openStream()));
 		        String serverOutput;
 		        String output = "";
@@ -102,10 +106,9 @@ public class MenuList extends Activity {
 		        	output = serverOutput;
 		        }
 		        
+		        // unpack the json from server
 		        json = new JSONObject(output);
 		        JSONObject objs = json.getJSONArray("objects").getJSONObject(0);
-		        //Not sure where I can set the name of the Restaurant
-		        //RestaurantName.setText(String.valueOf(json.getJSONArray("name")));????
 				JSONArray menus = objs.getJSONArray("menus");
 								
 				for (int men=0; men < menus.length(); men++) {
@@ -122,10 +125,13 @@ public class MenuList extends Activity {
 							
 							for (int d = 0; d < dishes.length(); d ++) {
 								JSONObject dish = dishes.getJSONObject(d);
-								
+								// add dish to the menu list
 								try {
 									result.add(convertDish(dish));
 								} catch(JSONException e) {
+									// catches anything thats not formatted like a standard dish
+									// i.e. any dish with options
+									// don't do anything --> these options don't show up in the menu...
 								}
 								
 							}
@@ -148,23 +154,38 @@ public class MenuList extends Activity {
     	
     }
     
- // We want to create a context Menu when the user long click on an item
-    	  @Override
-    	  public void onCreateContextMenu(ContextMenu menu, View v,
-    	          ContextMenuInfo menuInfo) {
-    	 
-    	      super.onCreateContextMenu(menu, v, menuInfo);
-    	      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-    	 
-    	      // We know that each row in the adapter is a Map - Except not in our code
-    	      //HashMap map =  (HashMap) simpleAdpt.getItem(aInfo.position);
-    	 
-    	      menu.setHeaderTitle("Name of dish");
-    	      menu.add(1, 1, 1, "Details");
-    	      menu.add(1, 1, 1, "Friends Recommend");
-    	      menu.add(1, 2, 2, "Ordered This!");
-    	 
-    	  }
+// // We want to create a context Menu when the user long click on an item
+//    	  @Override
+//    	  public void onCreateContextMenu(ContextMenu menu, View v,
+//    	          ContextMenuInfo menuInfo) {
+//    	 
+//    	      super.onCreateContextMenu(menu, v, menuInfo);
+//    	      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+//    	 
+//    	      // We know that each row in the adapter is a Map - Except not in our code
+//    	      //HashMap map =  (HashMap) simpleAdpt.getItem(aInfo.position);
+//    	 
+//    	      menu.setHeaderTitle("Name of dish");
+//    	      menu.add(1, 1, 1, "Details");
+//    	      menu.add(1, 1, 1, "Friends Recommend");
+//    	      menu.add(1, 2, 2, "Ordered This!");
+//    	 
+//    	  }
+    
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    	if (v.getId() == R.id.menuListView) {
+    		ListView lv = (ListView) v;
+    		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+    		Dish obj = (Dish) lv.getItemAtPosition(acmi.position);
+
+    		menu.setHeaderTitle(restName + ": " + obj.getName());
+    		menu.add(1, 1, 1, "Details");
+    		menu.add(1, 1, 1, "Friends Recommend");
+    		menu.add(1, 2, 2, "Ordered This!");
+
+    	}
+    }
     
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
