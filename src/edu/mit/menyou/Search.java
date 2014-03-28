@@ -81,11 +81,11 @@ public void onCreate(Bundle savedInstanceState) {
 
 	// Get the location manager
 	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	// Define the criteria how to select the location provider -> use default
-	Criteria criteria = new Criteria();
-	provider = locationManager.getBestProvider(criteria, false);
+	
+	provider = locationManager.PASSIVE_PROVIDER;
+	
+	locationManager.requestLocationUpdates(provider, 500, 20, this);
 	location = locationManager.getLastKnownLocation(provider);
-
 	
 	// Initialize the location fields
 	if (location != null) {
@@ -156,6 +156,7 @@ public void onCreate(Bundle savedInstanceState) {
 
 	@Override
 	public void onLocationChanged(Location location) {
+	  location=locationManager.getLastKnownLocation(provider);
 	  double lat = location.getLatitude();
 	  double lng = location.getLongitude();
 	  String latString=new DecimalFormat("#.#####").format(lat);
