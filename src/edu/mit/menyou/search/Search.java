@@ -263,7 +263,7 @@ public class Search extends Activity implements LocationListener {
 		protected List<RestaurantObject> doInBackground(String... params) {
 			JSONObject json = null;
 			List<RestaurantObject> result = new ArrayList<RestaurantObject>();
-			request_url = BASE_URL + "&location=" + params[0] + "&radius=300&category=restaurant";
+			request_url = BASE_URL + "&location=" + params[0] + "&radius=450&category=restaurant";
 
 			try {
 				//JSONArray restaurants = json.getJSONArray("objects");

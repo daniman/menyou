@@ -62,7 +62,7 @@ public class Home extends Activity {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.action_home:
-	        	Toast.makeText(Home.this, "profile", Toast.LENGTH_SHORT).show();
+	        	Toast.makeText(Home.this, "home", Toast.LENGTH_SHORT).show();
 	            return true;
 	        case R.id.action_search:
 	        	Intent nextScreen1 = new Intent(getApplicationContext(), Search.class);
