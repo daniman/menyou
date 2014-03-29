@@ -33,7 +33,6 @@ public class OrderedDish extends Activity {
 	private EditText edit_text;
 	private Button button;
 	private String review;
-	private ParseObject testObject = new ParseObject("TestObject");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +54,20 @@ public class OrderedDish extends Activity {
         
         button = (Button) findViewById(R.id.submitDishReview);
         
+        final ParseObject Reviews = new ParseObject("Reviews");
+        
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	
-            	//numberOfStars = String.valueOf(stars.getRating());
+            	numberOfStars = String.valueOf(stars.getRating());
             	review = String.valueOf(edit_text.getText());
             	
             	//testObject.put("foo", "bar");
-            	testObject.put("restName"+" from "+"dishName", "number of stars: "+numberOfStars);
-            	testObject.put("restName"+" from "+"dishName", review);
+            	Reviews.put("restID", restID);
+            	Reviews.put("restName", restName);
+            	Reviews.put("dishName", dishName);
+            	Reviews.put("rating",numberOfStars);
+            	Reviews.put("review", review);
             	
             	//this was crashing the app for some reason
             	//testObject.saveInBackground();
