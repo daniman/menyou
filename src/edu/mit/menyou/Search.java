@@ -162,18 +162,12 @@ public void onCreate(Bundle savedInstanceState) {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		
-		  provider=location.getProvider();
-		  //gps - most accurate but power consuming location
-		  //kill the request for updates once it finds a gps coord
-		  if(provider.equals(locationManager.GPS_PROVIDER)){
-			  locationManager.removeUpdates(ctx);
-		  }
 		  
 		  //if this is the first location recieved
 		  if(oldLocation==null){
 			oldLocation=location;
-			Toast.makeText(Search.this, "recieved a location", Toast.LENGTH_SHORT).show();
+			Toast.makeText(Search.this, "recieved a location from "+String.valueOf(location.getTime()), Toast.LENGTH_SHORT).show();
+
 		}
 		  //if recieved location is more than 2 minutes newer than previous
 		  //often the first location is from PASSIVE and out dated
