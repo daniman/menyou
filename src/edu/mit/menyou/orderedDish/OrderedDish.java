@@ -1,5 +1,6 @@
 package edu.mit.menyou.orderedDish;
 
+import com.parse.Parse;
 import com.parse.ParseObject;
 
 import edu.mit.menyou.Home;
@@ -38,6 +39,7 @@ public class OrderedDish extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ordered_dish);
+		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
 		getActionBar().setDisplayShowTitleEnabled(false);
 		
 		DishName = (TextView) findViewById(R.id.dishName);
@@ -70,7 +72,7 @@ public class OrderedDish extends Activity {
             	Reviews.put("review", review);
             	
             	//this was crashing the app for some reason
-            	//testObject.saveInBackground();
+            	Reviews.saveInBackground();
             	
             	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
     			startActivity(nextScreen);
