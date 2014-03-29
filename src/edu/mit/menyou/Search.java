@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 
 
+
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -53,7 +54,14 @@ public class Search extends Activity implements LocationListener {
 	private AutoCompleteTextView search_input;
 	//private ImageButton searchButton;
 	private Location location;
+	private LocationListener ctx = this;
 	//private Button update;
+	private String gps;
+	private String network;
+	private String passive;
+	private Location oldLocation = null;
+	private static final int TWO_MINUTES = 1000 * 60 * 2;
+
 	
 public void onCreate(Bundle savedInstanceState) {
 	getActionBar().setDisplayShowTitleEnabled(false);
@@ -82,34 +90,33 @@ public void onCreate(Bundle savedInstanceState) {
 	// Get the location manager
 	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	
-	provider = locationManager.PASSIVE_PROVIDER;
+	gps = LocationManager.GPS_PROVIDER;
+	network = LocationManager.NETWORK_PROVIDER;
+	passive = LocationManager.PASSIVE_PROVIDER;
 	
-	locationManager.requestLocationUpdates(provider, 500, 20, this);
-	location = locationManager.getLastKnownLocation(provider);
+	location = locationManager.getLastKnownLocation(passive);
+	onLocationChanged(location);
+	
+	locationManager.requestLocationUpdates(gps, 0, 0, this);
+	locationManager.requestLocationUpdates(network, 0, 0, this);
+	locationManager.requestLocationUpdates(passive, 0, 0, this);
+	onLocationChanged(location);
+	
 	
 	// Initialize the location fields
 	if (location != null) {
 		System.out.println("Provider " + provider + " has been selected.");
-		onLocationChanged(location);
 		String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
 		//String location1 = "42.364270,-71.102991";
         System.out.println("LOCATION: " + coords);
             (new AsyncListViewLoader()).execute(coords);
 	} 
 	if (location == null){
+	Toast.makeText(Search.this, "we couldn't find your location :( ", Toast.LENGTH_SHORT).show();
 	latitudeField.setText("Location not available");
 	longitudeField.setText("Location not available");
 	}
 	
-	/*
-	 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-		//String location = LatLongListener.latitude + "," + LatLongListener.longitude;
-		String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
-		         String location1 = "42.364270,-71.102991";
-		         System.out.println("LOCATION: " + coords);
-		             (new AsyncListViewLoader()).execute(coords);
-	 } 
-	 */
 	 if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 		 String displayThis = "Please enable your GPS";
 		 Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
@@ -144,7 +151,6 @@ public void onCreate(Bundle savedInstanceState) {
 	@Override
 	protected void onResume() {
 	  super.onResume();
-	  locationManager.requestLocationUpdates(provider, 400, 1, this);
 	}
 
 	/* Remove the locationlistener updates when Activity is paused */
@@ -156,14 +162,43 @@ public void onCreate(Bundle savedInstanceState) {
 
 	@Override
 	public void onLocationChanged(Location location) {
-	  location=locationManager.getLastKnownLocation(provider);
-	  double lat = location.getLatitude();
-	  double lng = location.getLongitude();
+		
+		  provider=location.getProvider();
+		  //gps - most accurate but power consuming location
+		  //kill the request for updates once it finds a gps coord
+		  if(provider.equals(locationManager.GPS_PROVIDER)){
+			  locationManager.removeUpdates(ctx);
+		  }
+		  
+		  //if this is the first location recieved
+		  if(oldLocation==null){
+			oldLocation=location;
+			Toast.makeText(Search.this, "recieved a location", Toast.LENGTH_SHORT).show();
+		}
+		  //if recieved location is more than 2 minutes newer than previous
+		  //often the first location is from PASSIVE and out dated
+		  if(oldLocation!=null){
+		    // Check whether the new location fix is newer or older
+		    long timeDelta = location.getTime() - oldLocation.getTime();
+		    boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+		    
+		    if(isSignificantlyNewer){
+		    	oldLocation=location;
+		    	locationManager.removeUpdates(ctx);
+		    	Toast.makeText(Search.this, "recieved a newer location", Toast.LENGTH_SHORT).show();
+		    }
+	  }
+	  
+	  double lat = oldLocation.getLatitude();
+	  double lng = oldLocation.getLongitude();
 	  String latString=new DecimalFormat("#.#####").format(lat);
 	  String lngString=new DecimalFormat("#.#####").format(lng);
 	  latitudeField.setText("Latitude: "+latString);
 	  longitudeField.setText("Longitude: "+lngString);
 	  
+	  String coords = String.valueOf(oldLocation.getLatitude()) + "," + String.valueOf(oldLocation.getLongitude());
+	  
+          (new AsyncListViewLoader()).execute(coords);
 
 	}
 
