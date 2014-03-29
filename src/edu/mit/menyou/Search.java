@@ -203,6 +203,7 @@ lView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(Search.this, MenuList.class);
                 intent.putExtra("restID",result.get(position).getId());
+                intent.putExtra("restName",result.get(position).getName());
                 startActivity(intent);
             }
         });	
