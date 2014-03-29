@@ -81,6 +81,10 @@
             android:name="edu.mit.menyou.Username"
             android:label="@string/title_activity_username" >
         </activity>
+        <activity
+            android:name="edu.mit.menyou.OrderedDish"
+            android:label="@string/title_activity_username" >
+        </activity>
     </application>
 
 </manifest>

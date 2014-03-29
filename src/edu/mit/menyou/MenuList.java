@@ -181,10 +181,29 @@ public class MenuList extends Activity {
 
     		menu.setHeaderTitle(restName + ": " + obj.getName());
     		menu.add(1, 1, 1, "Details");
-    		menu.add(1, 1, 1, "Friends Recommend");
-    		menu.add(1, 2, 2, "Ordered This!");
+    		menu.add(1, 2, 1, "Friends Recommend");
+    		menu.add(1, 3, 2, "Ordered This!");
 
     	}
+    }
+    
+  //the correct callback name starts with o and not O
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+       switch (item.getItemId()) {
+       case 1:
+           //first ContextMenu option I picked this to start the  new activity
+       break; 
+       case 2:
+          //stuff for option 2 of the ContextMenu
+       break;
+       case 3:
+           //stuff for option 2 of the ContextMenu
+    	   Intent i = new Intent(MenuList.this, OrderedDish.class);
+           startActivity(i);
+       break;
+       }
+       return super.onContextItemSelected(item);
     }
     
     @Override
