@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -15,7 +16,7 @@ import edu.mit.menyou.Home;
 import edu.mit.menyou.Profile;
 import edu.mit.menyou.R;
 import edu.mit.menyou.menu.RestaurantMenu;
-
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -92,10 +93,17 @@ public class Search extends Activity implements LocationListener {
 		network = LocationManager.NETWORK_PROVIDER;
 		passive = LocationManager.PASSIVE_PROVIDER;
 		
-		System.out.println("RAWR-4");
+		if(locationManager.getLastKnownLocation(passive)!=null){
+			location = locationManager.getLastKnownLocation(passive);
+			onLocationChanged(location);
+		}
 		
-		location = locationManager.getLastKnownLocation(passive);
-		onLocationChanged(location);
+		if(locationManager.getLastKnownLocation(passive)==null){
+			Criteria criteria = new Criteria();
+			provider = locationManager.getBestProvider(criteria, false);
+			location = locationManager.getLastKnownLocation(provider);
+			onLocationChanged(location);
+		}
 		
 		System.out.println("RAWR-5");
 				
@@ -167,12 +175,13 @@ public class Search extends Activity implements LocationListener {
 		//if this is the first location recieved
 		if(oldLocation==null){
 			oldLocation=location;
-			Toast.makeText(Search.this, "recieved a location from "+String.valueOf(location.getTime()), Toast.LENGTH_SHORT).show();
-
+			Toast.makeText(Search.this, "recieved a location", Toast.LENGTH_SHORT).show();
 		}
 		//if recieved location is more than 2 minutes newer than previous
 		//often the first location is from PASSIVE and out dated
 		if(oldLocation!=null){
+			
+			
 			// Check whether the new location fix is newer or older
 			long timeDelta = location.getTime() - oldLocation.getTime();
 			boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
