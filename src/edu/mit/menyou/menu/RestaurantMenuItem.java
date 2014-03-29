@@ -1,24 +1,18 @@
-package edu.mit.menyou;
+package edu.mit.menyou.menu;
 
 import java.io.Serializable;
 
-public class Restaurant implements Serializable {
+public class RestaurantMenuItem implements Serializable {
 
 	private String name;
 	private String description;
-	private String id;
 
-	public Restaurant(String name, String description, String id) {
+	public RestaurantMenuItem(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.id = id;
 	}
 
-	public String getId() {
-		return this.id;
-	}
-	
 	public String getName() {
 		return this.name;
 	}
@@ -36,4 +30,3 @@ public class Restaurant implements Serializable {
 	}
 
 }
-

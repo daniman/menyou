@@ -1,4 +1,4 @@
-package edu.mit.menyou;
+package edu.mit.menyou.menu;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,6 +9,15 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import edu.mit.menyou.Home;
+import edu.mit.menyou.Profile;
+import edu.mit.menyou.R;
+import edu.mit.menyou.R.id;
+import edu.mit.menyou.R.layout;
+import edu.mit.menyou.R.menu;
+import edu.mit.menyou.orderedDish.OrderedDish;
+import edu.mit.menyou.search.Search;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -28,12 +37,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MenuList extends Activity {
-	private MenuAdapter adpt;
+public class RestaurantMenu extends Activity {
+	private RestaurantMenuAdapter adpt;
 	private ListView lView;
 	private TextView RestaurantName;
+	private String restID;
 	private String restName;
-
+	private String selectedDish;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	
@@ -41,30 +52,30 @@ public class MenuList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
         
-        adpt  = new MenuAdapter(new ArrayList<Dish>(), this);
+        adpt  = new RestaurantMenuAdapter(new ArrayList<RestaurantMenuItem>(), this);
         lView = (ListView) findViewById(R.id.menuListView);
         lView.setAdapter(adpt);
         registerForContextMenu(lView); //register for the contextmenu
         
         RestaurantName = (TextView) findViewById(R.id.restName);
         restName = getIntent().getExtras().getString("restName");
+        restID = getIntent().getExtras().getString("restID");
         RestaurantName.setText(restName);
         
         
         String restID = getIntent().getExtras().getString("restID");
-        
         new AsyncListViewLoader().execute(restID);
         
     }
 
-    private class AsyncListViewLoader extends AsyncTask<String, Void, List<Dish>> {
-    	private final ProgressDialog dialog = new ProgressDialog(MenuList.this);
+    private class AsyncListViewLoader extends AsyncTask<String, Void, List<RestaurantMenuItem>> {
+    	private final ProgressDialog dialog = new ProgressDialog(RestaurantMenu.this);
     	private final String BASE_URL = "http://api.locu.com/v1_0/venue/";
     	private final String END_URL = "/?api_key=1a75b559bec4e3c7b00f0cc06d17356705599303";
 		private String request_url;
     	
 		@Override
-		protected void onPostExecute(List<Dish> result) {			
+		protected void onPostExecute(List<RestaurantMenuItem> result) {			
 			super.onPostExecute(result);
 			dialog.dismiss();
 			adpt.setItemList(result);
@@ -90,9 +101,9 @@ public class MenuList extends Activity {
 		}
 
 		@Override
-		protected List<Dish> doInBackground(String... params) {
+		protected List<RestaurantMenuItem> doInBackground(String... params) {
 			JSONObject json = null;
-			List<Dish> result = new ArrayList<Dish>();
+			List<RestaurantMenuItem> result = new ArrayList<RestaurantMenuItem>();
 			request_url = BASE_URL + params[0] + END_URL;
 
 			try {
@@ -146,40 +157,24 @@ public class MenuList extends Activity {
 			return null;
 		}
 		
-		private Dish convertDish(JSONObject obj) throws JSONException {
+		private RestaurantMenuItem convertDish(JSONObject obj) throws JSONException {
 			String name = obj.getString("name");
 			String description = obj.getString("description");
-			return new Dish(name, description);
+			return new RestaurantMenuItem(name, description);
 		}
     	
     }
     
-// // We want to create a context Menu when the user long click on an item
-//    	  @Override
-//    	  public void onCreateContextMenu(ContextMenu menu, View v,
-//    	          ContextMenuInfo menuInfo) {
-//    	 
-//    	      super.onCreateContextMenu(menu, v, menuInfo);
-//    	      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-//    	 
-//    	      // We know that each row in the adapter is a Map - Except not in our code
-//    	      //HashMap map =  (HashMap) simpleAdpt.getItem(aInfo.position);
-//    	 
-//    	      menu.setHeaderTitle("Name of dish");
-//    	      menu.add(1, 1, 1, "Details");
-//    	      menu.add(1, 1, 1, "Friends Recommend");
-//    	      menu.add(1, 2, 2, "Ordered This!");
-//    	 
-//    	  }
-    
+    // We want to create a context Menu when the user long click on an item
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
     	if (v.getId() == R.id.menuListView) {
     		ListView lv = (ListView) v;
     		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
-    		Dish obj = (Dish) lv.getItemAtPosition(acmi.position);
+    		RestaurantMenuItem obj = (RestaurantMenuItem) lv.getItemAtPosition(acmi.position);
 
-    		menu.setHeaderTitle(restName + ": " + obj.getName());
+    		selectedDish = obj.getName();
+    		menu.setHeaderTitle(selectedDish);
     		menu.add(1, 1, 1, "Details");
     		menu.add(1, 2, 1, "Friends Recommend");
     		menu.add(1, 3, 2, "Ordered This!");
@@ -199,8 +194,11 @@ public class MenuList extends Activity {
        break;
        case 3:
            //stuff for option 2 of the ContextMenu
-    	   Intent i = new Intent(MenuList.this, OrderedDish.class);
-           startActivity(i);
+    	   Intent intent = new Intent(RestaurantMenu.this, OrderedDish.class);
+    	   intent.putExtra("restID", restID);
+    	   intent.putExtra("restName", restName);
+    	   intent.putExtra("dishName", selectedDish);
+           startActivity(intent);
        break;
        }
        return super.onContextItemSelected(item);

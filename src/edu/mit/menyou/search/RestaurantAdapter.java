@@ -1,7 +1,11 @@
-package edu.mit.menyou;
+package edu.mit.menyou.search;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.mit.menyou.R;
+import edu.mit.menyou.R.id;
+import edu.mit.menyou.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
+public class RestaurantAdapter extends ArrayAdapter<RestaurantObject> {
 
-	private List<Restaurant> itemList;
+	private List<RestaurantObject> itemList;
 	private Context context;
 
-	public RestaurantAdapter(ArrayList<Restaurant> arrayList, Context ctx) {
+	public RestaurantAdapter(ArrayList<RestaurantObject> arrayList, Context ctx) {
 		super(ctx, android.R.layout.simple_list_item_1);
 		this.itemList = arrayList;
 		this.context = ctx;		
@@ -27,7 +31,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 		return 0;
 	}
 
-	public Restaurant getItem(int position) {
+	public RestaurantObject getItem(int position) {
 		if (itemList != null)
 			return itemList.get(position);
 		return null;
@@ -48,7 +52,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 			v = inflater.inflate(R.layout.restaurant_list_item, null);
 		}
 
-		Restaurant r = itemList.get(position);
+		RestaurantObject r = itemList.get(position);
 		TextView text = (TextView) v.findViewById(R.id.restaurantName);
 		text.setText(r.getName());
 
@@ -59,11 +63,11 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
 	}
 
-	public List<Restaurant> getItemList() {
+	public List<RestaurantObject> getItemList() {
 		return itemList;
 	}
 
-	public void setItemList(List<Restaurant> itemList) {
+	public void setItemList(List<RestaurantObject> itemList) {
 		this.itemList = itemList;
 	}
 
