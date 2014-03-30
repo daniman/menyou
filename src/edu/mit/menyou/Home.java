@@ -22,7 +22,6 @@ public class Home extends Activity {
 		String firstTime = "edu.mit.menyou.firstTime";
 		String first = "edu.mit.menyou.first";
 		String number = "edu.mit.menyou.number";
-		
 		int firstCheck = prefs.getInt(firstTime, 0);
 		String numberCheck = prefs.getString(number, "");
 		

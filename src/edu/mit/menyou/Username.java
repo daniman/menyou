@@ -38,7 +38,10 @@ public class Username extends Activity {
 		
 		if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
 			prefs.edit().putString(number, mPhoneNumber);
+
 		}
+		//Toast.makeText(Username.this, mPhoneNumber, Toast.LENGTH_SHORT).show();
+
 		
 		
         user_button.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +62,7 @@ public class Username extends Activity {
 		                startActivity(nextScreen4);
 		            	}
 	            	if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
-	        			prefs.edit().putString(number, mPhoneNumber);
+	        			prefs.edit().putString(number, mPhoneNumber).commit();
 	        			Intent nextScreen = new Intent(getApplicationContext(), Home.class);
 		                startActivity(nextScreen);
 	        		}
@@ -75,7 +78,7 @@ public class Username extends Activity {
 		            	}
 	            	
 	            	if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
-	        			prefs.edit().putString(number, mPhoneNumber);
+	        			prefs.edit().putString(number, mPhoneNumber).commit();
 	        			Intent nextScreen2 = new Intent(getApplicationContext(), Home.class);
 		                startActivity(nextScreen2);
 	        		}
