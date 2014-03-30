@@ -52,37 +52,30 @@ public class Search extends Activity implements LocationListener {
 	private String gps;
 	private String network;
 	private String passive;
-	private Location oldLocation = null;
+	private Location oldLocation;
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
 
 	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_search);
 		getActionBar().setDisplayShowTitleEnabled(false);
 		
 		System.out.println("RAWR-1");
-
+		oldLocation=null;
 		search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
 		//searchButton = (ImageButton) findViewById(R.id.search_button);
 		//ImageButton updateButton = (ImageButton) findViewById(R.id.gps_button);
 		//update = (Button) findViewById(R.id.update);
+		latitudeField = (TextView) findViewById(R.id.latitude);
+		longitudeField = (TextView) findViewById(R.id.longitude);
 
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search);
 		
 		System.out.println("RAWR-2");
 
 		adpt = new RestaurantAdapter(new ArrayList<RestaurantObject>(), this);
 		lView = (ListView) findViewById(R.id.restaurantListView);
 		lView.setAdapter(adpt);
-		/*
-    LocationManager locMan=null;
-    LatLongListener locList;
-    locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-    locList = new LatLongListener();
-    locMan.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locList);
-		 */
-		latitudeField = (TextView) findViewById(R.id.latitude);
-		longitudeField = (TextView) findViewById(R.id.longitude);
 
 		System.out.println("RAWR-3");
 		
@@ -93,25 +86,39 @@ public class Search extends Activity implements LocationListener {
 		network = LocationManager.NETWORK_PROVIDER;
 		passive = LocationManager.PASSIVE_PROVIDER;
 		
+		Criteria criteria = new Criteria();
+		provider = locationManager.getBestProvider(criteria, false);
+		location = locationManager.getLastKnownLocation(provider);
+		//locationManager.requestLocationUpdates(provider, 0, 0, this);
+		onLocationChanged(location);
+		
+		locationManager.requestLocationUpdates(provider, 0, 0, this);
+		
+		
 		if(locationManager.getLastKnownLocation(passive)!=null){
 			location = locationManager.getLastKnownLocation(passive);
 			onLocationChanged(location);
+			
 		}
 		
-		if(locationManager.getLastKnownLocation(passive)==null){
-			Criteria criteria = new Criteria();
-			provider = locationManager.getBestProvider(criteria, false);
-			location = locationManager.getLastKnownLocation(provider);
-			onLocationChanged(location);
+
+		List<String> all =locationManager.getAllProviders();
+		//Toast.makeText(Search.this, String.valueOf(all), Toast.LENGTH_SHORT).show();
+
+		/*
+		if(all.contains(passive)){
+			locationManager.requestLocationUpdates(passive, 0, 0, this);
 		}
+		if(all.contains(network)){
+			locationManager.requestLocationUpdates(network, 0, 0, this);
+		}
+		if(all.contains(gps)){
+			locationManager.requestLocationUpdates(network, 0, 0, this);
+		}
+		*/
 		
-		System.out.println("RAWR-5");
-				
-		locationManager.requestLocationUpdates(gps, 0, 0, this);
-		locationManager.requestLocationUpdates(network, 0, 0, this);
-		locationManager.requestLocationUpdates(passive, 0, 0, this);
-		onLocationChanged(location);
-				
+		
+		
 		// Initialize the location fields
 		if (location != null) {
 			System.out.println("Provider " + provider + " has been selected.");
@@ -130,6 +137,8 @@ public class Search extends Activity implements LocationListener {
 			String displayThis = "Please enable your GPS";
 			Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
 		}
+		
+		
 		/*
 	searchButton.setOnClickListener(new View.OnClickListener() {
         public void onClick(View arg0) {
@@ -171,17 +180,11 @@ public class Search extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-
-		//if this is the first location recieved
-		if(oldLocation==null){
-			oldLocation=location;
-			Toast.makeText(Search.this, "recieved a location", Toast.LENGTH_SHORT).show();
-		}
+		
+		
 		//if recieved location is more than 2 minutes newer than previous
 		//often the first location is from PASSIVE and out dated
-		if(oldLocation!=null){
-			
-			
+		if(oldLocation!=null && location!=null){
 			// Check whether the new location fix is newer or older
 			long timeDelta = location.getTime() - oldLocation.getTime();
 			boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
@@ -193,6 +196,24 @@ public class Search extends Activity implements LocationListener {
 			}
 		}
 
+		//if this is the first location received
+		if(oldLocation==null && location!=null){
+			Toast.makeText(Search.this, "recieved a location", Toast.LENGTH_SHORT).show();
+			oldLocation=location;
+			double lat = oldLocation.getLatitude();
+			double lng = oldLocation.getLongitude();
+			String latString=new DecimalFormat("#.#####").format(lat);
+			String lngString=new DecimalFormat("#.#####").format(lng);
+			latitudeField.setText("Latitude: "+latString);
+			longitudeField.setText("Longitude: "+lngString);
+
+			String coords = String.valueOf(oldLocation.getLatitude()) + "," + String.valueOf(oldLocation.getLongitude());
+			
+			System.out.println("RAWR HERE?");
+
+			(new AsyncListViewLoader()).execute(coords);
+		}
+/*
 		double lat = oldLocation.getLatitude();
 		double lng = oldLocation.getLongitude();
 		String latString=new DecimalFormat("#.#####").format(lat);
@@ -207,6 +228,7 @@ public class Search extends Activity implements LocationListener {
 		(new AsyncListViewLoader()).execute(coords);
 		
 		System.out.println("RAWR HERE");
+		*/
 
 	}
 

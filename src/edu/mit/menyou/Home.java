@@ -21,11 +21,16 @@ public class Home extends Activity {
 		SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String firstTime = "edu.mit.menyou.firstTime";
 		String first = "edu.mit.menyou.first";
+		String number = "edu.mit.menyou.number";
 		
-		// use a default value using new Date()
 		int firstCheck = prefs.getInt(firstTime, 0);
+		String numberCheck = prefs.getString(number, "");
 		
 		if(firstCheck==0){
+			Intent nextScreen = new Intent(getApplicationContext(), First.class);
+            startActivity(nextScreen);
+		}
+		if(numberCheck==""){
 			Intent nextScreen = new Intent(getApplicationContext(), First.class);
             startActivity(nextScreen);
 		}
@@ -35,6 +40,7 @@ public class Home extends Activity {
 		setContentView(R.layout.activity_home);
 		
 		getActionBar().setDisplayShowTitleEnabled(false);
+
 		
 		final Button home_button = (Button) findViewById(R.id.home_button);
 		TextView name = (TextView) findViewById(R.id.home_username);

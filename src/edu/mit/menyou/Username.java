@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class Username extends Activity {
+	private String mPhoneNumber;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,14 @@ public class Username extends Activity {
 		final SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		final String first = "edu.mit.menyou.first";
 		final String last = "edu.mit.menyou.last";
+		final String number = "edu.mit.menyou.number";
+		
+		TelephonyManager tMgr =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		mPhoneNumber = tMgr.getLine1Number();
+		
+		if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
+			prefs.edit().putString(number, mPhoneNumber);
+		}
 		
 		
         user_button.setOnClickListener(new View.OnClickListener() {
@@ -43,20 +53,38 @@ public class Username extends Activity {
 	            	lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
 	            	prefs.edit().putString(first, firstName).commit();
 	            	prefs.edit().putString(last, lastName).commit();
-	        		
-	            	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
-	                startActivity(nextScreen);
+	            	
+	            	if(mPhoneNumber.isEmpty()){
+		            	Intent nextScreen4 = new Intent(getApplicationContext(), PhoneNumber.class);
+		                startActivity(nextScreen4);
+		            	}
+	            	if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
+	        			prefs.edit().putString(number, mPhoneNumber);
+	        			Intent nextScreen = new Intent(getApplicationContext(), Home.class);
+		                startActivity(nextScreen);
+	        		}
             	}
-            	else if(!firstName.matches("") && lastName.matches("")){
+            	
+            	if(!firstName.matches("") && lastName.matches("")){
             		firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
             		prefs.edit().putString(first, firstName).commit();
-            		Intent nextScreen = new Intent(getApplicationContext(), Home.class);
-                    startActivity(nextScreen);
+            		
+            		if(mPhoneNumber.isEmpty()){
+		            	Intent nextScreen3 = new Intent(getApplicationContext(), PhoneNumber.class);
+		                startActivity(nextScreen3);
+		            	}
+	            	
+	            	if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
+	        			prefs.edit().putString(number, mPhoneNumber);
+	        			Intent nextScreen2 = new Intent(getApplicationContext(), Home.class);
+		                startActivity(nextScreen2);
+	        		}
             	}
-            	else{
+            	if(firstName.matches("")){
             		Toast.makeText(Username.this, "you should enter a name", Toast.LENGTH_SHORT).show();
 
             	}
+            	
             	
             	
             }

@@ -12,7 +12,9 @@ import edu.mit.menyou.R.menu;
 import edu.mit.menyou.search.Search;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
 import android.view.Menu;
@@ -34,6 +36,7 @@ public class OrderedDish extends Activity {
 	private EditText edit_text;
 	private Button button;
 	private String review;
+	private String mNumber;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,9 @@ public class OrderedDish extends Activity {
         
         button = (Button) findViewById(R.id.submitDishReview);
         
+        final SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		final String number = "edu.mit.menyou.number";
+		
         final ParseObject Reviews = new ParseObject("Reviews");
         
         button.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +69,8 @@ public class OrderedDish extends Activity {
             	
             	numberOfStars = String.valueOf(stars.getRating());
             	review = String.valueOf(edit_text.getText());
+        		mNumber = prefs.getString(number, "none");
+
             	
             	//testObject.put("foo", "bar");
             	Reviews.put("restID", restID);
@@ -70,6 +78,7 @@ public class OrderedDish extends Activity {
             	Reviews.put("dishName", dishName);
             	Reviews.put("rating",numberOfStars);
             	Reviews.put("review", review);
+            	Reviews.put("number", mNumber);
             	
             	//this was crashing the app for some reason
             	Reviews.saveInBackground();
