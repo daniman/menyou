@@ -46,11 +46,11 @@ public final class R {
     public static final class id {
         public static final int Text2=0x7f08002f;
         public static final int Text3=0x7f080030;
-        public static final int action_home=0x7f08005e;
-        public static final int action_profile=0x7f080060;
-        public static final int action_search=0x7f08005f;
-        public static final int action_settings=0x7f080061;
-        public static final int action_update_search=0x7f080062;
+        public static final int action_home=0x7f080061;
+        public static final int action_profile=0x7f080063;
+        public static final int action_search=0x7f080062;
+        public static final int action_settings=0x7f080064;
+        public static final int action_update_search=0x7f080065;
         public static final int allergies=0x7f080051;
         public static final int button_getStart=0x7f080007;
         public static final int cost_seekBar=0x7f080021;
@@ -63,6 +63,7 @@ public final class R {
         public static final int discover_seekBar=0x7f080024;
         public static final int dishDescription=0x7f080028;
         public static final int dishName=0x7f080025;
+        public static final int dislikes=0x7f080059;
         public static final int editFood=0x7f080008;
         public static final int edit_first=0x7f08004a;
         public static final int edit_last=0x7f08004d;
@@ -80,9 +81,9 @@ public final class R {
         public static final int heavy=0x7f08001e;
         public static final int high_cost=0x7f08001a;
         public static final int hint=0x7f080017;
-        public static final int historyDishName=0x7f080059;
-        public static final int historyDishRating=0x7f08005b;
-        public static final int historyRestName=0x7f08005a;
+        public static final int historyDishName=0x7f08005c;
+        public static final int historyDishRating=0x7f08005e;
+        public static final int historyRestName=0x7f08005d;
         public static final int history_button=0x7f080039;
         public static final int home_button=0x7f080014;
         public static final int home_logo=0x7f080006;
@@ -97,6 +98,7 @@ public final class R {
         public static final int likes=0x7f080055;
         public static final int listView2=0x7f080052;
         public static final int listView3=0x7f080056;
+        public static final int listView4=0x7f08005a;
         public static final int longitude=0x7f080042;
         public static final int menuListView=0x7f080016;
         public static final int mood_button=0x7f080036;
@@ -120,14 +122,15 @@ public final class R {
         public static final int reset_button=0x7f08003a;
         public static final int restName=0x7f080015;
         public static final int rest_textView1=0x7f08003b;
-        public static final int restaurantDescription=0x7f08005d;
+        public static final int restaurantDescription=0x7f080060;
         public static final int restaurantListView=0x7f08003e;
-        public static final int restaurantName=0x7f08005c;
+        public static final int restaurantName=0x7f08005f;
         public static final int search_input=0x7f080040;
         public static final int section_label=0x7f08004e;
         public static final int section_label2=0x7f08004f;
         public static final int section_label3=0x7f080053;
-        public static final int setup_button=0x7f080058;
+        public static final int section_label4=0x7f080057;
+        public static final int setup_button=0x7f08005b;
         public static final int small_cost=0x7f080019;
         public static final int spicy=0x7f08001c;
         public static final int spicy_seekBar=0x7f080022;
@@ -136,7 +139,7 @@ public final class R {
         public static final int textView1=0x7f080018;
         public static final int textView2=0x7f080050;
         public static final int textView3=0x7f080054;
-        public static final int textView4=0x7f080057;
+        public static final int textView4=0x7f080058;
         public static final int text_recom=0x7f080010;
         public static final int user_button=0x7f08004c;
         public static final int username_first=0x7f080033;

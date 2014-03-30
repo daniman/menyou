@@ -104,9 +104,7 @@ public class Home extends Activity {
 		query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> mealList, ParseException e) {
             	List<HistoryMenuItem> result = new ArrayList<HistoryMenuItem>();
-                if (e == null) {
-                    System.out.println(mealList);
-                    
+                if (e == null) {                    
                     displayMeals.setText(String.valueOf(mealList.size()));
                     if(mealList.size()==1){mealsWord.setText("meal");}
                     
@@ -121,7 +119,6 @@ public class Home extends Activity {
                     	result.add(item);
                     }
                 } else {
-                    System.out.println("didn't find any meals waaaaa");
                 }
                 adpt.setItemList(result);
 				adpt.notifyDataSetChanged();
