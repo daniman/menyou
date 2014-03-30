@@ -1,5 +1,6 @@
 package edu.mit.menyou;
 
+import edu.mit.menyou.home.Home;
 import edu.mit.menyou.search.Search;
 import android.os.Bundle;
 import android.app.Activity;

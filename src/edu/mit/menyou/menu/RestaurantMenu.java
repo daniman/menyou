@@ -10,12 +10,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.mit.menyou.Home;
 import edu.mit.menyou.Profile;
 import edu.mit.menyou.R;
 import edu.mit.menyou.R.id;
 import edu.mit.menyou.R.layout;
 import edu.mit.menyou.R.menu;
+import edu.mit.menyou.home.Home;
 import edu.mit.menyou.orderedDish.OrderedDish;
 import edu.mit.menyou.search.Search;
 

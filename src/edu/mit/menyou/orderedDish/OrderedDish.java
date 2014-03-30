@@ -3,12 +3,12 @@ package edu.mit.menyou.orderedDish;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-import edu.mit.menyou.Home;
 import edu.mit.menyou.Profile;
 import edu.mit.menyou.R;
 import edu.mit.menyou.R.id;
 import edu.mit.menyou.R.layout;
 import edu.mit.menyou.R.menu;
+import edu.mit.menyou.home.Home;
 import edu.mit.menyou.search.Search;
 import android.os.Bundle;
 import android.app.Activity;
@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,9 +48,10 @@ public class OrderedDish extends Activity {
 		
 		DishName = (TextView) findViewById(R.id.dishName);
 		stars = (RatingBar) findViewById(R.id.ratingBar1);
-		edit_text = (EditText) findViewById(R.id.postal_address);
+		edit_text = (EditText) findViewById(R.id.dishDescription);
 		
 		/// why is the edit text called postal address?? you copy-pasting codess???
+								// haha yeah oooopss...
 		
         restID = getIntent().getExtras().getString("restID");
         restName = getIntent().getExtras().getString("restName");
@@ -70,9 +72,7 @@ public class OrderedDish extends Activity {
             	numberOfStars = String.valueOf(stars.getRating());
             	review = String.valueOf(edit_text.getText());
         		mNumber = prefs.getString(number, "none");
-
             	
-            	//testObject.put("foo", "bar");
             	Reviews.put("restID", restID);
             	Reviews.put("restName", restName);
             	Reviews.put("dishName", dishName);

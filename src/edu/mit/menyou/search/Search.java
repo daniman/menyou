@@ -12,9 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.mit.menyou.Home;
 import edu.mit.menyou.Profile;
 import edu.mit.menyou.R;
+import edu.mit.menyou.home.Home;
 import edu.mit.menyou.menu.RestaurantMenu;
 import android.location.Criteria;
 import android.location.Location;

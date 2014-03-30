@@ -2,6 +2,7 @@ package edu.mit.menyou;
 
 import com.parse.ParseObject;
 
+import edu.mit.menyou.home.Home;
 import edu.mit.menyou.search.Search;
 
 

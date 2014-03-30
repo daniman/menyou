@@ -1,5 +1,6 @@
 package edu.mit.menyou;
 
+import edu.mit.menyou.home.Home;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
