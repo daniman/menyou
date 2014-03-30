@@ -101,28 +101,29 @@ public class Search extends Activity implements LocationListener {
 		
 		locationManager.requestLocationUpdates(provider, 0, 0, this);
 		
-		
+		/*
 		if(locationManager.getLastKnownLocation(passive)!=null){
 			location = locationManager.getLastKnownLocation(passive);
 			onLocationChanged(location);
-			
 		}
-		
+		*/
 
 		List<String> all =locationManager.getAllProviders();
 		//Toast.makeText(Search.this, String.valueOf(all), Toast.LENGTH_SHORT).show();
 
-		/*
+		
 		if(all.contains(passive)){
 			locationManager.requestLocationUpdates(passive, 0, 0, this);
 		}
+		
+		
 		if(all.contains(network)){
 			locationManager.requestLocationUpdates(network, 0, 0, this);
 		}
+		
 		if(all.contains(gps)){
-			locationManager.requestLocationUpdates(network, 0, 0, this);
+			locationManager.requestLocationUpdates(gps, 0, 0, this);
 		}
-		*/
 		
 		
 		
