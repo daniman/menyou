@@ -47,6 +47,8 @@ public class Home extends Activity {
 	private HistoryMenuAdaptor adpt;
 	private ListView lView;
 	private String mNumber;
+	private TextView displayMeals;
+	private TextView mealsWord;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class Home extends Activity {
 		String number = "edu.mit.menyou.number";
 		int firstCheck = prefs.getInt(firstTime, 0);
 		String numberCheck = prefs.getString(number, "");
-		mNumber = prefs.getString("edu.mit.menyou.number", "none");
+		mNumber = prefs.getString(number, "none");
 		
 		if(firstCheck==0){
 			Intent nextScreen = new Intent(getApplicationContext(), First.class);
@@ -79,6 +81,8 @@ public class Home extends Activity {
 		
 		final Button home_button = (Button) findViewById(R.id.home_button);
 		TextView name = (TextView) findViewById(R.id.home_username);
+		displayMeals = (TextView) findViewById(R.id.home_points);
+		mealsWord = (TextView) findViewById(R.id.home_meals);
 		name.setText("Welcome "+prefs.getString(first, "Ben"));
 		//Listening to button event
         home_button.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +97,7 @@ public class Home extends Activity {
         lView = (ListView) findViewById(R.id.home_meal_history);
         lView.setAdapter(adpt);
         
+        
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Reviews");
         query.setLimit(10); // limit to at most 10 results
         query.whereEqualTo("number", mNumber);
@@ -101,6 +106,10 @@ public class Home extends Activity {
             	List<HistoryMenuItem> result = new ArrayList<HistoryMenuItem>();
                 if (e == null) {
                     System.out.println(mealList);
+                    
+                    displayMeals.setText(String.valueOf(mealList.size()));
+                    if(mealList.size()==1){mealsWord.setText("meal");}
+                    
                     for (int i=0; i<mealList.size(); i++) {
                     	ParseObject obj = mealList.get(i);
                     	String restName = obj.getString("restName");

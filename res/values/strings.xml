@@ -43,5 +43,6 @@
     <string name="title_activity_restaurant">Restaurant</string>
     <string name="title_activity_username">Username</string>
     <string name="title_activity_phone_number">PhoneNumber</string>
+    <string name="title_activity_search_radius">SearchRadius</string>
 
 </resources>

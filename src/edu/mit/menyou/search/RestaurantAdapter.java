@@ -22,6 +22,7 @@ public class RestaurantAdapter extends ArrayAdapter<RestaurantObject> {
 	public RestaurantAdapter(ArrayList<RestaurantObject> arrayList, Context ctx) {
 		super(ctx, android.R.layout.simple_list_item_1);
 		this.itemList = arrayList;
+
 		this.context = ctx;		
 	}
 

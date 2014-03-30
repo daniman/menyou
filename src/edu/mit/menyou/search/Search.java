@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +53,8 @@ public class Search extends Activity implements LocationListener {
 	private String gps;
 	private String network;
 	private String passive;
+	private String radius;
+	private SharedPreferences prefs;
 	private Location oldLocation;
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
@@ -60,6 +63,10 @@ public class Search extends Activity implements LocationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		getActionBar().setDisplayShowTitleEnabled(false);
+		
+		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		String radiusKey = "edu.mit.menyou.radius";
+		radius = prefs.getString(radiusKey, "200");
 		
 		System.out.println("RAWR-1");
 		oldLocation=null;
@@ -285,7 +292,7 @@ public class Search extends Activity implements LocationListener {
 		protected List<RestaurantObject> doInBackground(String... params) {
 			JSONObject json = null;
 			List<RestaurantObject> result = new ArrayList<RestaurantObject>();
-			request_url = BASE_URL + "&location=" + params[0] + "&radius=450&category=restaurant";
+			request_url = BASE_URL + "&location=" + params[0] + "&radius="+radius+"&category=restaurant";
 
 			try {
 				//JSONArray restaurants = json.getJSONArray("objects");
@@ -349,7 +356,7 @@ public class Search extends Activity implements LocationListener {
 			startActivity(nextScreen);
 			return true;
 		case R.id.action_update_search:
-			Intent nextScreen2 = new Intent(getApplicationContext(), Search.class);
+			Intent nextScreen2 = new Intent(getApplicationContext(), SearchRadius.class);
 			startActivity(nextScreen2);
 			return true;
 		case R.id.action_profile:

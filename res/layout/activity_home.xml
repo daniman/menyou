@@ -7,6 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Home" >
+    
 
     <ImageView
         android:id="@+id/home_logo"
@@ -51,18 +52,56 @@
            android:text="@string/home_username"
            android:textSize="24sp" />
        
+       <TextView
+        	android:id="@+id/text_recom"
+        	android:layout_width="wrap_content"
+       		android:layout_height="wrap_content"
+       		android:layout_below="@+id/home_username"
+       		android:layout_alignParentLeft="true"
+       		android:layout_marginLeft="10dp"
+       		android:layout_marginTop="10dp"
+        	android:text="Recommended to you"
+        	android:gravity="center"
+         	android:textColor="#6B6868"
+          	android:textSize="20dp"
+          	android:layout_centerHorizontal="true"/>
+       
+       <ListView
+        android:id="@+id/home_recommendations"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/text_recom"
+        android:layout_alignLeft="@+id/text_recom"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp" />
+       
+       <TextView
+        	android:id="@+id/recentMeals"
+        	android:layout_width="wrap_content"
+       		android:layout_height="wrap_content"
+       		android:layout_below="@+id/home_recommendations"
+        	android:layout_alignLeft="@+id/home_recommendations"
+        	android:text="Recent Meals"
+        	android:gravity="center"
+         	android:textColor="#6B6868"
+          	android:textSize="20dp"
+          	android:layout_centerHorizontal="true"/>
+       
     <ListView
         android:id="@+id/home_meal_history"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp" />
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/recentMeals"
+        android:layout_above="@+id/home_button"
+        android:layout_alignLeft="@+id/recentMeals"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"/>
+ 
        
     <Button
         android:id="@+id/home_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:text="@string/home_button"

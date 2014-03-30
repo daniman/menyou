@@ -47,6 +47,7 @@ public class First extends Activity {
         // set up the font
         Typeface type = Typeface.createFromAsset(getAssets(),"fonts/bubblebo.ttf");
         button.setTypeface(type);
+
         
         //Listening to button event
         button.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +58,7 @@ public class First extends Activity {
                 startActivity(nextScreen);
                 }
         });
+
 
         //////////////////////////////////////////////////////////////////////
         // test that menyou is connected to Parse
