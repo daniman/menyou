@@ -1,6 +1,11 @@
 package edu.mit.menyou;
 
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -8,6 +13,8 @@ import java.util.Locale;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -40,7 +47,7 @@ public class Tastes extends FragmentActivity {
 	final static String allergiesKey = "edu.mit.menyou.allergies";
 	final static String likesKey = "edu.mit.menyou.likes";
 	final static String dislikesKey = "edu.mit.menyou.dislikes";
-
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -193,14 +200,20 @@ public class Tastes extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			final View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
-			allergies_full.add("egg");
-			allergies_full.add("fish");
-			allergies_full.add("milk");
-			allergies_full.add("peanuts");
-			allergies_full.add("soy");
-			allergies_full.add("tree nuts");
-			allergies_full.add("shellfish");
-			allergies_full.add("wheat");
+
+			try {
+				AssetManager assetManager = getResources().getAssets();
+				InputStream is = assetManager.open("allergiesList");
+				BufferedReader r = new BufferedReader(new InputStreamReader(is));
+				if ( is != null) {
+					while (r.readLine() != null) {
+						allergies_full.add(r.readLine());
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+						
 			final TextView allergies = (TextView) rootView2.findViewById(R.id.allergies);
 			final ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
 			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
@@ -227,7 +240,19 @@ public class Tastes extends FragmentActivity {
 				Bundle savedInstanceState) {
 			View rootView3 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy3, container, false);
 			
-			food_list.add("pad thai");
+			try {
+				AssetManager assetManager = getResources().getAssets();
+				InputStream is = assetManager.open("foodList");
+				BufferedReader r = new BufferedReader(new InputStreamReader(is));
+				if ( is != null) {
+					while (r.readLine() != null) {
+						food_list.add(r.readLine());
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 			final TextView likes = (TextView) rootView3.findViewById(R.id.likes);
 			final ListView lv = (ListView) rootView3.findViewById(R.id.listView3);
 			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, food_list);
@@ -279,7 +304,6 @@ public class Tastes extends FragmentActivity {
 	                });
 			return rootView5;
 		}
-	}
-	
+	} 
 	
 }

@@ -23,7 +23,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
@@ -71,9 +73,6 @@ public class Search extends Activity implements LocationListener {
 		System.out.println("RAWR-1");
 		oldLocation=null;
 		search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
-		//searchButton = (ImageButton) findViewById(R.id.search_button);
-		//ImageButton updateButton = (ImageButton) findViewById(R.id.gps_button);
-		//update = (Button) findViewById(R.id.update);
 		latitudeField = (TextView) findViewById(R.id.latitude);
 		longitudeField = (TextView) findViewById(R.id.longitude);
 
@@ -107,24 +106,9 @@ public class Search extends Activity implements LocationListener {
 			onLocationChanged(location);
 			
 		}
-		
 
 		List<String> all =locationManager.getAllProviders();
 		//Toast.makeText(Search.this, String.valueOf(all), Toast.LENGTH_SHORT).show();
-
-		/*
-		if(all.contains(passive)){
-			locationManager.requestLocationUpdates(passive, 0, 0, this);
-		}
-		if(all.contains(network)){
-			locationManager.requestLocationUpdates(network, 0, 0, this);
-		}
-		if(all.contains(gps)){
-			locationManager.requestLocationUpdates(network, 0, 0, this);
-		}
-		*/
-		
-		
 		
 		// Initialize the location fields
 		if (location != null) {
@@ -145,31 +129,6 @@ public class Search extends Activity implements LocationListener {
 			Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
 		}
 		
-		
-		/*
-	searchButton.setOnClickListener(new View.OnClickListener() {
-        public void onClick(View arg0) {
-
-          if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-         String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
-         //String location = "42.364270,-71.102991";
-         System.out.println("LOCATION: " + coords);
-             (new AsyncListViewLoader()).execute(coords);
-             } else {
-             String displayThis = "Please enable your GPS";
-              Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
-             }
-        }
-    });
-	updateButton.setClickable(true);
-	 update.setOnClickListener(new View.OnClickListener() {
-		public void onClick(View arg0) {
-			String displayThis = "Please enable your GPS";
-            Toast.makeText(Search.this, displayThis, Toast.LENGTH_SHORT).show();
-		}
-	});
-		 */
-
 	}
 
 	////////////////////////////////////////////
@@ -213,35 +172,9 @@ public class Search extends Activity implements LocationListener {
 			String lngString=new DecimalFormat("#.#####").format(lng);
 			latitudeField.setText("Latitude: "+latString);
 			longitudeField.setText("Longitude: "+lngString);
-
 			String coords = String.valueOf(oldLocation.getLatitude()) + "," + String.valueOf(oldLocation.getLongitude());
-			
-			System.out.println("RAWR HERE?");
-
 			(new AsyncListViewLoader()).execute(coords);
 		}
-/*
-		double lat = oldLocation.getLatitude();
-		double lng = oldLocation.getLongitude();
-		String latString=new DecimalFormat("#.#####").format(lat);
-		String lngString=new DecimalFormat("#.#####").format(lng);
-		latitudeField.setText("Latitude: "+latString);
-		longitudeField.setText("Longitude: "+lngString);
-
-		String coords = String.valueOf(oldLocation.getLatitude()) + "," + String.valueOf(oldLocation.getLongitude());
-		
-		System.out.println("RAWR HERE?");
-
-		(new AsyncListViewLoader()).execute(coords);
-		
-		System.out.println("RAWR HERE");
-		*/
-
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -295,18 +228,6 @@ public class Search extends Activity implements LocationListener {
 			request_url = BASE_URL + "&location=" + params[0] + "&radius="+radius+"&category=restaurant";
 
 			try {
-				//JSONArray restaurants = json.getJSONArray("objects");
-				//for (int i=0; i<restaurants.length() ;i++) {
-				//JSONObject rest = restaurants.getJSONObject(i);
-				//System.out.println(rest.get("name"));
-				//local.add(rest.getString("name"));
-
-
-				//search_history.add(search_input.getText().toString());
-				//Toast.makeText(Search.this, "searching", Toast.LENGTH_SHORT).show();
-				//adapter.notifyDataSetChanged();
-				//adapter1.notifyDataSetChanged();
-
 				URL u = new URL(request_url);
 				//read the server's output
 				BufferedReader in = new BufferedReader(new InputStreamReader(u.openStream()));
@@ -339,7 +260,6 @@ public class Search extends Activity implements LocationListener {
 
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -366,6 +286,10 @@ public class Search extends Activity implements LocationListener {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {		
 	}
 
 }

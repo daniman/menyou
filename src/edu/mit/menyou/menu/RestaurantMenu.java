@@ -20,8 +20,10 @@ import edu.mit.menyou.orderedDish.OrderedDish;
 import edu.mit.menyou.search.Search;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -44,6 +46,7 @@ public class RestaurantMenu extends Activity {
 	private String restID;
 	private String restName;
 	private String selectedDish;
+	final Context context = this;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,17 +83,20 @@ public class RestaurantMenu extends Activity {
 			dialog.dismiss();
 			adpt.setItemList(result);
 			adpt.notifyDataSetChanged();
-			
-//			lView.setOnItemClickListener(new OnItemClickListener() {
-//
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                     Intent myIntent = new Intent(MenuList.this,MenuList.class);
-//                     startActivity(myIntent);
-//                }
-//
-//            });
-			
+			if (result.size() == 0) {				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+					alertDialogBuilder.setTitle("Ooops...... :(");
+					alertDialogBuilder
+						.setMessage("We are very sorry but we do not have the menu for " + restName + " in our records.")
+						.setCancelable(false)
+						.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								RestaurantMenu.this.finish();
+							}
+						  });
+						AlertDialog alertDialog = alertDialogBuilder.create();
+						alertDialog.show();
+			}
 		}
 
 		@Override
