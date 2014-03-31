@@ -9,7 +9,7 @@
     tools:context=".ScrollableStuff$DummySectionFragment" >
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/section_label4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -17,10 +17,30 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label"
+        android:layout_below="@+id/section_label4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:text="which do you dislike?"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="18dp"
+        android:layout_alignParentTop="true" />
+    
+    <TextView
+        android:id="@+id/dislikes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:layout_marginTop="8dp"
+        android:textSize="18dp"/>
+
+    <ListView
+        android:id="@+id/listView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp" >
+    </ListView>
 
 </RelativeLayout>

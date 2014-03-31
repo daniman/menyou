@@ -1,6 +1,11 @@
 package edu.mit.menyou;
 
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -8,6 +13,8 @@ import java.util.Locale;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -34,13 +42,16 @@ public class Tastes extends FragmentActivity {
 	private static final List<String> dislikes_list = new ArrayList<String>();
 	private static final List<String> likes_list = new ArrayList<String>();
 	private static final List<String> allergies_full = new ArrayList<String>();
-	private static final List<String> food_list = new ArrayList<String>();
+	private static final List<String> likes_food_list = new ArrayList<String>();
+	private static final List<String> dislikes_food_list = new ArrayList<String>();
 	
 	final static String firstTime = "edu.mit.menyou.firstTime";
 	final static String allergiesKey = "edu.mit.menyou.allergies";
 	final static String likesKey = "edu.mit.menyou.likes";
 	final static String dislikesKey = "edu.mit.menyou.dislikes";
-
+	
+	
+	
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a
@@ -61,6 +72,20 @@ public class Tastes extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scrollable_stuff);
 		getActionBar().setDisplayShowTitleEnabled(false);
+		
+		try {
+			AssetManager assetManager = getResources().getAssets();
+			InputStream is = assetManager.open("foodList");
+			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			if ( is != null) {
+				while (r.readLine() != null) {
+					likes_food_list.add(r.readLine());
+					dislikes_food_list.add(r.readLine());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		final Button SetupButton = (Button) findViewById(R.id.setup_button);
 		
@@ -193,24 +218,32 @@ public class Tastes extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			final View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
-			allergies_full.add("egg");
-			allergies_full.add("fish");
-			allergies_full.add("milk");
-			allergies_full.add("peanuts");
-			allergies_full.add("soy");
-			allergies_full.add("tree nuts");
-			allergies_full.add("shellfish");
-			allergies_full.add("wheat");
+
+			try {
+				AssetManager assetManager = getResources().getAssets();
+				InputStream is = assetManager.open("allergiesList");
+				BufferedReader r = new BufferedReader(new InputStreamReader(is));
+				if ( is != null) {
+					while (r.readLine() != null) {
+						allergies_full.add(r.readLine());
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+						
 			final TextView allergies = (TextView) rootView2.findViewById(R.id.allergies);
 			final ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
-			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
-			lv.setAdapter(adapter);
+			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
+			lv.setAdapter(adpt);
 			
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
 			         // We know the View is a TextView so we can cast it
 				         TextView clickedView = (TextView) view;
 					     allergies.setText(allergies.getText()+" "+clickedView.getText().toString());
+					     allergies_full.remove(position);	
+						 adpt.notifyDataSetChanged();
 					     }
 					});
 			return rootView2;
@@ -226,20 +259,44 @@ public class Tastes extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView3 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy3, container, false);
+						
+			// Get a reference to the AutoCompleteTextView in the layout
+			final AutoCompleteTextView likes_input = (AutoCompleteTextView) rootView3.findViewById(R.id.likes_input);
+			// Create the adapter and set it to the AutoCompleteTextView 
+			//ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_list_item_1, likes_food_list);
+			//likes_input.setAdapter(adapter);
 			
-			food_list.add("pad thai");
 			final TextView likes = (TextView) rootView3.findViewById(R.id.likes);
 			final ListView lv = (ListView) rootView3.findViewById(R.id.listView3);
-			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, food_list);
-			lv.setAdapter(adapter);
+			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_food_list);
+						
+			likes_input.setAdapter(adpt);
+			lv.setAdapter(adpt);
 			
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
 			         // We know the View is a TextView so we can cast it
-				         TextView clickedView = (TextView) view;
-					     likes.setText(likes.getText()+" "+clickedView.getText().toString());
-					     }
-					});
+		 	    	 TextView clickedView = (TextView) view;
+					 likes.setText(likes.getText()+" "+clickedView.getText().toString());
+					 likes_list.add(clickedView.getText().toString());
+					 likes_food_list.remove(position);	
+					 adpt.notifyDataSetChanged();
+		 	     }
+			});
+			rootView3.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            	public void onClick(View view) {
+            		String liked = likes_input.getText().toString();
+            		likes.setText(likes.getText()+" "+liked);
+            		
+            		if(likes_food_list.contains(liked)){
+            			int index = likes_food_list.indexOf(liked);
+            			likes_food_list.remove(index);	
+   					 	adpt.notifyDataSetChanged();
+            		}
+            		likes_input.setText("");
+            		
+                }
+            });
 			return rootView3;
 		}
 	}
@@ -251,9 +308,26 @@ public class Tastes extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_scrollable_stuff_dummy4, container, false);
-			return rootView;
+			View rootView4 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy4, container, false);
+			
+			final TextView likes = (TextView) rootView4.findViewById(R.id.dislikes);
+			final ListView lv = (ListView) rootView4.findViewById(R.id.listView4);
+			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_food_list);
+						
+			lv.setAdapter(adpt);
+			
+			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
+			         // We know the View is a TextView so we can cast it
+		 	    	 TextView clickedView = (TextView) view;
+					 likes.setText(likes.getText()+" "+clickedView.getText().toString());
+					 dislikes_list.add(clickedView.getText().toString());
+					 dislikes_food_list.remove(position);	
+					 adpt.notifyDataSetChanged();
+		 	     }
+			});
+						
+			return rootView4;
 		}
 		
 	}
@@ -279,7 +353,6 @@ public class Tastes extends FragmentActivity {
 	                });
 			return rootView5;
 		}
-	}
-	
+	} 
 	
 }

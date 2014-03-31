@@ -17,30 +17,49 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label3"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="what foods do you like the most?"
-        android:textSize="18dp"
-        android:layout_alignParentTop="true" />
+        android:textSize="18dp" />
+    
+    <AutoCompleteTextView
+    android:id="@+id/likes_input"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/textView3"
+    android:layout_marginRight="70dp"
+    
+     />
     
     <TextView
         android:id="@+id/likes"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text=""
-        android:layout_marginTop="8dp"
-        android:textSize="18dp"/>
+        android:textSize="18dp"
+        android:layout_marginBottom="10dp"/>
 
     <ListView
         android:id="@+id/listView3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/likes_input"
+        android:layout_above="@+id/likes"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp" >
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" >
     </ListView>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/likes_input"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView3"
+        android:text="add" />
 
 </RelativeLayout>
