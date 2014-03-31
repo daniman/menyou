@@ -17,30 +17,49 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label4"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="which do you dislike?"
-        android:textSize="18dp"
-        android:layout_alignParentTop="true" />
+        android:textSize="18dp" />
     
-    <TextView
+    <ListView
         android:id="@+id/dislikes"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        android:text=""
-        android:layout_marginTop="8dp"
-        android:textSize="18dp"/>
+         android:layout_below="@+id/dislikes_input"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/listView4"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
     <ListView
         android:id="@+id/listView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp" >
+        android:layout_width="180dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/dislikes_input"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" >
     </ListView>
+    
+    
+    <AutoCompleteTextView
+    android:id="@+id/dislikes_input"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/textView4"
+    android:layout_marginRight="70dp"
+     />
+ 
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/dislikes_input"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView4"
+        android:text="add" />
 
 </RelativeLayout>
