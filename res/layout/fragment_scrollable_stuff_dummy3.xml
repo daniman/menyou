@@ -29,9 +29,8 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/textView3"
     android:layout_marginRight="70dp"
-    
      />
-<!--   android:layout_above="@+id/likes"  -->
+    
     <ListView
         android:id="@+id/listView3"
         android:layout_width="180dp"
@@ -42,11 +41,27 @@
         android:layout_marginBottom="10dp" >
     </ListView>
     
+    <TextView
+        android:id="@+id/likeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/likes_input"
+        android:layout_toRightOf="@+id/listView3"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="6dp"
+        android:text="my likes"
+        android:textSize="16dp" />
+    
     <ListView
         android:id="@+id/likes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:alpha=".6"
+        android:background="@drawable/rect_edit_text"
         android:layout_toRightOf="@+id/listView3"
+         android:layout_below="@+id/likeTitle"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>

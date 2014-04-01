@@ -23,14 +23,29 @@
         android:text="which do you dislike?"
         android:textSize="18dp" />
     
+    <TextView
+        android:id="@+id/dislikeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/dislikes_input"
+        android:layout_toRightOf="@+id/listView4"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="6dp"
+        android:text="my dislikes"
+        android:textSize="16dp" />
+    
     <ListView
         android:id="@+id/dislikes"
+        android:alpha=".6"
+        android:background="@drawable/rect_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-         android:layout_below="@+id/dislikes_input"
+        android:layout_height="match_parent"
+         android:layout_below="@+id/dislikeTitle"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/listView4"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:layout_marginBottom="10dp"/>
 
     <ListView
@@ -50,6 +65,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/textView4"
     android:layout_marginRight="70dp"
+    
      />
  
 

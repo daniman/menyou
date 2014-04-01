@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Locale;
 
 
+
+import edu.mit.menyou.menu.RestaurantMenu;
+import edu.mit.menyou.menu.RestaurantMenuItem;
+import edu.mit.menyou.orderedDish.OrderedDish;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +42,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class Tastes extends FragmentActivity {
 	
@@ -50,7 +56,7 @@ public class Tastes extends FragmentActivity {
 	final static String allergiesKey = "edu.mit.menyou.allergies";
 	final static String likesKey = "edu.mit.menyou.likes";
 	final static String dislikesKey = "edu.mit.menyou.dislikes";
-
+	
 	
 	
 	
@@ -256,22 +262,7 @@ public class Tastes extends FragmentActivity {
 				Bundle savedInstanceState) {
 			final View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
 
-			final SharedPreferences prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
-/*
-			try {
-				AssetManager assetManager = getResources().getAssets();
-				InputStream is = assetManager.open("allergiesList");
-				BufferedReader r = new BufferedReader(new InputStreamReader(is));
-				if ( is != null) {
-					while (r.readLine() != null) {
-						allergies_full.add(r.readLine());
-					}
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			*/
-						
+			final SharedPreferences prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);						
 			final TextView allergies = (TextView) rootView2.findViewById(R.id.allergies);
 			final ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
 			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
@@ -294,6 +285,10 @@ public class Tastes extends FragmentActivity {
 	}
 	public static class DummySectionFragment3 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
+		
+		private ArrayAdapter<String> likesAdpt;
+		private ArrayAdapter<String> adpt;
+		private String clickedLike;
 
 		public DummySectionFragment3() {}
 
@@ -308,13 +303,14 @@ public class Tastes extends FragmentActivity {
 			
 			final ListView likesLV = (ListView) rootView3.findViewById(R.id.likes);
 			final ListView lv = (ListView) rootView3.findViewById(R.id.listView3);
-			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_food_list);
-			final ArrayAdapter<String> likesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_list);
+			adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_food_list);
+			likesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_list);
 
 			
 			likes_input.setAdapter(adpt);
 			lv.setAdapter(adpt);
 			likesLV.setAdapter(likesAdpt);
+			registerForContextMenu(likesLV);  //register for contextmenu
 			
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
@@ -333,29 +329,59 @@ public class Tastes extends FragmentActivity {
             		
             		if(likes_food_list.contains(liked)){
             			int index = likes_food_list.indexOf(liked);
-            			likes_food_list.remove(index);	
-   					 	likesAdpt.notifyDataSetChanged();
-   					 	adpt.notifyDataSetChanged();
+            			likes_food_list.remove(index);
             		}
+            		
             		likes_input.setText("");
+            		likesAdpt.notifyDataSetChanged();
+					adpt.notifyDataSetChanged();
             		
                 }
             });
 			
-			likesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		 	     public void onItemClick(AdapterView<?> adapter1, View view1, int position1,long id1) { 
-			         // We know the View is a TextView so we can cast it
-				         TextView clickedView1 = (TextView) view1;
-					     String clickedLike = clickedView1.getText().toString();
-		            	Toast.makeText(getActivity().getBaseContext(), clickedLike, Toast.LENGTH_SHORT).show();
-
-					     }
-					}); 
 			return rootView3;
 		}
+		// We want to create a context Menu when the user long click on an item
+	    @Override
+	    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+	    	if (v.getId() == R.id.likes) {
+	    		super.onCreateContextMenu(menu, v, menuInfo);
+	    		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			    clickedLike = likesAdpt.getItem(aInfo.position);
+	    		
+	    		menu.setHeaderTitle(clickedLike);
+	    		menu.add(1, 1, 1, "remove from my likes");
+	    		menu.add(1, 2, 1, "nevermind");
+
+	    	}
+	    }
+	    
+	  //the correct callback name starts with o and not O
+	    @Override
+	    public boolean onContextItemSelected(MenuItem item) {
+	       switch (item.getItemId()) {
+	       case 1:
+	           //first ContextMenu option
+	    	   likes_list.remove(clickedLike);
+	    	   likes_food_list.add(clickedLike);
+	    	   likesAdpt.notifyDataSetChanged();
+	    	   adpt.notifyDataSetChanged();
+	    	   
+	       break; 
+	       case 2:
+	          //stuff for option 2 of the ContextMenu
+	    	  //nothing
+	       break;
+	       }
+	       return super.onContextItemSelected(item);
+	    }
 	}
 	public static class DummySectionFragment4 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
+		
+		private ArrayAdapter<String> dislikesAdpt;
+		private ArrayAdapter<String> adpt2;
+		private String clickedDislike;
 
 		public DummySectionFragment4() {}
 		
@@ -367,13 +393,14 @@ public class Tastes extends FragmentActivity {
 			final AutoCompleteTextView dislikes_input = (AutoCompleteTextView) rootView4.findViewById(R.id.dislikes_input);
 			final ListView dislikesLV = (ListView) rootView4.findViewById(R.id.dislikes);
 			final ListView lv = (ListView) rootView4.findViewById(R.id.listView4);
-			final ArrayAdapter<String> adpt2 = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_food_list);
-			final ArrayAdapter<String> dislikesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_list);
+			adpt2 = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_food_list);
+			dislikesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_list);
 
 			
 			lv.setAdapter(adpt2);
 			dislikes_input.setAdapter(adpt2);
 			dislikesLV.setAdapter(dislikesAdpt);
+			registerForContextMenu(dislikesLV);  //register for contextmenu
 			
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
@@ -384,37 +411,62 @@ public class Tastes extends FragmentActivity {
 					 dislikes_list.add(clickedView.getText().toString());
 					 dislikes_food_list.remove(position);	
 					 adpt2.notifyDataSetChanged();
+					 dislikesAdpt.notifyDataSetChanged();
 		 	     }
 			});
 			
 			rootView4.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             	public void onClick(View view) {
             		String disliked = dislikes_input.getText().toString();
-            		//dislikes.setText(dislikes.getText()+" "+disliked);
             		dislikes_list.add(disliked);
             		
             		if(dislikes_food_list.contains(disliked)){
             			int index = dislikes_food_list.indexOf(disliked);
-            			dislikes_food_list.remove(index);	
-   					 	adpt2.notifyDataSetChanged();
+            			dislikes_food_list.remove(index);
             		}
-            		dislikes_input.setText("");
             		
+            		dislikes_input.setText("");
+            		adpt2.notifyDataSetChanged();
+					dislikesAdpt.notifyDataSetChanged();
                 }
             }); 
-			
-			dislikesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		 	     public void onItemClick(AdapterView<?> adapter1, View view1, int position1,long id1) { 
-			         // We know the View is a TextView so we can cast it
-				         TextView clickedView1 = (TextView) view1;
-					     String clickedLike = clickedView1.getText().toString();
-		            	Toast.makeText(getActivity().getBaseContext(), clickedLike, Toast.LENGTH_SHORT).show();
-
-					     }
-					}); 
 					
 			return rootView4;
 		}
+		// We want to create a context Menu when the user long click on an item
+	    @Override
+	    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+	    	if (v.getId() == R.id.dislikes) {
+	    		super.onCreateContextMenu(menu, v, menuInfo);
+	    		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			    clickedDislike = dislikesAdpt.getItem(aInfo.position);
+	    		
+	    		menu.setHeaderTitle(clickedDislike);
+	    		menu.add(1, 1, 1, "remove from my likes");
+	    		menu.add(1, 2, 1, "nevermind");
+
+	    	}
+	    }
+	    
+	  //the correct callback name starts with o and not O
+	    @Override
+	    public boolean onContextItemSelected(MenuItem item) {
+	       switch (item.getItemId()) {
+	       case 1:
+	           //first ContextMenu option
+	    	   dislikes_list.remove(clickedDislike);
+	    	   dislikes_food_list.add(clickedDislike);
+	    	   dislikesAdpt.notifyDataSetChanged();
+	    	   adpt2.notifyDataSetChanged();
+	    	   
+	       break; 
+	       case 2:
+	          //stuff for option 2 of the ContextMenu
+	    	  //nothing
+	       break;
+	       }
+	       return super.onContextItemSelected(item);
+	    }
 		
 	}
 	public static class DummySectionFragment5 extends Fragment {
