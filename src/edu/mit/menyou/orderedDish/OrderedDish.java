@@ -73,6 +73,9 @@ public class OrderedDish extends Activity {
             	review = String.valueOf(edit_text.getText());
         		mNumber = prefs.getString(number, "none");
             	
+        		System.out.println("restID: " + restID + "; restName: " + restName + "; dishName: " + dishName + "; rating: " + numberOfStars
+                		+ "; review: " + review);
+        		
             	Reviews.put("restID", restID);
             	Reviews.put("restName", restName);
             	Reviews.put("dishName", dishName);

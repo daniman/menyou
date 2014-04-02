@@ -6,11 +6,13 @@ public class RestaurantMenuItem implements Serializable {
 
 	private String name;
 	private String description;
+	private String price;
 
-	public RestaurantMenuItem(String name, String description) {
+	public RestaurantMenuItem(String name, String description, String price) {
 		super();
 		this.name = name;
 		this.description = description;
+		this.price = price;
 	}
 
 	public String getName() {
@@ -27,6 +29,14 @@ public class RestaurantMenuItem implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String getPrice() {
+		return this.price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
 	}
 
 }

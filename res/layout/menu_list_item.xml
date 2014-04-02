@@ -18,5 +18,13 @@
               android:layout_width="wrap_content"
    			  android:layout_height="wrap_content"   			  
    			  android:layout_below="@id/dishName" />
+    
+    <TextView android:id="@+id/dishPrice"
+        	  android:textStyle="italic"
+        	  android:textSize="10sp"
+        	  android:textColor="#b8b8b8"
+              android:layout_width="wrap_content"
+   			  android:layout_height="wrap_content"   			  
+   			  android:layout_below="@id/dishName" />
 
 </LinearLayout>

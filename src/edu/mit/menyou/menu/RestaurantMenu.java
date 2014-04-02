@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class RestaurantMenu extends Activity {
         adpt  = new RestaurantMenuAdapter(new ArrayList<RestaurantMenuItem>(), this);
         lView = (ListView) findViewById(R.id.menuListView);
         lView.setAdapter(adpt);
+        lView.setTextFilterEnabled(true);
         registerForContextMenu(lView); //register for the contextmenu
         
         RestaurantName = (TextView) findViewById(R.id.restName);
@@ -66,8 +68,32 @@ public class RestaurantMenu extends Activity {
         RestaurantName.setText(restName);
         
         
-        String restID = getIntent().getExtras().getString("restID");
         new AsyncListViewLoader().execute(restID);
+
+        lView.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> a, View v, final int position, long id) {   
+        		final int selectedPosition = position;
+        		AlertDialog.Builder adb = new AlertDialog.Builder(RestaurantMenu.this); 
+        		RestaurantMenuItem obj = (RestaurantMenuItem) lView.getItemAtPosition(position);
+        		
+        		selectedDish = obj.getName();
+        		
+        		adb.setTitle(obj.getName());
+        		adb.setMessage(obj.getDescription()); 
+        		adb.setPositiveButton("Cancel", null); 
+        		adb.setNegativeButton("I Ordered This!", new DialogInterface.OnClickListener() {
+        			public void onClick(DialogInterface dialog, int id) {
+        				Intent intent = new Intent(RestaurantMenu.this, OrderedDish.class);
+        				intent.putExtra("restID", restID);
+        				intent.putExtra("restName", restName);
+        				intent.putExtra("dishName", selectedDish);
+        				startActivity(intent);
+        			}
+        		});
+        		adb.show();
+                 
+             }
+         });
         
     }
 
@@ -87,7 +113,7 @@ public class RestaurantMenu extends Activity {
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 					alertDialogBuilder.setTitle("Ooops...... :(");
 					alertDialogBuilder
-						.setMessage("We are very sorry but we do not have the menu for " + restName + " in our records.")
+						.setMessage("We are very sorry but we do not have the menu for " + restName + " in our records at this time.")
 						.setCancelable(false)
 						.setPositiveButton("OK",new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,int id) {
@@ -166,49 +192,47 @@ public class RestaurantMenu extends Activity {
 		private RestaurantMenuItem convertDish(JSONObject obj) throws JSONException {
 			String name = obj.getString("name");
 			String description = obj.getString("description");
-			return new RestaurantMenuItem(name, description);
+			String price = obj.getString("price");
+			return new RestaurantMenuItem(name, description, price);
 		}
     	
     }
     
-    // We want to create a context Menu when the user long click on an item
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-    	if (v.getId() == R.id.menuListView) {
-    		ListView lv = (ListView) v;
-    		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
-    		RestaurantMenuItem obj = (RestaurantMenuItem) lv.getItemAtPosition(acmi.position);
-
-    		selectedDish = obj.getName();
-    		menu.setHeaderTitle(selectedDish);
-    		menu.add(1, 1, 1, "Details");
-    		menu.add(1, 2, 1, "Friends Recommend");
-    		menu.add(1, 3, 2, "Ordered This!");
-
-    	}
-    }
-    
-  //the correct callback name starts with o and not O
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-       switch (item.getItemId()) {
-       case 1:
-           //first ContextMenu option I picked this to start the  new activity
-       break; 
-       case 2:
-          //stuff for option 2 of the ContextMenu
-       break;
-       case 3:
-           //stuff for option 2 of the ContextMenu
-    	   Intent intent = new Intent(RestaurantMenu.this, OrderedDish.class);
-    	   intent.putExtra("restID", restID);
-    	   intent.putExtra("restName", restName);
-    	   intent.putExtra("dishName", selectedDish);
-           startActivity(intent);
-       break;
-       }
-       return super.onContextItemSelected(item);
-    }
+//    // We want to create a context Menu when the user long click on an item
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//    	if (v.getId() == R.id.menuListView) {
+//    		ListView lv = (ListView) v;
+//    		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+//    		RestaurantMenuItem obj = (RestaurantMenuItem) lv.getItemAtPosition(acmi.position);
+//
+//    		selectedDish = obj.getName();
+//    		menu.setHeaderTitle(selectedDish);
+//    		menu.addSubMenu("title");
+//    		menu.add(1, 1, 1, "Friends Recommend");
+//    		menu.add(1, 2, 1, "Ordered This!");
+//
+//    	}
+//    }
+//    
+//  //the correct callback name starts with o and not O
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//       switch (item.getItemId()) {
+//       case 1:
+//           //first ContextMenu option I picked this to start the  new activity
+//       break;
+//       case 2:
+//           //stuff for option 2 of the ContextMenu
+//    	   Intent intent = new Intent(RestaurantMenu.this, OrderedDish.class);
+//    	   intent.putExtra("restID", restID);
+//    	   intent.putExtra("restName", restName);
+//    	   intent.putExtra("dishName", selectedDish);
+//           startActivity(intent);
+//       break;
+//       }
+//       return super.onContextItemSelected(item);
+//    }
     
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -56,6 +56,9 @@ public class RestaurantMenuAdapter extends ArrayAdapter<RestaurantMenuItem> {
 
 		TextView text1 = (TextView) v.findViewById(R.id.dishDescription);
 		text1.setText(d.getDescription());
+		
+		TextView text2 = (TextView) v.findViewById(R.id.dishPrice);
+		text2.setText(d.getPrice());
 
 		return v;
 

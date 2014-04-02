@@ -2,7 +2,6 @@ package edu.mit.menyou;
 
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,23 +11,17 @@ import java.util.Locale;
 
 
 
-import edu.mit.menyou.menu.RestaurantMenu;
-import edu.mit.menyou.menu.RestaurantMenuItem;
-import edu.mit.menyou.orderedDish.OrderedDish;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,10 +31,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class Tastes extends FragmentActivity {
@@ -92,25 +83,11 @@ public class Tastes extends FragmentActivity {
 			AssetManager assetManager = getResources().getAssets();
 			InputStream is = assetManager.open("foodList");
 			BufferedReader r = new BufferedReader(new InputStreamReader(is));
-			
+			String line;
 			if ( is != null) {
-				while (r.readLine() != null) {
-					likes_food_list.add(r.readLine());
-					//dislikes_food_list.add(r.readLine());
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			AssetManager assetManager1 = getResources().getAssets();
-			InputStream is1 = assetManager1.open("foodList");
-			BufferedReader r1 = new BufferedReader(new InputStreamReader(is1));
-			
-			if ( is1 != null) {
-				while (r1.readLine() != null){
-					dislikes_food_list.add(r1.readLine());
+				while ((line = r.readLine()) != null) {
+					likes_food_list.add(line);
+					dislikes_food_list.add(line);
 				}
 			}
 		} catch (IOException e) {
@@ -121,9 +98,10 @@ public class Tastes extends FragmentActivity {
 			AssetManager assetManager = getResources().getAssets();
 			InputStream is = assetManager.open("allergiesList");
 			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			String line;
 			if ( is != null) {
-				while (r.readLine() != null) {
-					allergies_full.add(r.readLine());
+				while ((line = r.readLine()) != null) {
+					allergies_full.add(line);
 				}
 			}
 		} catch (IOException e) {

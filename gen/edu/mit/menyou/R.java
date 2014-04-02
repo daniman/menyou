@@ -46,11 +46,11 @@ public final class R {
     public static final class id {
         public static final int Text2=0x7f08002f;
         public static final int Text3=0x7f080030;
-        public static final int action_home=0x7f080067;
-        public static final int action_profile=0x7f080069;
-        public static final int action_search=0x7f080068;
-        public static final int action_settings=0x7f08006a;
-        public static final int action_update_search=0x7f08006b;
+        public static final int action_home=0x7f080068;
+        public static final int action_profile=0x7f08006a;
+        public static final int action_search=0x7f080069;
+        public static final int action_settings=0x7f08006b;
+        public static final int action_update_search=0x7f08006c;
         public static final int allergies=0x7f080051;
         public static final int button1=0x7f080059;
         public static final int button2=0x7f080060;
@@ -65,6 +65,7 @@ public final class R {
         public static final int discover_seekBar=0x7f080024;
         public static final int dishDescription=0x7f080028;
         public static final int dishName=0x7f080025;
+        public static final int dishPrice=0x7f080065;
         public static final int dislikeTitle=0x7f08005c;
         public static final int dislikes=0x7f08005f;
         public static final int dislikes_input=0x7f08005d;
@@ -128,9 +129,9 @@ public final class R {
         public static final int reset_button=0x7f08003a;
         public static final int restName=0x7f080015;
         public static final int rest_textView1=0x7f08003b;
-        public static final int restaurantDescription=0x7f080066;
+        public static final int restaurantDescription=0x7f080067;
         public static final int restaurantListView=0x7f08003e;
-        public static final int restaurantName=0x7f080065;
+        public static final int restaurantName=0x7f080066;
         public static final int search_input=0x7f080040;
         public static final int section_label=0x7f08004e;
         public static final int section_label2=0x7f08004f;
