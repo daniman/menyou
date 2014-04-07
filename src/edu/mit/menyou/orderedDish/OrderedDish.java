@@ -65,6 +65,7 @@ public class OrderedDish extends Activity {
 		final String number = "edu.mit.menyou.number";
 		
         final ParseObject Reviews = new ParseObject("Reviews");
+
         
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -79,6 +80,8 @@ public class OrderedDish extends Activity {
             	Reviews.put("rating",numberOfStars);
             	Reviews.put("review", review);
             	Reviews.put("number", mNumber);
+            	
+            	
             	
             	//this was crashing the app for some reason
             	Reviews.saveInBackground();

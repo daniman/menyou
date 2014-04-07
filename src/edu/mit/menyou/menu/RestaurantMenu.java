@@ -18,13 +18,13 @@ import edu.mit.menyou.R.menu;
 import edu.mit.menyou.home.Home;
 import edu.mit.menyou.orderedDish.OrderedDish;
 import edu.mit.menyou.search.Search;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -47,6 +47,9 @@ public class RestaurantMenu extends Activity {
 	private String restName;
 	private String selectedDish;
 	final Context context = this;
+	private String[] allergies;
+	private SharedPreferences prefs;
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,11 @@ public class RestaurantMenu extends Activity {
     	getActionBar().setDisplayShowTitleEnabled(false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
+        
+    	prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		String allergiesKey = "edu.mit.menyou.allergies";
+		String allergiesString = prefs.getString(allergiesKey, null);
+		allergies = allergiesString.split("\\s+");
         
         adpt  = new RestaurantMenuAdapter(new ArrayList<RestaurantMenuItem>(), this);
         lView = (ListView) findViewById(R.id.menuListView);
@@ -111,6 +119,8 @@ public class RestaurantMenu extends Activity {
 			JSONObject json = null;
 			List<RestaurantMenuItem> result = new ArrayList<RestaurantMenuItem>();
 			request_url = BASE_URL + params[0] + END_URL;
+			
+			
 
 			try {
 				URL u = new URL(request_url);
@@ -160,6 +170,11 @@ public class RestaurantMenu extends Activity {
 			catch(Throwable t) {
 				t.printStackTrace();
 			}
+			
+			Algorithm alg = new Algorithm(result,allergies);
+		
+			result=alg.calculate();
+			
 			return null;
 		}
 		

@@ -2,8 +2,10 @@ package edu.mit.menyou;
 
 import java.util.Random;
 
-import edu.mit.menyou.home.Home;
+import com.parse.Parse;
+import com.parse.ParseObject;
 
+import edu.mit.menyou.home.Home;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -43,20 +45,34 @@ public class PhoneNumber extends Activity {
 		
 		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		final String number = "edu.mit.menyou.number";
+		final String first = "edu.mit.menyou.first";
+		final String last = "edu.mit.menyou.last";
+		
+		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
+		final ParseObject Usernames = new ParseObject("Usernames");
+
 
 	number_button.setOnClickListener(new View.OnClickListener() {
         public void onClick(View arg0) {
         	
         	String mNumber=(editNumber.getText().toString());
+        	String firstName = prefs.getString(first, "error");
+        	String lastName = prefs.getString(last, "*no last name*");
         	
         	if(mNumber.length()==10){
             	prefs.edit().putString(number, mNumber).commit();
+            	Usernames.put("username", firstName+" "+lastName);
+            	Usernames.put("phoneNumber", String.valueOf(mNumber));
+            	Usernames.saveInBackground();
             	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
                 startActivity(nextScreen);
         	}
         	if(randomPrompt.getText().toString().length()==10){
         		mNumber=randomPrompt.getText().toString();
         		prefs.edit().putString(number, mNumber).commit();
+        		Usernames.put("username", firstName+" "+lastName);
+            	Usernames.put("phoneNumber", String.valueOf(mNumber));
+            	Usernames.saveInBackground();
             	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
                 startActivity(nextScreen);
         	}

@@ -17,6 +17,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseException;
 
 import edu.mit.menyou.First;
+import edu.mit.menyou.PhoneNumber;
 import edu.mit.menyou.Profile;
 import edu.mit.menyou.R;
 import edu.mit.menyou.R.id;
@@ -29,10 +30,12 @@ import edu.mit.menyou.search.Search;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,13 +52,15 @@ public class Home extends Activity {
 	private String mNumber;
 	private TextView displayMeals;
 	private TextView mealsWord;
+	private SharedPreferences prefs;
+	private String mealsNumber = "edu.mit.menyout.mealNumber";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
 		
-		SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String firstTime = "edu.mit.menyou.firstTime";
 		String first = "edu.mit.menyou.first";
 		String number = "edu.mit.menyou.number";
@@ -68,7 +73,7 @@ public class Home extends Activity {
             startActivity(nextScreen);
 		}
 		if(numberCheck==""){
-			Intent nextScreen = new Intent(getApplicationContext(), First.class);
+			Intent nextScreen = new Intent(getApplicationContext(), PhoneNumber.class);
             startActivity(nextScreen);
 		}
 		
@@ -84,6 +89,10 @@ public class Home extends Activity {
 		displayMeals = (TextView) findViewById(R.id.home_points);
 		mealsWord = (TextView) findViewById(R.id.home_meals);
 		name.setText("Welcome "+prefs.getString(first, "Ben"));
+		
+		displayMeals.setText(prefs.getString(mealsNumber, "0"));
+		if(Integer.parseInt(prefs.getString(mealsNumber, "0"))==1){mealsWord.setText("meal");}
+		
 		//Listening to button event
         home_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -104,8 +113,11 @@ public class Home extends Activity {
 		query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> mealList, ParseException e) {
             	List<HistoryMenuItem> result = new ArrayList<HistoryMenuItem>();
-                if (e == null) {                    
-                    displayMeals.setText(String.valueOf(mealList.size()));
+            	
+                if (e == null) {        
+                	String numberOfMeals = String.valueOf(mealList.size());
+                	prefs.edit().putString(mealsNumber, numberOfMeals);
+                    displayMeals.setText(numberOfMeals);
                     if(mealList.size()==1){mealsWord.setText("meal");}
                     
                     for (int i=0; i<mealList.size(); i++) {
@@ -147,7 +159,10 @@ public class Home extends Activity {
 	            return true;
 	        case R.id.action_profile:
 	        	Intent nextScreen2 = new Intent(getApplicationContext(), Profile.class);
-                startActivity(nextScreen2);
+	        	startActivity(nextScreen2);
+	        	//View view = findViewById(android.R.id.content);
+	        	//makeScaleUpAnimation(view, 100, 100, view.getWidth(), view.getHeight());
+		        //startActivity(nextScreen2, options.toBundle()\);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

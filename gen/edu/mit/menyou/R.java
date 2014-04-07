@@ -24,24 +24,25 @@ public final class R {
         public static final int avatar=0x7f020000;
         public static final int dietary_choices=0x7f020001;
         public static final int friends=0x7f020002;
-        public static final int ic_back_icon=0x7f020003;
-        public static final int ic_home=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int ic_map=0x7f020006;
-        public static final int ic_map_logo=0x7f020007;
-        public static final int ic_menyou_logo=0x7f020008;
-        public static final int ic_search=0x7f020009;
-        public static final int logo=0x7f02000a;
-        public static final int logo5=0x7f02000b;
-        public static final int logo_check=0x7f02000c;
-        public static final int logo_x=0x7f02000d;
-        public static final int logosimple=0x7f02000e;
-        public static final int map=0x7f02000f;
-        public static final int my_history=0x7f020010;
-        public static final int my_mood=0x7f020011;
-        public static final int rect_edit_text=0x7f020012;
-        public static final int rect_edit_text2=0x7f020013;
-        public static final int taste_profile=0x7f020014;
+        public static final int hamburger=0x7f020003;
+        public static final int ic_back_icon=0x7f020004;
+        public static final int ic_home=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
+        public static final int ic_map=0x7f020007;
+        public static final int ic_map_logo=0x7f020008;
+        public static final int ic_menyou_logo=0x7f020009;
+        public static final int ic_search=0x7f02000a;
+        public static final int logo=0x7f02000b;
+        public static final int logo5=0x7f02000c;
+        public static final int logo_check=0x7f02000d;
+        public static final int logo_x=0x7f02000e;
+        public static final int logosimple=0x7f02000f;
+        public static final int map=0x7f020010;
+        public static final int my_history=0x7f020011;
+        public static final int my_mood=0x7f020012;
+        public static final int rect_edit_text=0x7f020013;
+        public static final int rect_edit_text2=0x7f020014;
+        public static final int taste_profile=0x7f020015;
     }
     public static final class id {
         public static final int Text2=0x7f08002f;
@@ -178,8 +179,9 @@ public final class R {
         public static final int fragment_scrollable_stuff_dummy4=0x7f030015;
         public static final int fragment_scrollable_stuff_dummy5=0x7f030016;
         public static final int history_list_item=0x7f030017;
-        public static final int menu_list_item=0x7f030018;
-        public static final int restaurant_list_item=0x7f030019;
+        public static final int likes_list_item=0x7f030018;
+        public static final int menu_list_item=0x7f030019;
+        public static final int restaurant_list_item=0x7f03001a;
     }
     public static final class menu {
         public static final int first=0x7f070000;

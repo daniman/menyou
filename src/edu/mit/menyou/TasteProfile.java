@@ -1,5 +1,9 @@
 package edu.mit.menyou;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -16,28 +20,37 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class TasteProfile extends FragmentActivity {
 	
 	private static final List<String> dislikes_list = new ArrayList<String>();
 	private static final List<String> likes_list = new ArrayList<String>();
 	private static final List<String> allergies_full = new ArrayList<String>();
-	private static final List<String> food_list = new ArrayList<String>();
-	
+	private static final List<String> allergies_list = new ArrayList<String>();
+	private static final List<String> likes_food_list = new ArrayList<String>();	
+	private static final List<String> dislikes_food_list = new ArrayList<String>();
+	private static String[] allergiesArray;
+
+	final static String firstTime = "edu.mit.menyou.firstTime";
 	final static String allergiesKey = "edu.mit.menyou.allergies";
 	final static String likesKey = "edu.mit.menyou.likes";
 	final static String dislikesKey = "edu.mit.menyou.dislikes";
@@ -64,6 +77,57 @@ public class TasteProfile extends FragmentActivity {
 		getActionBar().setDisplayShowTitleEnabled(false);
 
 		findViewById(R.id.setup_button);
+		
+		dislikes_list.clear();
+		likes_list.clear();
+		allergies_full.clear();
+		allergies_list.clear();
+		likes_food_list.clear();
+		dislikes_food_list.clear();
+		
+		try {
+			AssetManager assetManager = getResources().getAssets();
+			InputStream is = assetManager.open("foodList");
+			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			
+			if ( is != null) {
+				while (r.readLine() != null) {
+					likes_food_list.add(r.readLine());
+					//dislikes_food_list.add(r.readLine());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			AssetManager assetManager1 = getResources().getAssets();
+			InputStream is1 = assetManager1.open("foodList");
+			BufferedReader r1 = new BufferedReader(new InputStreamReader(is1));
+			
+			if ( is1 != null) {
+				while (r1.readLine() != null){
+					dislikes_food_list.add(r1.readLine());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			AssetManager assetManager = getResources().getAssets();
+			InputStream is = assetManager.open("allergiesList");
+			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			if ( is != null) {
+				while (r.readLine() != null) {
+					allergies_full.add(r.readLine());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		final Button SetupButton = (Button) findViewById(R.id.setup_button);
 		
 		// Create the adapter that will return a fragment for each of the four
 		// primary sections of the app.
@@ -170,32 +234,50 @@ public class TasteProfile extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			final View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
-			allergies_full.add("egg");
-			allergies_full.add("fish");
-			allergies_full.add("milk");
-			allergies_full.add("peanuts");
-			allergies_full.add("soy");
-			allergies_full.add("tree nuts");
-			allergies_full.add("shellfish");
-			allergies_full.add("wheat");
+		
+			final SharedPreferences prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);						
 			final TextView allergies = (TextView) rootView2.findViewById(R.id.allergies);
 			final ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
-			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
-			lv.setAdapter(adapter);
+			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
+			lv.setAdapter(adpt);
 			
-			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
-			         // We know the View is a TextView so we can cast it
-				         TextView clickedView = (TextView) view;
-					     allergies.setText(allergies.getText()+" "+clickedView.getText().toString());
-					     }
-					});
+			String allergiesString = prefs.getString(allergiesKey, null);
+			allergiesArray = allergiesString.split("\\s+");
+			int length = allergiesArray.length;
+			
+			for(int i=0;i<length;i++){
+				if(allergies_full.contains(allergiesArray[i].toString())){
+					allergies_full.remove(allergiesArray[i].toString());
+				}
+				allergies_list.add(allergiesArray[i].toString());
+				allergies.setText(allergies.getText().toString()+" "+allergiesArray[i].toString());
+					
+			}
+			
+				lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
+				         // We know the View is a TextView so we can cast it
+					         TextView clickedView = (TextView) view;
+					         String newAllergy = clickedView.getText().toString();
+						     allergies.setText(allergies.getText().toString()+" "+newAllergy);
+						     allergies_full.remove(position);	
+						     allergies_list.add(newAllergy);
+							 adpt.notifyDataSetChanged();
+							 String allergiesTotal = prefs.getString(allergiesKey, null);
+							 //allergies_list.add(newAllergy);
+							 prefs.edit().putString(allergiesKey, allergiesTotal+" "+newAllergy).commit();
+						     }
+						});
 			return rootView2;
 		}
 	}
 	public static class DummySectionFragment2 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
+		private ArrayAdapter<String> likesAdpt;
+		private ArrayAdapter<String> adpt;
+		private String clickedLike;
+		
 		public DummySectionFragment2() {}
 
 		@Override
@@ -203,49 +285,197 @@ public class TasteProfile extends FragmentActivity {
 				Bundle savedInstanceState) {
 			View rootView3 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy3, container, false);
 			
-			food_list.add("pad thai");
-			final TextView likes = (TextView) rootView3.findViewById(R.id.likes);
+			// Get a reference to the AutoCompleteTextView in the layout
+			final AutoCompleteTextView likes_input = (AutoCompleteTextView) rootView3.findViewById(R.id.likes_input);
+			
+			
+			final ListView likesLV = (ListView) rootView3.findViewById(R.id.likes);
 			final ListView lv = (ListView) rootView3.findViewById(R.id.listView3);
-			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, food_list);
-			lv.setAdapter(adapter);
+			adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_food_list);
+			likesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.likes_list_item, likes_list);
+
+			
+			likes_input.setAdapter(adpt);
+			lv.setAdapter(adpt);
+			likesLV.setAdapter(likesAdpt);
+			registerForContextMenu(likesLV);  //register for contextmenu
 			
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
 			         // We know the View is a TextView so we can cast it
-				         TextView clickedView = (TextView) view;
-					     likes.setText(likes.getText()+" "+clickedView.getText().toString());
-					     }
-					});
+		 	    	 TextView clickedView = (TextView) view;
+					 likes_list.add(clickedView.getText().toString());
+					 likes_food_list.remove(position);
+					 likesAdpt.notifyDataSetChanged();
+					 adpt.notifyDataSetChanged();
+		 	     }
+			});
+			rootView3.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            	public void onClick(View view) {
+            		String liked = likes_input.getText().toString();
+            		likes_list.add(liked);
+            		
+            		if(likes_food_list.contains(liked)){
+            			int index = likes_food_list.indexOf(liked);
+            			likes_food_list.remove(index);
+            		}
+            		
+            		likes_input.setText("");
+            		likesAdpt.notifyDataSetChanged();
+					adpt.notifyDataSetChanged();
+            		
+                }
+            });
+			
 			return rootView3;
 			
 		}
+		// We want to create a context Menu when the user long click on an item
+	    @Override
+	    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+	    	if (v.getId() == R.id.likes) {
+	    		super.onCreateContextMenu(menu, v, menuInfo);
+	    		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			    clickedLike = likesAdpt.getItem(aInfo.position);
+	    		
+	    		menu.setHeaderTitle(clickedLike);
+	    		menu.add(1, 1, 1, "remove from my likes");
+	    		menu.add(1, 2, 1, "nevermind");
+	    	}
+	    }
+	    @Override
+	    public boolean onContextItemSelected(MenuItem item) {
+	       switch (item.getItemId()) {
+	       case 1:
+	           //first ContextMenu option
+	    	   likes_list.remove(clickedLike);
+	    	   likes_food_list.add(clickedLike);
+	    	   likesAdpt.notifyDataSetChanged();
+	    	   adpt.notifyDataSetChanged();
+	       break; 
+	       case 2:
+	          //stuff for option 2 of the ContextMenu
+	    	  //nothing
+	       break;
+	       }
+	       return super.onContextItemSelected(item);
+	    }
 	}
 	public static class DummySectionFragment3 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
 
+
+		private ArrayAdapter<String> dislikesAdpt;
+		private ArrayAdapter<String> adpt2;
+		private String clickedDislike;
+		
 		public DummySectionFragment3() {}
 
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_scrollable_stuff_dummy4, container, false);
-			return rootView;
+			View rootView4 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy4, container, false);
+			
+			final AutoCompleteTextView dislikes_input = (AutoCompleteTextView) rootView4.findViewById(R.id.dislikes_input);
+			final ListView dislikesLV = (ListView) rootView4.findViewById(R.id.dislikes);
+			final ListView lv = (ListView) rootView4.findViewById(R.id.listView4);
+			adpt2 = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_food_list);
+			dislikesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.likes_list_item, dislikes_list);
+
+			
+			lv.setAdapter(adpt2);
+			dislikes_input.setAdapter(adpt2);
+			dislikesLV.setAdapter(dislikesAdpt);
+			registerForContextMenu(dislikesLV);  //register for contextmenu
+			
+			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
+			         // We know the View is a TextView so we can cast it
+		 	    	 TextView clickedView = (TextView) view;
+					 //dislikes.setText(dislikes.getText()+" "+clickedView.getText().toString());
+		 	    	 String disliked= clickedView.getText().toString();
+		 	    	 
+		 	    	 if(!dislikes_list.contains(disliked)){
+					 dislikes_list.add(disliked);
+		 	    	 }
+					 dislikes_food_list.remove(position);	
+					 adpt2.notifyDataSetChanged();
+					 dislikesAdpt.notifyDataSetChanged();
+		 	    	 
+		 	     }
+			});
+			
+			rootView4.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            	public void onClick(View view) {
+            		String disliked = dislikes_input.getText().toString();
+            		
+            		if(disliked!=""){
+            		if(!dislikes_list.contains(disliked)){
+            		dislikes_list.add(disliked);
+            		}
+            		if(dislikes_food_list.contains(disliked)){
+            			int index = dislikes_food_list.indexOf(disliked);
+            			dislikes_food_list.remove(index);
+            		}
+            		
+            		dislikes_input.setText("");
+            		adpt2.notifyDataSetChanged();
+					dislikesAdpt.notifyDataSetChanged();
+                }
+            	}
+            }); 
+			
+			return rootView4;
 		}
+		// We want to create a context Menu when the user long click on an item
+	    @Override
+	    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+	    	if (v.getId() == R.id.dislikes) {
+	    		super.onCreateContextMenu(menu, v, menuInfo);
+	    		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			    clickedDislike = dislikesAdpt.getItem(aInfo.position);
+	    		
+	    		menu.setHeaderTitle(clickedDislike);
+	    		menu.add(1, 1, 1, "remove from my likes");
+	    		menu.add(1, 2, 1, "nevermind");
+
+	    	}
+	    }
+	    
+	  //the correct callback name starts with o and not O
+	    @Override
+	    public boolean onContextItemSelected(MenuItem item) {
+	       switch (item.getItemId()) {
+	       case 1:
+	           //first ContextMenu option
+	    	   dislikes_list.remove(clickedDislike);
+	    	   dislikes_food_list.add(clickedDislike);
+	    	   dislikesAdpt.notifyDataSetChanged();
+	    	   adpt2.notifyDataSetChanged();
+	    	   
+	       break; 
+	       case 2:
+	          //stuff for option 2 of the ContextMenu
+	    	  //nothing
+	       break;
+	       }
+	       return super.onContextItemSelected(item);
+	    }
 	}
 	public static class DummySectionFragment4 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
-
+		
 		public DummySectionFragment4() {}
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+				
 			View rootView5 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy5, container, false);
 					      
 	        rootView5.findViewById(R.id.setup_button).setOnClickListener(new View.OnClickListener() {
 	                    
 	                	public void onClick(View view) {
-	                        Intent intent = new Intent(getActivity(), Home.class);
+	                        Intent intent = new Intent(getActivity(), Profile.class);
 	                        startActivity(intent);
 	                    }
 	                });

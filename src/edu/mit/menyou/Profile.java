@@ -32,6 +32,8 @@ public class Profile extends Activity {
 		final SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		final String first = "edu.mit.menyou.first";
 		final String last = "edu.mit.menyou.last";
+		final String allergiesKey = "edu.mit.menyou.allergies";
+		final String likes = "edu.mit.menyou.likes";
 		
 		TextView first_name = (TextView) findViewById(R.id.username_first);
 		first_name.setText(prefs.getString(first, "Ben"));
@@ -77,6 +79,7 @@ public class Profile extends Activity {
         		prefs.edit().putInt(firstTime, 0).commit();
         		prefs.edit().putString(first, null).commit();
         		prefs.edit().putString(last, null).commit();
+        		prefs.edit().putString(allergiesKey, "").commit();
                 Intent nextScreen = new Intent(getApplicationContext(), First.class);
                 startActivity(nextScreen);
                 }

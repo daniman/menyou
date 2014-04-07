@@ -58,17 +58,16 @@
         android:id="@+id/likes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha=".6"
-        android:background="@drawable/rect_edit_text"
         android:layout_toRightOf="@+id/listView3"
          android:layout_below="@+id/likeTitle"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="1dp"
         android:layout_marginBottom="10dp"/>
 
     
     <Button
         android:id="@+id/button1"
+        android:textColor="#638e22"
         android:layout_width="60dp"
         android:layout_height="30dp"
         android:layout_alignBottom="@+id/likes_input"

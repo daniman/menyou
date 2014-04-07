@@ -45,8 +45,8 @@ public class First extends Activity {
         final Button button = (Button) findViewById(R.id.button_getStart);
         
         // set up the font
-        Typeface type = Typeface.createFromAsset(getAssets(),"fonts/bubblebo.ttf");
-        button.setTypeface(type);
+        //Typeface type = Typeface.createFromAsset(getAssets(),"fonts/bubblebo.ttf");
+        //button.setTypeface(type);
 
         
         //Listening to button event

@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
 
+
+import java.util.Set;
 
 import edu.mit.menyou.menu.RestaurantMenu;
 import edu.mit.menyou.menu.RestaurantMenuItem;
@@ -49,6 +52,7 @@ public class Tastes extends FragmentActivity {
 	private static final List<String> dislikes_list = new ArrayList<String>();
 	private static final List<String> likes_list = new ArrayList<String>();
 	private static final List<String> allergies_full = new ArrayList<String>();
+	private static final List<String> allergies_list = new ArrayList<String>();
 	private static final List<String> likes_food_list = new ArrayList<String>();	
 	private static final List<String> dislikes_food_list = new ArrayList<String>();
 
@@ -56,7 +60,6 @@ public class Tastes extends FragmentActivity {
 	final static String allergiesKey = "edu.mit.menyou.allergies";
 	final static String likesKey = "edu.mit.menyou.likes";
 	final static String dislikesKey = "edu.mit.menyou.dislikes";
-	
 	
 	
 	
@@ -84,6 +87,7 @@ public class Tastes extends FragmentActivity {
 		dislikes_list.clear();
 		likes_list.clear();
 		allergies_full.clear();
+		allergies_list.clear();
 		likes_food_list.clear();
 		dislikes_food_list.clear();
 		
@@ -268,6 +272,8 @@ public class Tastes extends FragmentActivity {
 			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
 			lv.setAdapter(adpt);
 			
+			//allergies_list = prefs.getStringSet(allergiesKey, null);
+			
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
 			         // We know the View is a TextView so we can cast it
@@ -275,8 +281,11 @@ public class Tastes extends FragmentActivity {
 				         String newAllergy = clickedView.getText().toString();
 					     allergies.setText(allergies.getText().toString()+" "+newAllergy);
 					     allergies_full.remove(position);	
+					     allergies_list.add(newAllergy);
 						 adpt.notifyDataSetChanged();
-						 prefs.edit().putString(allergiesKey, newAllergy+", ").commit();
+						 String allergiesTotal = prefs.getString(allergiesKey, null);
+						 //allergies_list.add(newAllergy);
+						 prefs.edit().putString(allergiesKey, allergiesTotal+" "+newAllergy).commit();
 					     }
 					});
 			return rootView2;
@@ -304,7 +313,7 @@ public class Tastes extends FragmentActivity {
 			final ListView likesLV = (ListView) rootView3.findViewById(R.id.likes);
 			final ListView lv = (ListView) rootView3.findViewById(R.id.listView3);
 			adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_food_list);
-			likesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_list);
+			likesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.likes_list_item, likes_list);
 
 			
 			likes_input.setAdapter(adpt);
@@ -352,11 +361,8 @@ public class Tastes extends FragmentActivity {
 	    		menu.setHeaderTitle(clickedLike);
 	    		menu.add(1, 1, 1, "remove from my likes");
 	    		menu.add(1, 2, 1, "nevermind");
-
 	    	}
 	    }
-	    
-	  //the correct callback name starts with o and not O
 	    @Override
 	    public boolean onContextItemSelected(MenuItem item) {
 	       switch (item.getItemId()) {
@@ -366,7 +372,6 @@ public class Tastes extends FragmentActivity {
 	    	   likes_food_list.add(clickedLike);
 	    	   likesAdpt.notifyDataSetChanged();
 	    	   adpt.notifyDataSetChanged();
-	    	   
 	       break; 
 	       case 2:
 	          //stuff for option 2 of the ContextMenu
@@ -394,7 +399,7 @@ public class Tastes extends FragmentActivity {
 			final ListView dislikesLV = (ListView) rootView4.findViewById(R.id.dislikes);
 			final ListView lv = (ListView) rootView4.findViewById(R.id.listView4);
 			adpt2 = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_food_list);
-			dislikesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, dislikes_list);
+			dislikesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.likes_list_item, dislikes_list);
 
 			
 			lv.setAdapter(adpt2);
@@ -406,20 +411,27 @@ public class Tastes extends FragmentActivity {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
 			         // We know the View is a TextView so we can cast it
 		 	    	 TextView clickedView = (TextView) view;
-					 dislikesAdpt.notifyDataSetChanged();
 					 //dislikes.setText(dislikes.getText()+" "+clickedView.getText().toString());
-					 dislikes_list.add(clickedView.getText().toString());
+		 	    	 String disliked= clickedView.getText().toString();
+		 	    	 
+		 	    	 if(!dislikes_list.contains(disliked)){
+					 dislikes_list.add(disliked);
+		 	    	 }
 					 dislikes_food_list.remove(position);	
 					 adpt2.notifyDataSetChanged();
 					 dislikesAdpt.notifyDataSetChanged();
+		 	    	 
 		 	     }
 			});
 			
 			rootView4.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             	public void onClick(View view) {
             		String disliked = dislikes_input.getText().toString();
-            		dislikes_list.add(disliked);
             		
+            		if(disliked!=""){
+            		if(!dislikes_list.contains(disliked)){
+            		dislikes_list.add(disliked);
+            		}
             		if(dislikes_food_list.contains(disliked)){
             			int index = dislikes_food_list.indexOf(disliked);
             			dislikes_food_list.remove(index);
@@ -429,6 +441,7 @@ public class Tastes extends FragmentActivity {
             		adpt2.notifyDataSetChanged();
 					dislikesAdpt.notifyDataSetChanged();
                 }
+            	}
             }); 
 					
 			return rootView4;

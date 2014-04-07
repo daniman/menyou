@@ -38,8 +38,6 @@
     
     <ListView
         android:id="@+id/dislikes"
-        android:alpha=".6"
-        android:background="@drawable/rect_edit_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
          android:layout_below="@+id/dislikeTitle"
@@ -71,6 +69,7 @@
 
     <Button
         android:id="@+id/button2"
+        android:textColor="#638e22"
         android:layout_width="60dp"
         android:layout_height="30dp"
         android:layout_alignBottom="@+id/dislikes_input"

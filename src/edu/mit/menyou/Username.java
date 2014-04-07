@@ -1,5 +1,8 @@
 package edu.mit.menyou;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import edu.mit.menyou.home.Home;
 import android.os.Bundle;
 import android.app.Activity;
@@ -21,6 +24,8 @@ public class Username extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_username);
+		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
+
 
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(false);
@@ -43,7 +48,7 @@ public class Username extends Activity {
 		}
 		//Toast.makeText(Username.this, mPhoneNumber, Toast.LENGTH_SHORT).show();
 
-		
+		final ParseObject Usernames = new ParseObject("Usernames");
 		
         user_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -57,6 +62,7 @@ public class Username extends Activity {
 	            	lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
 	            	prefs.edit().putString(first, firstName).commit();
 	            	prefs.edit().putString(last, lastName).commit();
+
 	            	
 	            	if(mPhoneNumber.isEmpty()){
 		            	Intent nextScreen4 = new Intent(getApplicationContext(), PhoneNumber.class);
@@ -64,6 +70,9 @@ public class Username extends Activity {
 		            	}
 	            	if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
 	        			prefs.edit().putString(number, mPhoneNumber).commit();
+	        			Usernames.put("username", firstName+" "+lastName);
+		            	Usernames.put("phoneNumber", String.valueOf(mPhoneNumber));
+		            	Usernames.saveInBackground();
 	        			Intent nextScreen = new Intent(getApplicationContext(), Home.class);
 		                startActivity(nextScreen);
 	        		}
@@ -79,6 +88,9 @@ public class Username extends Activity {
 		            	}
 	            	
 	            	if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
+	            		Usernames.put("username", firstName+" "+lastName);
+		            	Usernames.put("phoneNumber", String.valueOf(mPhoneNumber));
+		            	Usernames.saveInBackground();
 	        			prefs.edit().putString(number, mPhoneNumber).commit();
 	        			Intent nextScreen2 = new Intent(getApplicationContext(), Home.class);
 		                startActivity(nextScreen2);
