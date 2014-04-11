@@ -2,21 +2,36 @@ package edu.mit.menyou.menu;
 
 import java.io.Serializable;
 
-public class RestaurantMenuItem implements Serializable {
+@SuppressWarnings("serial")
+public class RestaurantMenuItem implements Serializable, Comparable {
 
 	private String name;
 	private String description;
 	private String price;
+	private int rank;
 
 	public RestaurantMenuItem(String name, String description, String price) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.price = price;
+		this.rank=100;
 	}
 
 	public String getName() {
 		return this.name;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+	
+	public void changeRank(int rankDelta) {
+		this.rank = this.rank+rankDelta;
+	}
+	
+	public int getRank() {
+		return this.rank;
 	}
 
 	public void setName(String name) {
@@ -38,5 +53,16 @@ public class RestaurantMenuItem implements Serializable {
 	public void setPrice(String price) {
 		this.price = price;
 	}
+
+	@Override
+	public int compareTo(Object compareDish) {
+		int compareRank = ((RestaurantMenuItem) compareDish).getRank(); 
+		 
+		//ascending order
+		//return this.getRank() - compareRank;
+ 
+		//descending order
+		return compareRank - this.getRank();
+	}	
 
 }

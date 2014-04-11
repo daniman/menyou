@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.view.Menu;
@@ -22,6 +23,8 @@ public class Username extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_username);
 		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");

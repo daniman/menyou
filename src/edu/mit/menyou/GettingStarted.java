@@ -81,7 +81,7 @@ public class GettingStarted extends Activity {
  
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Tastes.class);
+                Intent nextScreen = new Intent(getApplicationContext(), SetupTastes.class);
                 
                 startActivity(nextScreen);
                 }

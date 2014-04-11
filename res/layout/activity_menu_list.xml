@@ -23,17 +23,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="30dp"/>
-    <TextView
-        android:id="@+id/hint"
-        android:layout_width="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content"
-        android:text="  long click on dishes that interest you"
-        android:gravity="left"
-        android:textColor="#6B6868"
-        android:textSize="14dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="20dp"/>
+    
     
 
 </RelativeLayout>

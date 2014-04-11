@@ -1,9 +1,12 @@
 package edu.mit.menyou.menu;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -15,6 +18,7 @@ import edu.mit.menyou.R;
 import edu.mit.menyou.R.id;
 import edu.mit.menyou.R.layout;
 import edu.mit.menyou.R.menu;
+import edu.mit.menyou.UpdateMood;
 import edu.mit.menyou.home.Home;
 import edu.mit.menyou.orderedDish.OrderedDish;
 import edu.mit.menyou.search.Search;
@@ -25,6 +29,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.AssetManager;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,20 +56,93 @@ public class RestaurantMenu extends Activity {
 	final Context context = this;
 	private String[] allergies;
 	private SharedPreferences prefs;
+	private Context ctx = this;
+	private static String[] allergiesArray;
+	private static String[] likesArray;
+	private static String[] dislikesArray;
+	private static final List<String> dislikes_list = new ArrayList<String>();
+	private static final List<String> likes_list = new ArrayList<String>();
+	private static final List<String> allergies_list = new ArrayList<String>();
+	
+	private int costInt;
+	private int spiceInt;
+	private int denseInt;
+	private int discoverInt;
+	private int healthInt;
+	
+	final static String costM = "edu.mit.menyou.cost";
+	final static String spiceM = "edu.mit.menyou.spice";
+	final static String healthM = "edu.mit.menyou.health";
+	final static String denseM = "edu.mit.menyou.dense";
+	final static String discoverM = "edu.mit.menyou.discover";
+	
 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
     	
     	getActionBar().setDisplayShowTitleEnabled(false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
+       
+        
         
     	prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String allergiesKey = "edu.mit.menyou.allergies";
-		String allergiesString = prefs.getString(allergiesKey, null);
-		allergies = allergiesString.split("\\s+");
+		String likesKey = "edu.mit.menyou.likes";
+		String dislikesKey = "edu.mit.menyou.dislikes";
+		//String allergiesString = prefs.getString(allergiesKey, null);
+		//allergies = allergiesString.split("\\s+");
         
+/////////////// allergies //////////////////
+		
+	String allergiesString = prefs.getString(allergiesKey, null);
+	if(allergiesString!=null){
+	allergiesArray = allergiesString.split(" ");
+	int length = allergiesArray.length;
+			
+	
+	for(int i=0;i<length;i++){
+		String food=allergiesArray[i];
+		food = food.replaceAll("-", " ");
+		allergies_list.add(food);
+		}
+	allergies_list.remove(0);
+	}
+	
+	/////////////// likes //////////////////////
+	String likesString = prefs.getString(likesKey, null);
+	if(likesString!=null){
+	likesArray = likesString.split(" ");
+	int length = likesArray.length;
+			
+	
+	for(int i=0;i<length;i++){
+		String food=likesArray[i];
+		food = food.replaceAll("_", " ");
+		likes_list.add(food);
+		}
+	likes_list.remove(0);
+	}
+	
+	/////////////// dislikes //////////////////////
+	String dislikesString = prefs.getString(dislikesKey, null);
+	if(dislikesString!=null){
+	dislikesArray = dislikesString.split(" ");
+	int length = dislikesArray.length;
+	
+	
+	for(int i=0;i<length;i++){
+		String food=dislikesArray[i];
+		food = food.replaceAll("_", " ");
+		dislikes_list.add(food);
+		}
+	dislikes_list.remove(0);
+	}
+	
+	////////////////////////////////////////////////////
         adpt  = new RestaurantMenuAdapter(new ArrayList<RestaurantMenuItem>(), this);
         lView = (ListView) findViewById(R.id.menuListView);
         lView.setAdapter(adpt);
@@ -71,9 +150,11 @@ public class RestaurantMenu extends Activity {
         registerForContextMenu(lView); //register for the contextmenu
         
         RestaurantName = (TextView) findViewById(R.id.restName);
+        
         restName = getIntent().getExtras().getString("restName");
         restID = getIntent().getExtras().getString("restID");
         RestaurantName.setText(restName);
+        
         
         
         new AsyncListViewLoader().execute(restID);
@@ -112,7 +193,13 @@ public class RestaurantMenu extends Activity {
 		private String request_url;
     	
 		@Override
-		protected void onPostExecute(List<RestaurantMenuItem> result) {			
+		protected void onPostExecute(List<RestaurantMenuItem> result) {	
+			costInt=prefs.getInt(costM, 0);
+			spiceInt=prefs.getInt(spiceM, 0);
+			denseInt=prefs.getInt(denseM, 0);
+			discoverInt=prefs.getInt(discoverM, 0);
+			healthInt=prefs.getInt(healthM, 0);
+			
 			super.onPostExecute(result);
 			dialog.dismiss();
 			adpt.setItemList(result);
@@ -191,16 +278,22 @@ public class RestaurantMenu extends Activity {
 						}
 					}
 				}
+				
+				
+				Algorithm alg = new Algorithm(result,allergies_list,likes_list,dislikes_list,costInt,spiceInt,denseInt,discoverInt,healthInt);
+				
+				result=alg.calculate();
+				
+				//String test = alg.calculateTest();
+				
+				//Toast.makeText(ctx, "hi", Toast.LENGTH_SHORT).show();
+				
 				return result;
 			}
 			catch(Throwable t) {
 				t.printStackTrace();
 			}
-			
-			Algorithm alg = new Algorithm(result,allergies);
-		
-			result=alg.calculate();
-			
+
 			return null;
 		}
 		
@@ -210,6 +303,7 @@ public class RestaurantMenu extends Activity {
 			String price = obj.getString("price");
 			return new RestaurantMenuItem(name, description, price);
 		}
+		
     	
     }
     
@@ -252,28 +346,37 @@ public class RestaurantMenu extends Activity {
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.home, menu);
+		getMenuInflater().inflate(R.menu.update_mood, menu);
 		return true;
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
-	        case R.id.action_home:
-	        	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
-                startActivity(nextScreen);
+	        case R.id.update_mood:
+	        	Intent i = new Intent(this, UpdateMood.class);
+	        	startActivityForResult(i, 1);
 	            return true;
-	        case R.id.action_search:
-	        	Intent nextScreen1 = new Intent(getApplicationContext(), Search.class);
-                startActivity(nextScreen1);
-	            return true;
-	        case R.id.action_profile:
-	        	Intent nextScreen2 = new Intent(getApplicationContext(), Profile.class);
-                startActivity(nextScreen2);	           
-                return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		  if (requestCode == 1) {
+
+		     if(resultCode == RESULT_OK){      
+		         String result=data.getStringExtra("result");          
+		     }
+		     if (resultCode == RESULT_CANCELED) {  
+		    	 new AsyncListViewLoader().execute(restID);
+
+					adpt.notifyDataSetChanged();
+		    	 
+		         
+		     }
+		  }
+		}
 
 }

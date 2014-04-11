@@ -64,7 +64,7 @@
          	android:textColor="#6B6868"
           	android:textSize="20dp"
           	android:layout_centerHorizontal="true"/>
-       
+       <!-- 
        <ListView
         android:id="@+id/home_recommendations"
         android:layout_width="match_parent"
@@ -73,17 +73,19 @@
         android:layout_alignLeft="@+id/text_recom"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="10dp" />
+       -->
        
        <TextView
         	android:id="@+id/recentMeals"
         	android:layout_width="wrap_content"
        		android:layout_height="wrap_content"
-       		android:layout_below="@+id/home_recommendations"
-        	android:layout_alignLeft="@+id/home_recommendations"
+       		android:layout_below="@+id/text_recom"
+        	android:layout_alignLeft="@+id/text_recom"
         	android:text="Recent Meals"
         	android:gravity="center"
          	android:textColor="#6B6868"
           	android:textSize="20dp"
+          	android:layout_marginTop="100dp"
           	android:layout_centerHorizontal="true"/>
        
     <ListView
@@ -106,6 +108,21 @@
         android:text="@string/home_button"
         android:textColor="#638e22"
         android:textSize="30sp" />
-       
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_recom"
+        android:layout_marginTop="14dp"
+        android:text="friends features:\ncoming soon"
+        android:rotation="-9"
+        android:textColor="#638e22"
+        android:background="@drawable/rect_edit_text_outline"
+        android:gravity="center"
+        android:textSize="20dp" />
 
 </RelativeLayout>

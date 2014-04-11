@@ -63,6 +63,9 @@ public class HistoryMenuAdaptor extends ArrayAdapter<HistoryMenuItem> {
 		//TextView text4 = (TextView) v.findViewById(R.id.historyDishDescription);
 		//text4.setText(item.getDescription());
 
+		TextView text5 = (TextView) v.findViewById(R.id.date);
+		text5.setText(item.getTime().toString());
+		
 		return v;
 
 	}

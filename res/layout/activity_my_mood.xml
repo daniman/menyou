@@ -12,14 +12,16 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My General Mood" />
+        android:text="My General Mood"
+        android:layout_marginTop="8dp"
+        android:textSize="22dp" />
     
     <TextView
         android:id="@+id/small_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        android:layout_alignParentLeft="true"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="66dp"
         android:gravity="center"
         android:text="  $" />
     <TextView
@@ -27,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="66dp"
         android:text="$$$" />
     
      <TextView
@@ -35,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        android:layout_alignParentLeft="true"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="140dp"
         android:text="not\nspicy"
         android:gravity="center" />
     <TextView
@@ -43,37 +45,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="166dp"
+        android:layout_marginTop="146dp"
         android:text="spicy" />
     <TextView
         android:id="@+id/light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        android:layout_alignParentLeft="true"
-        android:layout_marginTop="246dp"
+        android:layout_marginTop="226dp"
         android:text="light" />
     <TextView
         android:id="@+id/heavy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="246dp"
+        android:layout_marginTop="226dp"
         android:text="heavy" />
     <TextView
         android:id="@+id/familiar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        android:layout_alignParentLeft="true"
-        android:layout_marginTop="326dp"
+        android:layout_marginTop="306dp"
         android:text="familiar" />
     <TextView
         android:id="@+id/notfamiliar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="326dp"
+        android:layout_marginTop="306dp"
         android:layout_marginRight="4dp"
         android:text="new" />
+    <TextView
+        android:id="@+id/unhealthy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+        android:layout_marginTop="380dp"
+        android:text="less\nhealthy"
+        android:gravity="center"  />
+    <TextView
+        android:id="@+id/healthy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="386dp"
+        android:layout_marginRight="4dp"
+        android:text="healthy" />
     
     <SeekBar
         android:id="@+id/cost_seekBar"
@@ -81,13 +99,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
-        android:layout_marginTop="80dp" />
+        android:layout_marginTop="60dp" />
     <SeekBar
         android:id="@+id/spicy_seekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="140dp"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp" />
     <SeekBar
@@ -95,7 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="220dp"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp" />
 
@@ -104,9 +122,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-		android:layout_marginTop="320dp"
+		android:layout_marginTop="300dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp" />
+    
+    <SeekBar
+        android:id="@+id/health_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+		android:layout_marginTop="380dp"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp" />
 
+    <Button
+        android:id="@+id/moodsButton"
+        android:textColor="#638e22"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignRight="@+id/notfamiliar"
+        android:layout_alignParentTop="true"
+        android:text="apply" />
 
 </RelativeLayout>

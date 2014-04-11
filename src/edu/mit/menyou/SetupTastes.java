@@ -19,6 +19,7 @@ import edu.mit.menyou.orderedDish.OrderedDish;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,7 +41,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class Tastes extends FragmentActivity {
+public class SetupTastes extends FragmentActivity {
 	
 	private static final List<String> dislikes_list = new ArrayList<String>();
 	private static final List<String> likes_list = new ArrayList<String>();
@@ -73,6 +74,7 @@ public class Tastes extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scrollable_stuff);
 		getActionBar().setDisplayShowTitleEnabled(false);
@@ -241,31 +243,31 @@ public class Tastes extends FragmentActivity {
 
 		public DummySectionFragment2() {}
 
+		private ArrayAdapter<String> allergiesAdpt;
+		private ArrayAdapter<String> adpt;
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			final View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
 
-			final SharedPreferences prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);						
-			final TextView allergies = (TextView) rootView2.findViewById(R.id.allergies);
+			final ListView allergies = (ListView) rootView2.findViewById(R.id.allergies);
 			final ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
-			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
+			adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
+			allergiesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.allergies_list_item, allergies_list);
 			lv.setAdapter(adpt);
+			allergies.setAdapter(allergiesAdpt);
 			
 			//allergies_list = prefs.getStringSet(allergiesKey, null);
 			
 			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
-			         // We know the View is a TextView so we can cast it
-				         TextView clickedView = (TextView) view;
-				         String newAllergy = clickedView.getText().toString();
-					     allergies.setText(allergies.getText().toString()+" "+newAllergy);
-					     allergies_full.remove(position);	
-					     allergies_list.add(newAllergy);
-						 adpt.notifyDataSetChanged();
-						 String allergiesTotal = prefs.getString(allergiesKey, null);
-						 //allergies_list.add(newAllergy);
-						 prefs.edit().putString(allergiesKey, allergiesTotal+" "+newAllergy).commit();
+		 	    	 // We know the View is a TextView so we can cast it
+			         TextView clickedView = (TextView) view;
+			         String newAllergy = clickedView.getText().toString();
+				     allergies_full.remove(position);	
+				     allergies_list.add(newAllergy);
+					 adpt.notifyDataSetChanged();
 					     }
 					});
 			return rootView2;
@@ -474,9 +476,32 @@ public class Tastes extends FragmentActivity {
 			final SharedPreferences prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		      
 	        rootView5.findViewById(R.id.setup_button).setOnClickListener(new View.OnClickListener() {
-	                    
-	                	public void onClick(View view) {
-	                		prefs.edit().putInt(firstTime, 1).commit();
+	                 
+	        	String likes="";
+		        String dislikes="";
+		        String allergies="";
+		        
+		                	public void onClick(View view) {
+		                		for(int i=0;i<allergies_list.size();i++){
+		                			String food = allergies_list.get(i);
+		                			food = food.replaceAll(" ", "-");
+		                			allergies=allergies+" "+food;
+		                		}
+		                		for(int i=0;i<likes_list.size();i++){
+		                			String food = likes_list.get(i);
+		                			food = food.replaceAll(" ", "_");
+		                			likes=likes+" "+food;
+		                		}
+		                		for(int i=0;i<dislikes_list.size();i++){
+		                			String food = dislikes_list.get(i);
+		                			food = food.replaceAll(" ", "_");
+		                			dislikes=dislikes+" "+food;
+		                		}
+		                		
+		                		prefs.edit().putString(allergiesKey, allergies).commit();
+		                		prefs.edit().putString(likesKey, likes).commit();
+		                		prefs.edit().putString(dislikesKey, dislikes).commit();
+		                		prefs.edit().putInt(firstTime, 1).commit();
 	                		
 	                        Intent intent = new Intent(getActivity(), Username.class);
 	                        startActivity(intent);

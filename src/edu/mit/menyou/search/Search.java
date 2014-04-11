@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,9 +60,12 @@ public class Search extends Activity implements LocationListener {
 	private SharedPreferences prefs;
 	private Location oldLocation;
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
+	private int count;
 
 
 	public void onCreate(Bundle savedInstanceState) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		getActionBar().setDisplayShowTitleEnabled(false);
@@ -69,21 +73,16 @@ public class Search extends Activity implements LocationListener {
 		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String radiusKey = "edu.mit.menyou.radius";
 		radius = prefs.getString(radiusKey, "200");
+		count=0;
 		
-		System.out.println("RAWR-1");
 		oldLocation=null;
 		search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
 		latitudeField = (TextView) findViewById(R.id.latitude);
 		longitudeField = (TextView) findViewById(R.id.longitude);
 
-		
-		System.out.println("RAWR-2");
-
 		adpt = new RestaurantAdapter(new ArrayList<RestaurantObject>(), this);
 		lView = (ListView) findViewById(R.id.restaurantListView);
 		lView.setAdapter(adpt);
-
-		System.out.println("RAWR-3");
 		
 		// Get the location manager
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -100,12 +99,12 @@ public class Search extends Activity implements LocationListener {
 		
 		locationManager.requestLocationUpdates(provider, 0, 0, this);
 		
-		/*
+		
 		if(locationManager.getLastKnownLocation(passive)!=null){
 			location = locationManager.getLastKnownLocation(passive);
 			onLocationChanged(location);
 		}
-		*/
+		
 
 		List<String> all =locationManager.getAllProviders();
 		//Toast.makeText(Search.this, String.valueOf(all), Toast.LENGTH_SHORT).show();
@@ -126,6 +125,7 @@ public class Search extends Activity implements LocationListener {
 		
 		
 		// Initialize the location fields
+		
 		if (location != null) {
 			System.out.println("Provider " + provider + " has been selected.");
 			String coords = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
@@ -133,6 +133,7 @@ public class Search extends Activity implements LocationListener {
 			System.out.println("LOCATION: " + coords);
 			(new AsyncListViewLoader()).execute(coords);
 		} 
+		
 		if (location == null){
 			Toast.makeText(Search.this, "we couldn't find your location :( ", Toast.LENGTH_SHORT).show();
 			latitudeField.setText("Location not available");
@@ -161,10 +162,20 @@ public class Search extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
+		count=count+1;
 		
+		if(count==3){
+			locationManager.removeUpdates(ctx);
+		}
 		
-		//if recieved location is more than 2 minutes newer than previous
-		//often the first location is from PASSIVE and out dated
+		//if this is the first location received
+		if(oldLocation==null && location!=null){
+			Toast.makeText(Search.this, "recieved a location", Toast.LENGTH_SHORT).show();
+			oldLocation=location;
+		}
+		
+		//if received location is more than 2 minutes newer than previous
+		//often the first location is from PASSIVE and old
 		if(oldLocation!=null && location!=null){
 			// Check whether the new location fix is newer or older
 			long timeDelta = location.getTime() - oldLocation.getTime();
@@ -176,11 +187,8 @@ public class Search extends Activity implements LocationListener {
 				Toast.makeText(Search.this, "recieved a newer location", Toast.LENGTH_SHORT).show();
 			}
 		}
-
-		//if this is the first location received
-		if(oldLocation==null && location!=null){
-			Toast.makeText(Search.this, "recieved a location", Toast.LENGTH_SHORT).show();
-			oldLocation=location;
+		
+		if(oldLocation!=null){
 			double lat = oldLocation.getLatitude();
 			double lng = oldLocation.getLongitude();
 			String latString=new DecimalFormat("#.#####").format(lat);
@@ -190,6 +198,7 @@ public class Search extends Activity implements LocationListener {
 			String coords = String.valueOf(oldLocation.getLatitude()) + "," + String.valueOf(oldLocation.getLongitude());
 			(new AsyncListViewLoader()).execute(coords);
 		}
+		
 	}
 
 	@Override

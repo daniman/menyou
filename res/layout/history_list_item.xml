@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,21 +10,41 @@
         	  android:textSize="18sp"
               android:layout_width="wrap_content"
    			  android:layout_height="wrap_content"
-   			  android:layout_marginLeft="5dp"/>
+   			  android:layout_marginLeft="5dp"
+   			  android:text="dish"
+   			  android:textColor="#FFF"/>
     
     <TextView android:id="@+id/historyRestName"
         	  android:textSize="14sp"
         	  android:textColor="#2F2E2E"
               android:layout_width="wrap_content"
    			  android:layout_height="wrap_content"
-   			  android:layout_marginLeft="10dp"/>
+   			  android:layout_marginLeft="10dp"
+   			  android:layout_below="@+id/historyDishName"
+   			  android:text="Rest"
+   			  />
     
     <TextView android:id="@+id/historyDishRating"
         	  android:textSize="14sp"
         	  android:textColor="#2F2E2E"
               android:layout_width="wrap_content"
    			  android:layout_height="wrap_content"
-   			  android:layout_marginLeft="10dp"/>
+   			  android:layout_marginLeft="10dp"
+   			     			  android:text="rating"
+   			     			  android:layout_below="@+id/historyRestName"
+   			  />
+    
+        
+    <TextView android:id="@+id/date"
+        	  android:textSize="14sp"
+        	  android:textColor="#2F2E2E"
+              android:layout_width="wrap_content"
+   			  android:layout_height="wrap_content"
+			android:gravity="center"
+   			  android:text="date"
+   			  android:layout_alignParentRight="true"
+   			  android:layout_alignBottom="@+id/historyRestName"
+   			  android:layout_marginRight="8dp"/>
    			  
  <!-- 
     <TextView android:id="@+id/historyDishDescription"
@@ -34,6 +54,13 @@
               android:layout_width="wrap_content"
    			  android:layout_height="wrap_content"   			  
    			  android:layout_below="@id/dishName" />
-    -->
+   
 
-</LinearLayout>
+    <RatingBar
+        android:id="@+id/ratingBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/historyDishRating"
+        android:layout_alignTop="@+id/historyDishRating" />
+-->
+</RelativeLayout>

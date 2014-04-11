@@ -5,21 +5,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import edu.mit.menyou.Tastes.DummySectionFragment;
-import edu.mit.menyou.Tastes.DummySectionFragment2;
-import edu.mit.menyou.Tastes.DummySectionFragment3;
-import edu.mit.menyou.Tastes.DummySectionFragment4;
-import edu.mit.menyou.Tastes.DummySectionFragment5;
-import edu.mit.menyou.Tastes.SectionsPagerAdapter;
+import edu.mit.menyou.SetupTastes.DummySectionFragment;
+import edu.mit.menyou.SetupTastes.DummySectionFragment2;
+import edu.mit.menyou.SetupTastes.DummySectionFragment3;
+import edu.mit.menyou.SetupTastes.DummySectionFragment4;
+import edu.mit.menyou.SetupTastes.DummySectionFragment5;
+import edu.mit.menyou.SetupTastes.SectionsPagerAdapter;
 import edu.mit.menyou.home.Home;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -49,6 +51,9 @@ public class TasteProfile extends FragmentActivity {
 	private static final List<String> likes_food_list = new ArrayList<String>();	
 	private static final List<String> dislikes_food_list = new ArrayList<String>();
 	private static String[] allergiesArray;
+	private static String[] likesArray;
+	private static String[] dislikesArray;
+	private static SharedPreferences prefs;
 
 	final static String firstTime = "edu.mit.menyou.firstTime";
 	final static String allergiesKey = "edu.mit.menyou.allergies";
@@ -72,6 +77,7 @@ public class TasteProfile extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scrollable_stuff);
 		getActionBar().setDisplayShowTitleEnabled(false);
@@ -89,25 +95,11 @@ public class TasteProfile extends FragmentActivity {
 			AssetManager assetManager = getResources().getAssets();
 			InputStream is = assetManager.open("foodList");
 			BufferedReader r = new BufferedReader(new InputStreamReader(is));
-			
+			String line;
 			if ( is != null) {
-				while (r.readLine() != null) {
-					likes_food_list.add(r.readLine());
-					//dislikes_food_list.add(r.readLine());
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			AssetManager assetManager1 = getResources().getAssets();
-			InputStream is1 = assetManager1.open("foodList");
-			BufferedReader r1 = new BufferedReader(new InputStreamReader(is1));
-			
-			if ( is1 != null) {
-				while (r1.readLine() != null){
-					dislikes_food_list.add(r1.readLine());
+				while ((line = r.readLine()) != null) {
+					likes_food_list.add(line);
+					dislikes_food_list.add(line);
 				}
 			}
 		} catch (IOException e) {
@@ -118,9 +110,10 @@ public class TasteProfile extends FragmentActivity {
 			AssetManager assetManager = getResources().getAssets();
 			InputStream is = assetManager.open("allergiesList");
 			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			String line;
 			if ( is != null) {
-				while (r.readLine() != null) {
-					allergies_full.add(r.readLine());
+				while ((line = r.readLine()) != null) {
+					allergies_full.add(line);
 				}
 			}
 		} catch (IOException e) {
@@ -129,6 +122,65 @@ public class TasteProfile extends FragmentActivity {
 
 		final Button SetupButton = (Button) findViewById(R.id.setup_button);
 		
+		prefs = this.getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		
+		/////////////// allergies //////////////////
+		
+		String allergiesString = prefs.getString(allergiesKey, null);
+		if(allergiesString!=null){
+		allergiesArray = allergiesString.split(" ");
+		int length = allergiesArray.length;
+				
+		
+		for(int i=0;i<length;i++){
+			String food=allergiesArray[i];
+			food = food.replaceAll("-", " ");
+			allergies_list.add(food);
+			if(allergies_full.contains(food)){
+			allergies_full.remove(allergies_full.indexOf(food));
+			}
+			}
+		allergies_list.remove(0);
+		}
+		
+		/////////////// likes //////////////////////
+		String likesString = prefs.getString(likesKey, null);
+		if(likesString!=null){
+		likesArray = likesString.split(" ");
+		int length = likesArray.length;
+				
+		
+		for(int i=0;i<length;i++){
+			String food=likesArray[i];
+			food = food.replaceAll("_", " ");
+			likes_list.add(food);
+			if(likes_food_list.contains(food)){
+			likes_food_list.remove(likes_food_list.indexOf(food));
+			}
+			}
+		likes_list.remove(0);
+		}
+		
+		/////////////// dislikes //////////////////////
+		String dislikesString = prefs.getString(dislikesKey, null);
+		if(dislikesString!=null){
+		dislikesArray = dislikesString.split(" ");
+		int length = dislikesArray.length;
+		
+		
+		for(int i=0;i<length;i++){
+			String food=dislikesArray[i];
+			food = food.replaceAll("_", " ");
+			dislikes_list.add(food);
+			if(dislikes_food_list.contains(food)){
+			dislikes_food_list.remove(dislikes_food_list.indexOf(food));
+			}
+			}
+		dislikes_list.remove(0);
+		
+		////////////////////////////////////////////////////
+		
+		}
 		// Create the adapter that will return a fragment for each of the four
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -230,46 +282,86 @@ public class TasteProfile extends FragmentActivity {
 
 		public DummySectionFragment() {}
 		
+		private ArrayAdapter<String> allergiesAdpt;
+		private ArrayAdapter<String> adpt;
+		private String clickedAllergy;
+		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			final View rootView2 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy2, container, false);
 		
-			final SharedPreferences prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);						
-			final TextView allergies = (TextView) rootView2.findViewById(R.id.allergies);
+			System.out.println("rawr1");
+			
+			prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);						
+			final ListView allergies = (ListView) rootView2.findViewById(R.id.allergies);
 			final ListView lv = (ListView) rootView2.findViewById(R.id.listView2);
-			final ArrayAdapter<String> adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
+			adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, allergies_full);
+			allergiesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.allergies_list_item, allergies_list);
 			lv.setAdapter(adpt);
+			allergies.setAdapter(allergiesAdpt);
+			allergiesAdpt.notifyDataSetChanged();
+			registerForContextMenu(allergies);  //register for contextmenu
 			
-			String allergiesString = prefs.getString(allergiesKey, null);
-			allergiesArray = allergiesString.split("\\s+");
-			int length = allergiesArray.length;
-			
+			System.out.println("rawr2");
+			//String allergiesString = prefs.getString(allergiesKey, null);
+			//if(allergiesString!=null){
+			//allergiesArray = allergiesString.split("\\s+");
+			//int length = allergiesArray.length;
+			/*
 			for(int i=0;i<length;i++){
 				if(allergies_full.contains(allergiesArray[i].toString())){
-					allergies_full.remove(allergiesArray[i].toString());
-				}
+				allergies_full.remove(allergiesArray[i].toString());
 				allergies_list.add(allergiesArray[i].toString());
-				allergies.setText(allergies.getText().toString()+" "+allergiesArray[i].toString());
+				}
 					
 			}
+			
+			}
+			*/
 			
 				lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			 	     public void onItemClick(AdapterView<?> adapter, View view, int position,long id) { 
 				         // We know the View is a TextView so we can cast it
 					         TextView clickedView = (TextView) view;
 					         String newAllergy = clickedView.getText().toString();
-						     allergies.setText(allergies.getText().toString()+" "+newAllergy);
 						     allergies_full.remove(position);	
 						     allergies_list.add(newAllergy);
 							 adpt.notifyDataSetChanged();
-							 String allergiesTotal = prefs.getString(allergiesKey, null);
-							 //allergies_list.add(newAllergy);
-							 prefs.edit().putString(allergiesKey, allergiesTotal+" "+newAllergy).commit();
 						     }
 						});
 			return rootView2;
 		}
+		// We want to create a context Menu when the user long click on an item
+	    @Override
+	    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+	    	if (v.getId() == R.id.allergies) {
+	    		super.onCreateContextMenu(menu, v, menuInfo);
+	    		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			    clickedAllergy = allergiesAdpt.getItem(aInfo.position);
+	    		
+	    		menu.setHeaderTitle(clickedAllergy);
+	    		menu.add(1, 1, 1, "remove from my allergies");
+	    		menu.add(1, 2, 1, "nevermind");
+	    	}
+	    }
+	    @Override
+	    public boolean onContextItemSelected(MenuItem item) {
+	       switch (item.getItemId()) {
+	       case 1:
+	           //first ContextMenu option
+	    	   allergies_list.remove(clickedAllergy);
+	    	   allergies_full.add(clickedAllergy);
+	    	   allergiesAdpt.notifyDataSetChanged();
+	    	   adpt.notifyDataSetChanged();
+	       break; 
+	       case 2:
+	          //stuff for option 2 of the ContextMenu
+	    	  //nothing
+	       break;
+	       }
+	       return super.onContextItemSelected(item);
+	    }
 	}
 	public static class DummySectionFragment2 extends Fragment {
 		public static final String ARG_SECTION_NUMBER = "section_number";
@@ -284,7 +376,8 @@ public class TasteProfile extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView3 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy3, container, false);
-			
+
+			System.out.println("rawr5");
 			// Get a reference to the AutoCompleteTextView in the layout
 			final AutoCompleteTextView likes_input = (AutoCompleteTextView) rootView3.findViewById(R.id.likes_input);
 			
@@ -293,7 +386,6 @@ public class TasteProfile extends FragmentActivity {
 			final ListView lv = (ListView) rootView3.findViewById(R.id.listView3);
 			adpt = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_list_item_1, likes_food_list);
 			likesAdpt = new ArrayAdapter<String>(getActivity().getBaseContext(),R.layout.likes_list_item, likes_list);
-
 			
 			likes_input.setAdapter(adpt);
 			lv.setAdapter(adpt);
@@ -328,6 +420,7 @@ public class TasteProfile extends FragmentActivity {
             });
 			
 			return rootView3;
+			
 			
 		}
 		// We want to create a context Menu when the user long click on an item
@@ -469,12 +562,38 @@ public class TasteProfile extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+			
+			prefs = getActivity().getBaseContext().getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);		
 				
 			View rootView5 = inflater.inflate(R.layout.fragment_scrollable_stuff_dummy5, container, false);
 					      
 	        rootView5.findViewById(R.id.setup_button).setOnClickListener(new View.OnClickListener() {
 	                    
+	        String likes="";
+	        String dislikes="";
+	        String allergies="";
+	        
 	                	public void onClick(View view) {
+	                		for(int i=0;i<allergies_list.size();i++){
+	                			String food = allergies_list.get(i);
+	                			food = food.replaceAll(" ", "-");
+	                			allergies=allergies+" "+food;
+	                		}
+	                		for(int i=0;i<likes_list.size();i++){
+	                			String food = likes_list.get(i);
+	                			food = food.replaceAll(" ", "_");
+	                			likes=likes+" "+food;
+	                		}
+	                		for(int i=0;i<dislikes_list.size();i++){
+	                			String food = dislikes_list.get(i);
+	                			food = food.replaceAll(" ", "_");
+	                			dislikes=dislikes+" "+food;
+	                		}
+	                		
+	                		prefs.edit().putString(allergiesKey, allergies).commit();
+	                		prefs.edit().putString(likesKey, likes).commit();
+	                		prefs.edit().putString(dislikesKey, dislikes).commit();
+	                		
 	                        Intent intent = new Intent(getActivity(), Profile.class);
 	                        startActivity(intent);
 	                    }

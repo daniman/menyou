@@ -9,8 +9,56 @@
     tools:context=".History" >
 
     <TextView
+        android:id="@+id/hist_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="" 
+        android:layout_marginTop="10dp"/>
+       
+    <TextView
+        android:id="@+id/hist_points"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:background="#638e22"
+        android:text="0"
+        android:textSize="36sp"  />
+    
+       <TextView
+        android:id="@+id/hist_meals"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hist_points"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-10dp"
+        android:gravity="center"
+        android:background="#638e22"
+        android:text="@string/home_meals"
+        android:textSize="20sp" />
+       
+              <TextView
+        	android:id="@+id/recentMeals"
+        	android:layout_width="wrap_content"
+       		android:layout_height="wrap_content"
+       		android:layout_below="@+id/hist_meals"
+        	android:layout_alignLeft="@+id/hist_title"
+        	android:text="Your Meals"
+        	android:gravity="center"
+         	android:textColor="#6B6868"
+          	android:textSize="20dp"
+          	android:layout_centerHorizontal="true"/>
+       
+    <ListView
+        android:id="@+id/hist_meal_history"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/recentMeals"
+        android:layout_above="@+id/home_button"
+        android:layout_alignLeft="@+id/recentMeals"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"/>
 
 </RelativeLayout>

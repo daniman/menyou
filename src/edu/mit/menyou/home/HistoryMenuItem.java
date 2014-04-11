@@ -8,13 +8,15 @@ public class HistoryMenuItem implements Serializable {
 	private String dishName;
 	private String rating;
 	private String description;
+	private String time;
 
-	public HistoryMenuItem(String restName, String dishName, String rating, String description) {
+	public HistoryMenuItem(String restName, String dishName, String rating, String description, String reportDate) {
 		super();
 		this.restName = restName;
 		this.dishName = dishName;
 		this.rating = rating;
 		this.description = description;
+		this.time= reportDate;
 	}
 
 	public String getRestName() {
@@ -31,6 +33,10 @@ public class HistoryMenuItem implements Serializable {
 
 	public String getDescription() {
 		return this.description;
+	}
+	
+	public String getTime() {
+		return this.time;
 	}
 	
 	public String toString() {

@@ -1,7 +1,6 @@
 package edu.mit.menyou;
 
 import java.io.BufferedReader;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -19,6 +18,7 @@ import android.app.Fragment;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +35,8 @@ public class First extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_first);
 		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
@@ -54,7 +56,7 @@ public class First extends Activity {
  
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Tastes.class);
+                Intent nextScreen = new Intent(getApplicationContext(), SetupTastes.class);
                 startActivity(nextScreen);
                 }
         });

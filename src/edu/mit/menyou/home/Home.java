@@ -3,8 +3,12 @@ package edu.mit.menyou.home;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +39,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Menu;
@@ -57,7 +62,7 @@ public class Home extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
 		
 		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
@@ -108,25 +113,43 @@ public class Home extends Activity {
         
         
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Reviews");
-        query.setLimit(10); // limit to at most 10 results
+        //query.setLimit(10); // limit to at most 10 results
         query.whereEqualTo("number", mNumber);
+        query.addDescendingOrder("createdAt");
 		query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> mealList, ParseException e) {
             	List<HistoryMenuItem> result = new ArrayList<HistoryMenuItem>();
-            	
                 if (e == null) {        
                 	String numberOfMeals = String.valueOf(mealList.size());
                 	prefs.edit().putString(mealsNumber, numberOfMeals);
                     displayMeals.setText(numberOfMeals);
                     if(mealList.size()==1){mealsWord.setText("meal");}
                     
-                    for (int i=0; i<mealList.size(); i++) {
+                    for (int i=0; i<7; i++) {
                     	ParseObject obj = mealList.get(i);
                     	String restName = obj.getString("restName");
                     	String dishName = obj.getString("dishName");
                     	String rating = obj.getString("rating");
                     	String description = obj.getString("description");
-                    	HistoryMenuItem item = new HistoryMenuItem(restName, dishName, rating, description);
+                    	//Date time = obj.getDate("date");
+                    	//Date time = new Date();
+                    	Date time = obj.getCreatedAt();
+                    	// Create an instance of SimpleDateFormat used for formatting 
+                    	// the string representation of date (month/day/year)
+                    	
+                    	time.setHours(time.getHours()-4);
+                    	//SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm"); 
+                    	
+                    	String format = "EEE  MMM-dd";
+                    	SimpleDateFormat df = new SimpleDateFormat(format, Locale.US);
+                    	df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        
+                    	// Using DateFormat format method we can create a string 
+                    	// representation of a date with the defined format.
+                    	
+                    	String reportDate = df.format(time);
+                    	
+                    	HistoryMenuItem item = new HistoryMenuItem(restName, dishName, rating, description, reportDate);
                     	System.out.println(item.toString());
                     	result.add(item);
                     }

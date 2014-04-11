@@ -40,7 +40,7 @@
             android:label="@string/title_activity_display_favorites" >
         </activity>
         <activity
-            android:name="edu.mit.menyou.Tastes"
+            android:name="edu.mit.menyou.SetupTastes"
             android:label="@string/title_activity_scrollable_stuff" >
         </activity>
         <activity
@@ -94,6 +94,10 @@
         <activity
             android:name="edu.mit.menyou.search.SearchRadius"
             android:label="@string/title_activity_search_radius" >
+        </activity>
+        <activity
+            android:name="edu.mit.menyou.UpdateMood"
+            android:label="@string/title_activity_update_mood" >
         </activity>
     </application>
 

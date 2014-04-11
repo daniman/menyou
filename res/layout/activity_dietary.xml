@@ -11,6 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+       android:text="change dietary choices \n vegetarian \n vegan \n pescatarian \n etc..." 
+        android:layout_marginTop="40dp" />
 
 </RelativeLayout>
