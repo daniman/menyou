@@ -30,25 +30,32 @@ import edu.mit.menyou.R.menu;
 import edu.mit.menyou.menu.RestaurantMenu;
 import edu.mit.menyou.menu.RestaurantMenuAdapter;
 import edu.mit.menyou.menu.RestaurantMenuItem;
+import edu.mit.menyou.orderedDish.OrderedDish;
 import edu.mit.menyou.search.Search;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class Home extends Activity {
 	
@@ -59,7 +66,7 @@ public class Home extends Activity {
 	private TextView mealsWord;
 	private SharedPreferences prefs;
 	private String mealsNumber = "edu.mit.menyout.mealNumber";
-
+	private HistoryMenuItem clicked;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -130,7 +137,7 @@ public class Home extends Activity {
                     	String restName = obj.getString("restName");
                     	String dishName = obj.getString("dishName");
                     	String rating = obj.getString("rating");
-                    	String description = obj.getString("description");
+                    	String description = obj.getString("review");
                     	//Date time = obj.getDate("date");
                     	//Date time = new Date();
                     	Date time = obj.getCreatedAt();
@@ -159,6 +166,27 @@ public class Home extends Activity {
 				adpt.notifyDataSetChanged();
             }
         });    
+		
+		lView.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> a, View v, final int position, long id) {   
+        		final int selectedPosition = position;
+        		AlertDialog.Builder adb = new AlertDialog.Builder(Home.this); 
+        		HistoryMenuItem obj = (HistoryMenuItem) lView.getItemAtPosition(position);
+        		
+        		String selectedDish = obj.getDishName();
+        		
+        		adb.setTitle(selectedDish);
+        		adb.setMessage(obj.getDescription()+"\n"+obj.getRating().substring(0, 1)+"/5 stars"); 
+        		adb.setPositiveButton("Cancel", null); 
+        		adb.setNegativeButton("Recommend this to friend!", null);
+        				
+        				//new DialogInterface.OnClickListener() {
+        			
+        		//});
+        		adb.show();
+                 
+             }
+         });
         
 	}
 

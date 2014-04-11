@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -283,10 +284,7 @@ public class RestaurantMenu extends Activity {
 				Algorithm alg = new Algorithm(result,allergies_list,likes_list,dislikes_list,costInt,spiceInt,denseInt,discoverInt,healthInt);
 				
 				result=alg.calculate();
-				
-				//String test = alg.calculateTest();
-				
-				//Toast.makeText(ctx, "hi", Toast.LENGTH_SHORT).show();
+			
 				
 				return result;
 			}
@@ -302,7 +300,9 @@ public class RestaurantMenu extends Activity {
 			String description = obj.getString("description");
 			String price = obj.getString("price");
 			return new RestaurantMenuItem(name, description, price);
+
 		}
+
 		
     	
     }
@@ -372,7 +372,9 @@ public class RestaurantMenu extends Activity {
 		     if (resultCode == RESULT_CANCELED) {  
 		    	 new AsyncListViewLoader().execute(restID);
 
-					adpt.notifyDataSetChanged();
+			     adpt.notifyDataSetChanged();
+					
+					
 		    	 
 		         
 		     }

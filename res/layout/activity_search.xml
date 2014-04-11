@@ -52,7 +52,8 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="44dp"
         android:hint="search"
-        android:singleLine="true" >
+        android:singleLine="true" 
+        android:alpha="0">
 
         <requestFocus />
     </AutoCompleteTextView>

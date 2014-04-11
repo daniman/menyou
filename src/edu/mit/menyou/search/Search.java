@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.app.ProgressDialog;
@@ -61,6 +62,9 @@ public class Search extends Activity implements LocationListener {
 	private Location oldLocation;
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 	private int count;
+	private ArrayAdapter<String> adptNames;
+	private static final List<String> list_names = new ArrayList<String>();
+
 
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,8 +85,11 @@ public class Search extends Activity implements LocationListener {
 		longitudeField = (TextView) findViewById(R.id.longitude);
 
 		adpt = new RestaurantAdapter(new ArrayList<RestaurantObject>(), this);
+		adptNames = new ArrayAdapter<String>(this.getBaseContext(),android.R.layout.simple_list_item_1, list_names);
+
 		lView = (ListView) findViewById(R.id.restaurantListView);
 		lView.setAdapter(adpt);
+		search_input.setAdapter(adpt);
 		
 		// Get the location manager
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -265,6 +272,8 @@ public class Search extends Activity implements LocationListener {
 				for (int i=0; i < arr.length(); i++) {
 					JSONObject rest = arr.getJSONObject(i);
 					result.add(convertRestaurant(rest));
+					list_names.add(rest.getString("name"));
+					adptNames.notifyDataSetChanged();
 				}
 				return result;
 			}

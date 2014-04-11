@@ -13,5 +13,21 @@
         android:layout_height="wrap_content"
        android:text="change dietary choices \n vegetarian \n vegan \n pescatarian \n etc..." 
         android:layout_marginTop="40dp" />
+    
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="dietary choice:\ncoming soon"
+        android:rotation="-9"
+        android:textColor="#638e22"
+        android:background="@drawable/rect_edit_text_outline"
+        android:gravity="center"
+        android:textSize="20dp" />
+    
 
 </RelativeLayout>
