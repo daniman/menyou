@@ -81,9 +81,8 @@ public class UpdateMood extends Activity {
             	prefs.edit().putInt(healthM,healthBar.getProgress()).commit();
             	prefs.edit().putInt(discoverM,discoverBar.getProgress()).commit();
                 
-            	Intent returnIntent = new Intent();
-            	setResult(RESULT_CANCELED, returnIntent);        
-            	finish();
+            	Intent nextScreen2 = new Intent(getApplicationContext(), RestaurantMenu.class);
+				startActivity(nextScreen2);
                 }
         });
 	}

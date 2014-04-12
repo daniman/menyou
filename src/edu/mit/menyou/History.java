@@ -21,6 +21,7 @@ import edu.mit.menyou.home.Home;
 import edu.mit.menyou.search.Search;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,9 +29,12 @@ import android.content.pm.ActivityInfo;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class History extends Activity {
 	private HistoryMenuAdaptor adpt;
@@ -83,7 +87,7 @@ public class History extends Activity {
                     	String restName = obj.getString("restName");
                     	String dishName = obj.getString("dishName");
                     	String rating = obj.getString("rating");
-                    	String description = obj.getString("description");
+                    	String description = obj.getString("review");
                     	//Date time = obj.getDate("date");
                     	Date time = new Date();
                     	// Create an instance of SimpleDateFormat used for formatting 
@@ -108,7 +112,28 @@ public class History extends Activity {
                 adpt.setItemList(result);
 				adpt.notifyDataSetChanged();
             }
-        });    
+        });   
+		
+		lView.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> a, View v, final int position, long id) {   
+        		final int selectedPosition = position;
+        		AlertDialog.Builder adb = new AlertDialog.Builder(History.this); 
+        		HistoryMenuItem obj = (HistoryMenuItem) lView.getItemAtPosition(position);
+        		
+        		String selectedDish = obj.getDishName();
+        		
+        		adb.setTitle(selectedDish);
+        		adb.setMessage(obj.getDescription()+"\n"+obj.getRating().substring(0, 1)+"/5 stars"); 
+        		adb.setPositiveButton("Cancel", null); 
+        		adb.setNegativeButton("Recommend this to friend!", null);
+        				
+        				//new DialogInterface.OnClickListener() {
+        			
+        		//});
+        		adb.show();
+                 
+             }
+         });
         
 	}
 

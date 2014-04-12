@@ -30,8 +30,8 @@ public class  Algorithm {
 	private int discoverInt;
 	private int healthInt;
 	
-	private int likesPlus=1;
-	private int dislikesDrop=-1;
+	private int likesPlus;
+	private int dislikesDrop=-2;
 	
 	
 	public  Algorithm(List<RestaurantMenuItem> LOD, List<String> AL,List<String> L,List<String> D, int cost, int spice, int dense, int discover, int health){
@@ -46,9 +46,21 @@ public class  Algorithm {
 		healthInt=health;
 	}
 	
+	public void  reset(){
+		/// Reset all food Rank to 100 each time ///
+		
+				for (int k=0;k<listOfDishes1.size();k++){
+					listOfDishes1.get(k).setRank(100);
+				}
+		
+	}
+	
 	
 	public List<RestaurantMenuItem> calculate(){
 		
+		for (int k=0;k<listOfDishes1.size();k++){
+			listOfDishes1.get(k).setRank(100);
+		}
 		//do stuff with the first 2 lists to make the final one
 
 		/*
@@ -206,30 +218,76 @@ public class  Algorithm {
 		
 		
 			for (int k=0;k<listOfDishes1.size();k++){
-				String dish = listOfDishes1.get(k).getName();
-				String desc = listOfDishes1.get(k).getDescription();
+				RestaurantMenuItem obj = listOfDishes1.get(k);
+				obj.setRank(100);
+				String dish = obj.getName();
+				String desc = obj.getDescription();
+				Double price = Double.parseDouble(obj.getPrice());
 				
 				for (int j=0;j<likesList.size();j++){
-					if(dish.toLowerCase().contains(likesList.get(j))){
-						listOfDishes1.get(k).changeRank(likesPlus);
+					String food = likesList.get(j);
+					
+					if(dish.toLowerCase(Locale.ENGLISH).contains(food)){
+						int rank = obj.getRank();
+						obj.setRank(rank+likesPlus);
+						//listOfDishes1.get(k).changeRank(likesPlus);
 					}
-					if(desc.toLowerCase().contains(likesList.get(j))){
-						listOfDishes1.get(k).changeRank(likesPlus);
+					if(desc.toLowerCase(Locale.ENGLISH).contains(food)){
+						int rank = obj.getRank();
+						obj.setRank(rank+likesPlus);
 					}
 				}
-
-				for (int m=0;m<dislikesList.size();m++){
-					if(dish.toLowerCase().contains(dislikesList.get(m))){
-						listOfDishes1.get(k).changeRank(dislikesDrop);
+				for (int j=0;j<dislikesList.size();j++){
+					String food = dislikesList.get(j);
+					
+					if(dish.contains(food) || desc.toLowerCase(Locale.ENGLISH).contains(food)){
+						int rank = obj.getRank();
+						obj.setRank(rank+dislikesDrop);
+						//listOfDishes1.get(k).changeRank(likesPlus);
 					}
-					if(desc.toLowerCase().contains(dislikesList.get(m))){
-						listOfDishes1.get(k).changeRank(dislikesDrop);
+					if(desc.toLowerCase(Locale.ENGLISH).contains(food)){
+						int rank = obj.getRank();
+						obj.setRank(rank+dislikesDrop);
+					}
+				}
+				if(costInt<8){
+					int rank = obj.getRank();
+					if(price>13 && price<=16){
+					obj.setRank(rank-2);
+					}
+					if(price>16){
+						obj.setRank(rank-4);
+					}
+				}
+				if(costInt>7 && costInt<16){
+					int rank = obj.getRank();
+					if(price>13 && price<=16){
+					obj.setRank(rank-1);
+					}
+					if(price>16){
+						obj.setRank(rank-3);
+					}
+				}
+				if(costInt>15 && costInt<24){
+					int rank = obj.getRank();
+					if(price>16){
+						obj.setRank(rank-1);
+					}
+				}
+				if(costInt>31){
+					int rank = obj.getRank();
+					if(price>16 && price<20){
+						obj.setRank(rank+2);
+					}
+					if(price>=20){
+						obj.setRank(rank+3);
 					}
 				}
 			}
 		
 
 		List<RestaurantMenuItem> listOfDishesFinal = new ArrayList<RestaurantMenuItem>();
+		listOfDishesFinal.clear();
 		
 		//Collections.sort(listOfDishes1, new MenuItemComparator());
 		

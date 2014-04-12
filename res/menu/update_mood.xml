@@ -6,5 +6,18 @@
         android:showAsAction="always"
         android:title="update my mood"/>
     
+    
+    <item
+        android:id="@+id/menu_back"
+        android:orderInCategory="99"
+        android:showAsAction="always"
+        android:title="back to search"/>
+    
+    <item
+        android:id="@+id/home"
+        android:orderInCategory="98"
+        android:showAsAction="always"
+        android:title="home"/>
+    
 
 </menu>

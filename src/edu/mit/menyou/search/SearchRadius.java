@@ -1,6 +1,7 @@
 package edu.mit.menyou.search;
 
 import edu.mit.menyou.R;
+
 import edu.mit.menyou.R.layout;
 import edu.mit.menyou.R.menu;
 import android.os.Bundle;

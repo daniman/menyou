@@ -100,8 +100,18 @@ public class Home extends Activity {
 		TextView name = (TextView) findViewById(R.id.home_username);
 		displayMeals = (TextView) findViewById(R.id.home_points);
 		mealsWord = (TextView) findViewById(R.id.home_meals);
-		name.setText("Welcome "+prefs.getString(first, "Ben"));
+		String firstname = prefs.getString(first, "Ben");
+		name.setText("Welcome "+firstname);
 		
+		if(firstname.length()>10){
+			name.setTextSize(20);
+		}
+		if(firstname.length()>15){
+			name.setTextSize(18);
+		}
+		if(firstname.length()>20){
+			name.setTextSize(14);
+		}
 		displayMeals.setText(prefs.getString(mealsNumber, "0"));
 		if(Integer.parseInt(prefs.getString(mealsNumber, "0"))==1){mealsWord.setText("meal");}
 		
@@ -113,11 +123,10 @@ public class Home extends Activity {
                 startActivity(nextScreen);
                 }
         });
-                
+        
         adpt  = new HistoryMenuAdaptor(new ArrayList<HistoryMenuItem>(), this);
         lView = (ListView) findViewById(R.id.home_meal_history);
         lView.setAdapter(adpt);
-        
         
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Reviews");
         //query.setLimit(10); // limit to at most 10 results
@@ -131,7 +140,43 @@ public class Home extends Activity {
                 	prefs.edit().putString(mealsNumber, numberOfMeals);
                     displayMeals.setText(numberOfMeals);
                     if(mealList.size()==1){mealsWord.setText("meal");}
-                    
+            		
+            		
+            		if(!mealList.isEmpty()){
+            			
+            			if(mealList.size()<8){
+            				
+
+                            for (int i=0; i<mealList.size(); i++) {
+                            	ParseObject obj = mealList.get(i);
+                            	String restName = obj.getString("restName");
+                            	String dishName = obj.getString("dishName");
+                            	String rating = obj.getString("rating");
+                            	String description = obj.getString("review");
+                            	//Date time = obj.getDate("date");
+                            	//Date time = new Date();
+                            	Date time = obj.getCreatedAt();
+                            	// Create an instance of SimpleDateFormat used for formatting 
+                            	// the string representation of date (month/day/year)
+                            	time.setHours(time.getHours()-4);
+                            	//SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm"); 
+                            	
+                            	String format = "EEE  MMM-dd";
+                            	SimpleDateFormat df = new SimpleDateFormat(format, Locale.US);
+                            	df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                                
+                            	// Using DateFormat format method we can create a string 
+                            	// representation of a date with the defined format.
+                            	
+                            	String reportDate = df.format(time);
+                            	HistoryMenuItem item = new HistoryMenuItem(restName, dishName, rating, description, reportDate);
+                            	System.out.println(item.toString());
+                            	result.add(item);
+                            }
+
+                            }
+            			if(mealList.size()>7){
+
                     for (int i=0; i<7; i++) {
                     	ParseObject obj = mealList.get(i);
                     	String restName = obj.getString("restName");
@@ -160,6 +205,9 @@ public class Home extends Activity {
                     	System.out.println(item.toString());
                     	result.add(item);
                     }
+
+                    }
+            		}
                 } else {
                 }
                 adpt.setItemList(result);

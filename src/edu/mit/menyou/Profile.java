@@ -38,12 +38,32 @@ public class Profile extends Activity {
 		final String allergiesKey = "edu.mit.menyou.allergies";
 		final String likes = "edu.mit.menyou.likes";
 		
+		String firstname = prefs.getString(first, "Ben");
 		TextView first_name = (TextView) findViewById(R.id.username_first);
-		first_name.setText(prefs.getString(first, "Ben"));
-		TextView last_name = (TextView) findViewById(R.id.username_last);
-		last_name.setText(prefs.getString(last, ""));
-	      
+		first_name.setText(firstname);
 		
+		String lastname = prefs.getString(last, "");
+		TextView last_name = (TextView) findViewById(R.id.username_last);
+		last_name.setText(lastname);
+	    
+		if(firstname.length()>10){
+			first_name.setTextSize(20);
+		}
+		if(firstname.length()>15){
+			first_name.setTextSize(18);
+		}
+		if(firstname.length()>20){
+			first_name.setTextSize(14);
+		}
+		if(lastname.length()>10){
+			last_name.setTextSize(20);
+		}
+		if(lastname.length()>15){
+			last_name.setTextSize(18);
+		}
+		if(lastname.length()>20){
+			last_name.setTextSize(14);
+		}
 		TasteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent nextScreen = new Intent(getApplicationContext(), TasteProfile.class);

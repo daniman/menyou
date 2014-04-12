@@ -64,6 +64,9 @@ public class Search extends Activity implements LocationListener {
 	private int count;
 	private ArrayAdapter<String> adptNames;
 	private static final List<String> list_names = new ArrayList<String>();
+	
+	private String restID = "edu.mit.menyou.restID";
+	private String restName = "edu.mit.menyou.restName";
 
 
 
@@ -78,9 +81,10 @@ public class Search extends Activity implements LocationListener {
 		String radiusKey = "edu.mit.menyou.radius";
 		radius = prefs.getString(radiusKey, "200");
 		count=0;
+
 		
 		oldLocation=null;
-		search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
+		//search_input = (AutoCompleteTextView) findViewById(R.id.search_input);
 		latitudeField = (TextView) findViewById(R.id.latitude);
 		longitudeField = (TextView) findViewById(R.id.longitude);
 
@@ -89,7 +93,7 @@ public class Search extends Activity implements LocationListener {
 
 		lView = (ListView) findViewById(R.id.restaurantListView);
 		lView.setAdapter(adpt);
-		search_input.setAdapter(adpt);
+		//search_input.setAdapter(adpt);
 		
 		// Get the location manager
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -237,9 +241,11 @@ public class Search extends Activity implements LocationListener {
 			lView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					prefs.edit().putString(restID, result.get(position).getId()).commit();
+					prefs.edit().putString(restName, result.get(position).getName()).commit();
 					Intent intent = new Intent(Search.this, RestaurantMenu.class);
-					intent.putExtra("restID",result.get(position).getId());
-					intent.putExtra("restName",result.get(position).getName());
+					//intent.putExtra("restID",result.get(position).getId());
+					//intent.putExtra("restName",result.get(position).getName());
 					startActivity(intent);
 				}
 			});	

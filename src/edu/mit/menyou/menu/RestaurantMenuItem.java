@@ -15,23 +15,23 @@ public class RestaurantMenuItem implements Serializable, Comparable {
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.rank=100;
+		rank=100;
 	}
 
 	public String getName() {
 		return this.name;
 	}
 
-	public void setRank(int rank) {
-		this.rank = rank;
+	public void setRank(int r) {
+		rank = r;
 	}
 	
 	public void changeRank(int rankDelta) {
-		this.rank = this.rank+rankDelta;
+		rank = rank+rankDelta;
 	}
 	
 	public int getRank() {
-		return this.rank;
+		return rank;
 	}
 
 	public void setName(String name) {

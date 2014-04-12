@@ -23,6 +23,7 @@ import edu.mit.menyou.UpdateMood;
 import edu.mit.menyou.home.Home;
 import edu.mit.menyou.orderedDish.OrderedDish;
 import edu.mit.menyou.search.Search;
+import edu.mit.menyou.search.SearchRadius;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -76,6 +77,9 @@ public class RestaurantMenu extends Activity {
 	final static String healthM = "edu.mit.menyou.health";
 	final static String denseM = "edu.mit.menyou.dense";
 	final static String discoverM = "edu.mit.menyou.discover";
+	
+	private String restIDKey = "edu.mit.menyou.restID";
+	private String restNameKey = "edu.mit.menyou.restName";
 	
 
 	
@@ -152,8 +156,11 @@ public class RestaurantMenu extends Activity {
         
         RestaurantName = (TextView) findViewById(R.id.restName);
         
-        restName = getIntent().getExtras().getString("restName");
-        restID = getIntent().getExtras().getString("restID");
+        
+        restName = prefs.getString(restNameKey, "");
+        restID = prefs.getString(restIDKey, "");
+        //restName = getIntent().getExtras().getString("restName");
+        //restID = getIntent().getExtras().getString("restID");
         RestaurantName.setText(restName);
         
         
@@ -195,11 +202,6 @@ public class RestaurantMenu extends Activity {
     	
 		@Override
 		protected void onPostExecute(List<RestaurantMenuItem> result) {	
-			costInt=prefs.getInt(costM, 0);
-			spiceInt=prefs.getInt(spiceM, 0);
-			denseInt=prefs.getInt(denseM, 0);
-			discoverInt=prefs.getInt(discoverM, 0);
-			healthInt=prefs.getInt(healthM, 0);
 			
 			super.onPostExecute(result);
 			dialog.dismiss();
@@ -232,7 +234,14 @@ public class RestaurantMenu extends Activity {
 		protected List<RestaurantMenuItem> doInBackground(String... params) {
 			JSONObject json = null;
 			List<RestaurantMenuItem> result = new ArrayList<RestaurantMenuItem>();
+			result.clear();
 			request_url = BASE_URL + params[0] + END_URL;
+			
+			costInt=prefs.getInt(costM, 0);
+			spiceInt=prefs.getInt(spiceM, 0);
+			denseInt=prefs.getInt(denseM, 0);
+			discoverInt=prefs.getInt(discoverM, 0);
+			healthInt=prefs.getInt(healthM, 0);
 			
 			
 
@@ -280,12 +289,15 @@ public class RestaurantMenu extends Activity {
 					}
 				}
 				
+				costInt=prefs.getInt(costM, 0);
+				spiceInt=prefs.getInt(spiceM, 0);
+				denseInt=prefs.getInt(denseM, 0);
+				discoverInt=prefs.getInt(discoverM, 0);
+				healthInt=prefs.getInt(healthM, 0);
 				
 				Algorithm alg = new Algorithm(result,allergies_list,likes_list,dislikes_list,costInt,spiceInt,denseInt,discoverInt,healthInt);
-				
+				alg.reset();
 				result=alg.calculate();
-			
-				
 				return result;
 			}
 			catch(Throwable t) {
@@ -354,14 +366,22 @@ public class RestaurantMenu extends Activity {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.update_mood:
-	        	Intent i = new Intent(this, UpdateMood.class);
-	        	startActivityForResult(i, 1);
+	        	 Intent nextScreen2 = new Intent(getApplicationContext(), UpdateMood.class);
+					startActivity(nextScreen2);
+	            return true;
+	        case R.id.menu_back:
+	        	 Intent nextScreen = new Intent(getApplicationContext(), Search.class);
+					startActivity(nextScreen);
+	            return true;
+	        case R.id.home:
+	        	 Intent nextScreen3= new Intent(getApplicationContext(), Home.class);
+					startActivity(nextScreen3);
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-	
+	/*
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		  if (requestCode == 1) {
@@ -369,10 +389,9 @@ public class RestaurantMenu extends Activity {
 		     if(resultCode == RESULT_OK){      
 		         String result=data.getStringExtra("result");          
 		     }
-		     if (resultCode == RESULT_CANCELED) {  
-		    	 new AsyncListViewLoader().execute(restID);
-
-			     adpt.notifyDataSetChanged();
+		     if (resultCode == RESULT_CANCELED) { 
+		    	 Intent nextScreen2 = new Intent(getApplicationContext(), RestaurantMenu.class);
+					startActivity(nextScreen2);
 					
 					
 		    	 
@@ -380,5 +399,5 @@ public class RestaurantMenu extends Activity {
 		     }
 		  }
 		}
-
+*/
 }

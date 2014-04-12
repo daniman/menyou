@@ -50,9 +50,9 @@
     android:hint="description"
     android:layout_marginTop="20dp"
     android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-    android:maxLines="7"
-    android:minLines="5"
-    android:text="\n\n\n\n" >
+    android:maxLines="6"
+    android:minLines="4"
+    android:text="\n\n\n" >
 
     <requestFocus />
 </EditText>
