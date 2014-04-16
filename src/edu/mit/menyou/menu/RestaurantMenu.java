@@ -86,21 +86,17 @@ public class RestaurantMenu extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-    	
     	getActionBar().setDisplayShowTitleEnabled(false);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_list);
-       
-        
-        
+    	
     	prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String allergiesKey = "edu.mit.menyou.allergies";
 		String likesKey = "edu.mit.menyou.likes";
 		String dislikesKey = "edu.mit.menyou.dislikes";
-		//String allergiesString = prefs.getString(allergiesKey, null);
-		//allergies = allergiesString.split("\\s+");
-        
+    	
+		likes_list.clear();
+		dislikes_list.clear();
+		allergies_list.clear();
+		
 /////////////// allergies //////////////////
 		
 	String allergiesString = prefs.getString(allergiesKey, null);
@@ -148,6 +144,11 @@ public class RestaurantMenu extends Activity {
 	}
 	
 	////////////////////////////////////////////////////
+	
+	
+	 super.onCreate(savedInstanceState);
+     setContentView(R.layout.activity_menu_list);
+		
         adpt  = new RestaurantMenuAdapter(new ArrayList<RestaurantMenuItem>(), this);
         lView = (ListView) findViewById(R.id.menuListView);
         lView.setAdapter(adpt);
@@ -155,7 +156,6 @@ public class RestaurantMenu extends Activity {
         registerForContextMenu(lView); //register for the contextmenu
         
         RestaurantName = (TextView) findViewById(R.id.restName);
-        
         
         restName = prefs.getString(restNameKey, "");
         restID = prefs.getString(restIDKey, "");
@@ -184,6 +184,7 @@ public class RestaurantMenu extends Activity {
         				intent.putExtra("restID", restID);
         				intent.putExtra("restName", restName);
         				intent.putExtra("dishName", selectedDish);
+        				intent.putExtra("position", position);
         				startActivity(intent);
         			}
         		});
@@ -294,6 +295,8 @@ public class RestaurantMenu extends Activity {
 				denseInt=prefs.getInt(denseM, 0);
 				discoverInt=prefs.getInt(discoverM, 0);
 				healthInt=prefs.getInt(healthM, 0);
+				
+				Thread.sleep(300);
 				
 				Algorithm alg = new Algorithm(result,allergies_list,likes_list,dislikes_list,costInt,spiceInt,denseInt,discoverInt,healthInt);
 				alg.reset();

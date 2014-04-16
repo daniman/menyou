@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import com.parse.ParseObject;
+
 import edu.mit.menyou.SetupTastes.DummySectionFragment;
 import edu.mit.menyou.SetupTastes.DummySectionFragment2;
 import edu.mit.menyou.SetupTastes.DummySectionFragment3;
@@ -593,6 +595,23 @@ public class TasteProfile extends FragmentActivity {
 	                		prefs.edit().putString(allergiesKey, allergies).commit();
 	                		prefs.edit().putString(likesKey, likes).commit();
 	                		prefs.edit().putString(dislikesKey, dislikes).commit();
+	                		
+	                		String first = "edu.mit.menyou.first";
+	                		String last = "edu.mit.menyou.last";
+	                		String number = "edu.mit.menyou.number";
+	                		String firstname = prefs.getString(first, "Ben");
+	                		String lastname = prefs.getString(last, "*no last name*");
+	                		String username = firstname+" "+lastname;
+	                		String mNumber = prefs.getString(number, "none");
+	                		
+	                		//user data on setup use//
+	                		ParseObject UpdateTastes = new ParseObject("UpdateTastes");
+	                		UpdateTastes.put("username", username);
+	                		UpdateTastes.put("number", mNumber);
+	                		UpdateTastes.put("allergies", allergies);
+	                		UpdateTastes.put("likes", likes);
+	                		UpdateTastes.put("dislikes", dislikes);
+	                		UpdateTastes.saveInBackground();
 	                		
 	                        Intent intent = new Intent(getActivity(), Profile.class);
 	                        startActivity(intent);

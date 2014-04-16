@@ -75,6 +75,7 @@ public class Home extends Activity {
 		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String firstTime = "edu.mit.menyou.firstTime";
 		String first = "edu.mit.menyou.first";
+		String last = "edu.mit.menyou.last";
 		String number = "edu.mit.menyou.number";
 		int firstCheck = prefs.getInt(firstTime, 0);
 		String numberCheck = prefs.getString(number, "");
@@ -84,10 +85,12 @@ public class Home extends Activity {
 			Intent nextScreen = new Intent(getApplicationContext(), First.class);
             startActivity(nextScreen);
 		}
+		/*
 		if(numberCheck==""){
 			Intent nextScreen = new Intent(getApplicationContext(), PhoneNumber.class);
             startActivity(nextScreen);
 		}
+		*/
 		
 		
 		super.onCreate(savedInstanceState);
@@ -101,7 +104,15 @@ public class Home extends Activity {
 		displayMeals = (TextView) findViewById(R.id.home_points);
 		mealsWord = (TextView) findViewById(R.id.home_meals);
 		String firstname = prefs.getString(first, "Ben");
+		String lastname = prefs.getString(last, "*no last name*");
 		name.setText("Welcome "+firstname);
+		String username = firstname+" "+lastname;
+
+		//user data on home page use//
+		ParseObject AppUses = new ParseObject("AppUses");
+		AppUses.put("username", username);
+		AppUses.put("number", mNumber);
+		AppUses.saveInBackground();
 		
 		if(firstname.length()>10){
 			name.setTextSize(20);

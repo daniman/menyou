@@ -13,6 +13,8 @@ import java.util.Locale;
 
 import java.util.Set;
 
+import com.parse.ParseObject;
+
 import edu.mit.menyou.menu.RestaurantMenu;
 import edu.mit.menyou.menu.RestaurantMenuItem;
 import edu.mit.menyou.orderedDish.OrderedDish;

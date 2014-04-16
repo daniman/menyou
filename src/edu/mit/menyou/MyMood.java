@@ -1,5 +1,7 @@
 package edu.mit.menyou;
 
+import com.parse.ParseObject;
+
 import edu.mit.menyou.home.Home;
 import edu.mit.menyou.search.Search;
 import android.os.Bundle;
@@ -79,6 +81,21 @@ public class MyMood extends Activity {
             	prefs.edit().putInt(spiceM,spiceBar.getProgress()).commit();
             	prefs.edit().putInt(healthM,healthBar.getProgress()).commit();
             	prefs.edit().putInt(discoverM,discoverBar.getProgress()).commit();
+            	
+            	String first = "edu.mit.menyou.first";
+        		String last = "edu.mit.menyou.last";
+        		String number = "edu.mit.menyou.number";
+        		String firstname = prefs.getString(first, "Ben");
+        		String lastname = prefs.getString(last, "*no last name*");
+        		String username = firstname+" "+lastname;
+        		String mNumber = prefs.getString(number, "none");
+        		String moodIntegers = "Cost:"+String.valueOf(costBar.getProgress())+" Dense:"+String.valueOf(denseBar.getProgress())+" Spice:"+String.valueOf(spiceBar.getProgress())+" Health:"+String.valueOf(healthBar.getProgress())+" Discover:"+String.valueOf(discoverBar.getProgress());
+        		ParseObject Moods = new ParseObject("Moods");
+        		Moods.put("username", username);
+        		Moods.put("number", mNumber);
+        		Moods.put("locationInApp","Profile edit");
+        		Moods.put("moodIntegers", moodIntegers);
+        		Moods.saveInBackground();
             	
             	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
                 startActivity(nextScreen);

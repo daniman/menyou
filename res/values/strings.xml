@@ -45,5 +45,6 @@
     <string name="title_activity_phone_number">PhoneNumber</string>
     <string name="title_activity_search_radius">SearchRadius</string>
     <string name="title_activity_update_mood">UpdateMood</string>
+    <string name="title_activity_feedback">Feedback</string>
 
 </resources>

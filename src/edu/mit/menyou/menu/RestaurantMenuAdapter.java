@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RestaurantMenuAdapter extends ArrayAdapter<RestaurantMenuItem> {
@@ -53,6 +54,8 @@ public class RestaurantMenuAdapter extends ArrayAdapter<RestaurantMenuItem> {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = inflater.inflate(R.layout.menu_list_item, null);
 		}
+		    ImageView imageView = (ImageView) v.findViewById(R.id.icon);
+		    
 		RestaurantMenuItem d = itemList.get(position);
 		TextView text = (TextView) v.findViewById(R.id.dishName);
 		text.setText(d.getName());
@@ -66,11 +69,37 @@ public class RestaurantMenuAdapter extends ArrayAdapter<RestaurantMenuItem> {
 		TextView text2 = (TextView) v.findViewById(R.id.dishPrice);
 		text2.setText("$"+d.getPrice());
 		
-		if(count<1 && d.getName().toString().contains("-Allergies-")){
+		if(d.getName().toString().contains("-Allergies-")){
 			text4.setText("");
 			text2.setText("");
-			count=1;
+			text.setTextColor(Color.RED);
+			
 		}
+		else if(!d.getName().toString().contains("-Allergies-")){
+			text.setTextColor(Color.parseColor("#638e22"));
+		}
+		
+		if (d.getRank()==-99){
+		      imageView.setImageResource(R.drawable.logo_x);
+		    } 
+		else if(d.getRank()>102){
+		      imageView.setImageResource(R.drawable.green);
+		}
+		else if(d.getRank()>98){
+		      imageView.setImageResource(R.drawable.green_yellow);
+		}
+		else if(d.getRank()>94){
+		      imageView.setImageResource(R.drawable.yellow);
+		}
+		else if(d.getRank()>89){
+		      imageView.setImageResource(R.drawable.orange);
+		}
+		else if(d.getRank()<90){
+		      imageView.setImageResource(R.drawable.red);
+		}
+		else{
+			imageView.setImageResource(R.drawable.logo_x);		}
+		
 		
 		return v;
 

@@ -99,6 +99,10 @@
             android:name="edu.mit.menyou.UpdateMood"
             android:label="@string/title_activity_update_mood" >
         </activity>
+        <activity
+            android:name="edu.mit.menyou.Feedback"
+            android:label="@string/title_activity_feedback" >
+        </activity>
     </application>
 
 </manifest>

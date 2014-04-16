@@ -84,7 +84,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:src="@drawable/dietary_choices" />
-
+ 
     <Button
         android:id="@+id/reset_button"
         style="?android:attr/buttonStyleSmall"
@@ -92,6 +92,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/username_first"
-        android:text="Reset\nProfile" />
+        android:text="Reset Profile"
+        android:textSize="10dp" /> 
+        
+    <Button
+        android:id="@+id/feedback"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/reset_button"
+        android:text="Send Feedback"
+        android:textSize="10dp" /> 
 
 </RelativeLayout>

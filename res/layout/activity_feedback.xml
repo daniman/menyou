@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Feedback" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:text="Send us any feedback you have about the app" />
+
+    
+<EditText
+    android:id="@+id/text"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/title"
+    android:alpha=".6"
+    android:background="@drawable/rect_edit_text"
+    android:ems="10"
+    android:hint="description"
+    android:layout_marginTop="20dp"
+    android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+    android:maxLines="6"
+    android:minLines="4"
+    android:text="\n\n" >
+    
+    <requestFocus />
+</EditText>
+    
+     <Button
+        android:id="@+id/feedback"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:layout_centerHorizontal="true"
+        android:text="Send Feedback"
+        android:textSize="18dp" /> 
+        
+</RelativeLayout>

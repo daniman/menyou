@@ -32,6 +32,7 @@ public class Profile extends Activity {
 		final ImageButton FriendsButton = (ImageButton) findViewById(R.id.friends_button);
 		final ImageButton HistoryButton = (ImageButton) findViewById(R.id.history_button);
 		final Button ResetButton = (Button) findViewById(R.id.reset_button);
+		final Button FeedbackButton = (Button) findViewById(R.id.feedback);
 		final SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		final String first = "edu.mit.menyou.first";
 		final String last = "edu.mit.menyou.last";
@@ -94,6 +95,7 @@ public class Profile extends Activity {
                 startActivity(nextScreen);
                 }
         });
+		
 		ResetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
             	String firstTime = "edu.mit.menyou.firstTime";
@@ -106,7 +108,14 @@ public class Profile extends Activity {
                 Intent nextScreen = new Intent(getApplicationContext(), First.class);
                 startActivity(nextScreen);
                 }
-        });
+        });  
+		
+		FeedbackButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                Intent nextScreen = new Intent(getApplicationContext(), Feedback.class);
+                startActivity(nextScreen);
+                }
+        });  
 	}
 
 	@Override

@@ -143,5 +143,15 @@
         android:layout_alignRight="@+id/notfamiliar"
         android:layout_alignParentTop="true"
         android:text="apply" />
+    
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="center the slider if you don't want that \nfactor to affect the menu order"
+        android:layout_marginTop="420dp"
+        android:textSize="12dp" />
 
 </RelativeLayout>

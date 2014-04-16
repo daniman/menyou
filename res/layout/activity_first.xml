@@ -29,5 +29,23 @@
         android:textColor="#638e22"
         android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/locu_promo"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="powered by:"
+        />
+    
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/locu_logo" />
    
 </RelativeLayout>

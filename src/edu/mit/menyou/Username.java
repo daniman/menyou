@@ -41,6 +41,14 @@ public class Username extends Activity {
 		final String first = "edu.mit.menyou.first";
 		final String last = "edu.mit.menyou.last";
 		final String number = "edu.mit.menyou.number";
+		final String allergiesKey = "edu.mit.menyou.allergies";
+		final String likesKey = "edu.mit.menyou.likes";
+		final String dislikesKey = "edu.mit.menyou.dislikes";
+		
+		final String allergiesString = prefs.getString(allergiesKey, null);
+		final String likesString = prefs.getString(likesKey, null);
+		final String dislikesString = prefs.getString(dislikesKey, null);
+
 		
 		TelephonyManager tMgr =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 		mPhoneNumber = tMgr.getLine1Number();
@@ -52,6 +60,7 @@ public class Username extends Activity {
 		//Toast.makeText(Username.this, mPhoneNumber, Toast.LENGTH_SHORT).show();
 
 		final ParseObject Usernames = new ParseObject("Usernames");
+		final ParseObject SetupTastes = new ParseObject("SetupTastes");
 		
         user_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -76,6 +85,15 @@ public class Username extends Activity {
 	        			Usernames.put("username", firstName+" "+lastName);
 		            	Usernames.put("phoneNumber", String.valueOf(mPhoneNumber));
 		            	Usernames.saveInBackground();
+		            	
+                		//user data on setup use//
+                		SetupTastes.put("username", firstName+" "+lastName);
+                		SetupTastes.put("number", mPhoneNumber);
+                		SetupTastes.put("allergies", allergiesString);
+                		SetupTastes.put("likes", likesString);
+                		SetupTastes.put("dislikes", dislikesString);
+                		SetupTastes.saveInBackground();
+                		
 	        			Intent nextScreen = new Intent(getApplicationContext(), Home.class);
 		                startActivity(nextScreen);
 	        		}
@@ -95,6 +113,15 @@ public class Username extends Activity {
 		            	Usernames.put("phoneNumber", String.valueOf(mPhoneNumber));
 		            	Usernames.saveInBackground();
 	        			prefs.edit().putString(number, mPhoneNumber).commit();
+	        			
+	        			//user data on setup use//
+                		SetupTastes.put("username", firstName+" "+lastName);
+                		SetupTastes.put("number", mPhoneNumber);
+                		SetupTastes.put("allergies", allergiesString);
+                		SetupTastes.put("likes", likesString);
+                		SetupTastes.put("dislikes", dislikesString);
+                		SetupTastes.saveInBackground();
+                		
 	        			Intent nextScreen2 = new Intent(getApplicationContext(), Home.class);
 		                startActivity(nextScreen2);
 	        		}

@@ -39,6 +39,9 @@ public class OrderedDish extends Activity {
 	private Button button;
 	private String review;
 	private String mNumber;
+	private String name1;
+	private String name2;
+	private int position;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class OrderedDish extends Activity {
         restID = getIntent().getExtras().getString("restID");
         restName = getIntent().getExtras().getString("restName");
         dishName = getIntent().getExtras().getString("dishName");
+        position = getIntent().getExtras().getInt("position");
         
         DishName.setText("You ordered the " + dishName + "!");
         
@@ -66,6 +70,8 @@ public class OrderedDish extends Activity {
         
         final SharedPreferences prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		final String number = "edu.mit.menyou.number";
+		final String first = "edu.mit.menyou.first";
+		final String last = "edu.mit.menyou.last";
 		
         final ParseObject Reviews = new ParseObject("Reviews");
 
@@ -76,9 +82,9 @@ public class OrderedDish extends Activity {
             	numberOfStars = String.valueOf(stars.getRating());
             	review = String.valueOf(edit_text.getText());
         		mNumber = prefs.getString(number, "none");
-            	
-        		System.out.println("restID: " + restID + "; restName: " + restName + "; dishName: " + dishName + "; rating: " + numberOfStars
-                		+ "; review: " + review);
+        		name1 = prefs.getString(first, "error7");
+        		name2 = prefs.getString(last, "error8");
+        		String username = name1+" "+name2;
         		
             	Reviews.put("restID", restID);
             	Reviews.put("restName", restName);
@@ -86,6 +92,8 @@ public class OrderedDish extends Activity {
             	Reviews.put("rating",numberOfStars);
             	Reviews.put("review", review);
             	Reviews.put("number", mNumber);
+            	Reviews.put("username", username);
+            	Reviews.put("position", position);
             	
             	
             	

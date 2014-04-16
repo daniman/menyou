@@ -21,24 +21,39 @@
         	  android:textColor="#638e22"
               android:layout_width="wrap_content"
    			  android:layout_height="wrap_content"
+   			  android:layout_toRightOf="@+id/icon"
+   			  android:layout_marginRight="40dp"
+   			  android:layout_alignParentRight="true"
    			  android:text="name"/>
  
     <TextView android:id="@+id/dishDescription"
         	  android:textStyle="italic"
-        	  android:textSize="14sp"
+        	  android:textSize="13sp"
         	  android:textColor="#b8b8b8"
               android:layout_width="wrap_content"
    			  android:layout_height="wrap_content"   			  
-   			  android:layout_below="@id/dishName" />
+   			  android:layout_below="@id/dishName"
+   			  android:layout_alignLeft="@+id/dishName" />
     
     <TextView
         android:id="@+id/dishRank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="rank"
-        android:layout_below="@+id/dishDescription"
+        android:layout_toLeftOf="@+id/dishDescription"
         android:textColor="#787878"
         android:textSize="12sp"
-        android:textStyle="italic" />
-
+        android:textStyle="italic" 
+        android:layout_alignLeft="@+id/dishName"/>
+<ImageView
+        android:id="@+id/icon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_launcher"
+        
+         >
+    </ImageView>
 </RelativeLayout>

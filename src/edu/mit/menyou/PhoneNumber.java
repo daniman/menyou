@@ -53,6 +53,16 @@ public class PhoneNumber extends Activity {
 		
 		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
 		final ParseObject Usernames = new ParseObject("Usernames");
+		final ParseObject SetupTastes = new ParseObject("SetupTastes");
+
+
+		final String allergiesKey = "edu.mit.menyou.allergies";
+		final String likesKey = "edu.mit.menyou.likes";
+		final String dislikesKey = "edu.mit.menyou.dislikes";
+		
+		final String allergiesString = prefs.getString(allergiesKey, null);
+		final String likesString = prefs.getString(likesKey, null);
+		final String dislikesString = prefs.getString(dislikesKey, null);
 
 
 	number_button.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +77,15 @@ public class PhoneNumber extends Activity {
             	Usernames.put("username", firstName+" "+lastName);
             	Usernames.put("phoneNumber", String.valueOf(mNumber));
             	Usernames.saveInBackground();
+            	
+            	//user data on setup use//
+        		SetupTastes.put("username", firstName+" "+lastName);
+        		SetupTastes.put("number", mNumber);
+        		SetupTastes.put("allergies", allergiesString);
+        		SetupTastes.put("likes", likesString);
+        		SetupTastes.put("dislikes", dislikesString);
+        		SetupTastes.saveInBackground();
+        		
             	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
                 startActivity(nextScreen);
         	}
@@ -76,6 +95,15 @@ public class PhoneNumber extends Activity {
         		Usernames.put("username", firstName+" "+lastName);
             	Usernames.put("phoneNumber", String.valueOf(mNumber));
             	Usernames.saveInBackground();
+            	
+            	//user data on setup use//
+        		SetupTastes.put("username", firstName+" "+lastName);
+        		SetupTastes.put("number", mNumber);
+        		SetupTastes.put("allergies", allergiesString);
+        		SetupTastes.put("likes", likesString);
+        		SetupTastes.put("dislikes", dislikesString);
+        		SetupTastes.saveInBackground();
+        		
             	Intent nextScreen = new Intent(getApplicationContext(), Home.class);
                 startActivity(nextScreen);
         	}
