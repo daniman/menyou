@@ -29,6 +29,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -174,10 +175,21 @@ public class Search extends Activity implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		count=count+1;
+		String provider1 = location.getProvider();
 		
-		if(count==3){
+		if(count==5){
 			locationManager.removeUpdates(ctx);
 		}
+		
+		if (provider1 == passive && System.currentTimeMillis()-location.getTime()<120000){
+			oldLocation=location;
+			locationManager.removeUpdates(ctx);
+		}
+		/*
+		if(count==5){
+			locationManager.removeUpdates(ctx);
+		} 
+		*/
 		
 		//if this is the first location received
 		if(oldLocation==null && location!=null){

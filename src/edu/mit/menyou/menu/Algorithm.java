@@ -293,11 +293,11 @@ public class  Algorithm {
 				
 				// Spicy  Mood // 
 				//changes amount added to a dish for spicy keywords
-				if(spiceInt<8){spicePoints=-3;}
-				if(spiceInt>7 && spiceInt<16){spicePoints=-1;}
+				if(spiceInt<8){spicePoints=-5;}
+				if(spiceInt>7 && spiceInt<16){spicePoints=-3;}
 				if(spiceInt>15 && spiceInt<24){spicePoints=0;}
-				if(spiceInt>23 && spiceInt<32){spicePoints=1;}
-				if(spiceInt>31){spicePoints=3;}	
+				if(spiceInt>23 && spiceInt<32){spicePoints=3;}
+				if(spiceInt>31){spicePoints=5;}	
 				
 				// spiciness rank //
 				for (int j=0;j<spicy.size();j++){

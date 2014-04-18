@@ -21,6 +21,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseException;
 
 import edu.mit.menyou.First;
+import edu.mit.menyou.Swipes;
 import edu.mit.menyou.PhoneNumber;
 import edu.mit.menyou.Profile;
 import edu.mit.menyou.R;
@@ -40,10 +41,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -67,19 +70,36 @@ public class Home extends Activity {
 	private SharedPreferences prefs;
 	private String mealsNumber = "edu.mit.menyout.mealNumber";
 	private HistoryMenuItem clicked;
+	private String mPhoneNumber;
+	private int timeCheck;
+	private Context ctx=this;
+	long threehours = 1000*60*60*3;
+	long sixhours = 1000*60*60*6;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		Parse.initialize(this, "4EPEC8gdyy1UVP4yC0pRpfM30zpgGMGkoMdeu9p7", "1DxRG10TudyhJwAR4jildKVne8q3PjqNHVvpzIlY");
 		
+		TelephonyManager tMgr =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		mPhoneNumber = tMgr.getLine1Number();
+
+		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
+		String number = "edu.mit.menyou.number";
+		
+		if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
+			prefs.edit().putString(number, mPhoneNumber).commit();
+		}
+		
 		prefs = this.getSharedPreferences("edu.mit.menyou", Context.MODE_PRIVATE);
 		String firstTime = "edu.mit.menyou.firstTime";
 		String first = "edu.mit.menyou.first";
 		String last = "edu.mit.menyou.last";
-		String number = "edu.mit.menyou.number";
 		int firstCheck = prefs.getInt(firstTime, 0);
 		String numberCheck = prefs.getString(number, "");
 		mNumber = prefs.getString(number, "none");
+		timeCheck=1;
 		
 		if(firstCheck==0){
 			Intent nextScreen = new Intent(getApplicationContext(), First.class);
@@ -148,7 +168,7 @@ public class Home extends Activity {
             	List<HistoryMenuItem> result = new ArrayList<HistoryMenuItem>();
                 if (e == null) {        
                 	String numberOfMeals = String.valueOf(mealList.size());
-                	prefs.edit().putString(mealsNumber, numberOfMeals);
+                	prefs.edit().putString(mealsNumber, numberOfMeals).commit();
                     displayMeals.setText(numberOfMeals);
                     if(mealList.size()==1){mealsWord.setText("meal");}
             		
@@ -246,6 +266,33 @@ public class Home extends Activity {
                  
              }
          });
+		
+		String timeOfSwipe = "edu.mit.menyou.timeOfSwipe";
+		String timeMillis = prefs.getString(timeOfSwipe, "0");
+		boolean timeCheck = System.currentTimeMillis()-Long.parseLong(timeMillis)>threehours;
+		
+		if(timeCheck){
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx);
+				alertDialogBuilder.setTitle("Daily Swipes");
+				alertDialogBuilder.setMessage("Wanna help Menyou help you?\n\nSwipe some food for us!");
+					
+				alertDialogBuilder.setNegativeButton("not interested",new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,int id) {
+							
+						}
+					  });
+				
+				alertDialogBuilder.setPositiveButton("let's go",new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							Intent nextScreen1 = new Intent(getApplicationContext(), Swipes.class);
+		                startActivity(nextScreen1);
+							
+						}
+			        });
+					AlertDialog alertDialog = alertDialogBuilder.create();
+					alertDialog.show();
+		}
         
 	}
 

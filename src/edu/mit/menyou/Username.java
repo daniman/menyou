@@ -54,7 +54,7 @@ public class Username extends Activity {
 		mPhoneNumber = tMgr.getLine1Number();
 		
 		if(mPhoneNumber!=null && !mPhoneNumber.isEmpty()){
-			prefs.edit().putString(number, mPhoneNumber);
+			prefs.edit().putString(number, mPhoneNumber).commit();
 
 		}
 		//Toast.makeText(Username.this, mPhoneNumber, Toast.LENGTH_SHORT).show();

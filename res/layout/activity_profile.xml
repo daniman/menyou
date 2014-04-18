@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Profile" >
-    
+    <!--
     <ImageView
         android:id="@+id/profile_av"
         android:layout_width="70dp"
@@ -16,13 +16,13 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:src="@drawable/hamburger" />
-    
+    -->
     <TextView
            android:id="@+id/username_first"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_toRightOf="@+id/profile_av"
            android:layout_alignParentTop="true"
+           android:layout_alignParentLeft="true"
            android:text="@string/profile_username_first"
            android:textSize="28sp"
            android:layout_marginLeft="30dp"
