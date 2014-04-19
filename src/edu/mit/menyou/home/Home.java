@@ -72,6 +72,7 @@ public class Home extends Activity {
 	private HistoryMenuItem clicked;
 	private String mPhoneNumber;
 	private int timeCheck;
+	private String timeOfSwipe = "edu.mit.menyou.timeOfSwipe";
 	private Context ctx=this;
 	long threehours = 1000*60*60*3;
 	long sixhours = 1000*60*60*6;
@@ -267,7 +268,6 @@ public class Home extends Activity {
              }
          });
 		
-		String timeOfSwipe = "edu.mit.menyou.timeOfSwipe";
 		String timeMillis = prefs.getString(timeOfSwipe, "0");
 		boolean timeCheck = System.currentTimeMillis()-Long.parseLong(timeMillis)>threehours;
 		
@@ -278,6 +278,7 @@ public class Home extends Activity {
 					
 				alertDialogBuilder.setNegativeButton("not interested",new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,int id) {
+							prefs.edit().putString(timeOfSwipe, String.valueOf(System.currentTimeMillis())).commit();
 							
 						}
 					  });

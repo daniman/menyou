@@ -66,7 +66,7 @@ public class Swipes extends Activity{
 	final static String dislikesKey = "edu.mit.menyou.dislikes";
 	final static String allergiesKey = "edu.mit.menyou.allergies";
 
-
+	private int COUNT_MAX=10;
     
 	    private GestureDetector gestureDetector;
 	    View.OnTouchListener gestureListener;
@@ -257,10 +257,15 @@ public class Swipes extends Activity{
 	        private static final int SWIPE_MIN_DISTANCE = 120;
 	        private static final int SWIPE_MAX_OFF_PATH = 250;
 	        private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-	        private static final int COUNT_MAX=10;
+	        
+	       
 
 	        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 	                float velocityY) {
+	        	
+	        	if(foodList.size()<10){
+		        	COUNT_MAX=foodList.size()+1;
+		        }
 	        	i=i+1;
 	            System.out.println(" in onFling() :: ");
 	            //if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
@@ -286,7 +291,7 @@ public class Swipes extends Activity{
 	                    	currentFood.setText(foodList.get(i));
 	    	                currentFood.startAnimation(inFromBelow);
 	    	                overlay.setVisibility(View.INVISIBLE);
-	    	                if(count>COUNT_MAX){
+	    	                if(count==COUNT_MAX){
 	    	                	endSwipes();
 	    	                }
 	                    }
@@ -312,7 +317,7 @@ public class Swipes extends Activity{
 	    	                currentFood.setText(foodList.get(i));
 	    	                currentFood.startAnimation(inFromBelow);
 	    	                overlay.setVisibility(View.INVISIBLE);
-	    	                if(count>COUNT_MAX){
+	    	                if(count==COUNT_MAX){
 	    	                	endSwipes();
 	    	                }
 

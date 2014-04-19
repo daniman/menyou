@@ -95,6 +95,8 @@ public class OrderedDish extends Activity {
             	Reviews.put("username", username);
             	Reviews.put("position", position);
             	
+            	String timeOfSwipe = "edu.mit.menyou.timeOfSwipe";
+        		prefs.edit().putString(timeOfSwipe, "0").commit();
             	
             	
             	//this was crashing the app for some reason
